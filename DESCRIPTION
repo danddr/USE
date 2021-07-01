@@ -1,0 +1,12 @@
+Package: UEsampling
+Title: Uniform Environmental sampling
+Version: 0.0.0.9000
+Authors@R: Authors@R: c(person("Manuele", "Bazzichetto", role = c("aut"), email = "manuele.bazzichetto@gmail.com"),person("Daniele", "Da Re", role = c("aut", "cre"), email = "daniele.dare@uclouvain.be"), person("Enrico", "Tordoni", role = c("aut"), email = "enrico.tordoni@ut.ee")) 
+Description: UEsampling performs uniform sampling of the environmental space.
+Depends: R (>= 3.6.0)
+Imports: data.table, dplyr, ggplot2
+License: GPL(>=2)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
