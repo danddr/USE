@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Daniele Da Re, Enrico Tordoni and Manuele Bazzichetto" />
+
+
+<title>UEsampling_vignette</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">UEsampling_vignette</h1>
+<h4 class="author">Daniele Da Re, Enrico Tordoni and Manuele Bazzichetto</h4>
+
+
+
+<p>In this vignette we will go trough the UEsampling package.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setlocale</span>(<span class="st">&quot;LC_ALL&quot;</span>, <span class="st">&quot;English&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;LC_COLLATE=English_United States.1252;LC_CTYPE=English_United States.1252;LC_MONETARY=English_United States.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UEsampling)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(virtualspecies)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RStoolbox)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>myCRS<span class="ot">&lt;-</span><span class="st">&quot;+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0&quot;</span></span></code></pre></div>
+<p>Download bioclimatic variables from Worldclim</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Worldclim<span class="ot">&lt;-</span>raster<span class="sc">::</span><span class="fu">getData</span>(<span class="st">&#39;worldclim&#39;</span>, <span class="at">var=</span><span class="st">&#39;bio&#39;</span>, <span class="at">res=</span><span class="dv">10</span>) </span></code></pre></div>
+<p>Crop the bioclimatic variables to the European extent</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>envData<span class="ot">&lt;-</span><span class="fu">crop</span>(Worldclim, <span class="fu">extent</span>(<span class="sc">-</span><span class="dv">12</span>, <span class="dv">25</span>, <span class="dv">36</span>, <span class="dv">60</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>envData</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class      : RasterBrick </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dimensions : 144, 222, 31968, 19  (nrow, ncol, ncell, nlayers)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; resolution : 0.1666667, 0.1666667  (x, y)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent     : -12, 25, 36, 60  (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; crs        : +proj=longlat +datum=WGS84 +no_defs </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; source     : memory</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; names      : bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, bio10, bio11, bio12, bio13, bio14, bio15, ... </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; min values :  -29,   36,   19, 2680,   75, -129,  127,  -72,  -87,    37,   -93,   221,    31,     0,     7, ... </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; max values :  186,  135,   47, 8893,  368,   97,  342,  204,  275,   277,   129,  2373,   290,   153,   100, ...</span></span></code></pre></div>
+<p>Create virtual species. For details about the methodology used, see the virtualspecies pkg’s <a href="http://borisleroy.com/files/virtualspecies-tutorial.html#introduction">vignette</a></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create virtual species</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>myRandNum<span class="ot">=</span><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">19</span>,<span class="at">size=</span><span class="dv">5</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>random.sp <span class="ot">&lt;-</span> virtualspecies<span class="sc">::</span><span class="fu">generateRandomSp</span>(envData[[myRandNum]], </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">convert.to.PA =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">species.type =</span> <span class="st">&quot;additive&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">realistic.sp =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">plot =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - Determining species&#39; response to predictor variables</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - Calculating species suitability</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Generating virtual species environmental suitability...</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - The response to each variable was rescaled between 0 and 1. To</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             disable, set argument rescale.each.response = FALSE</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - The final environmental suitability was rescaled between 0 and 1.</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             To disable, set argument rescale = FALSE</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#reclassify suitability raster using a probability conversion rule</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>new.pres<span class="ot">&lt;-</span><span class="fu">convertToPA</span>(<span class="at">x=</span>random.sp, </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                      <span class="at">beta=</span><span class="fl">0.55</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                      <span class="at">alpha =</span> <span class="sc">-</span><span class="fl">0.05</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    --- Determing species.prevalence automatically according to alpha and beta</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Logistic conversion finished:</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               </span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - beta = 0.55</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - alpha = -0.05</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - species prevalence =0.370696514773752</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#Sample true occurrences</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>presence.points <span class="ot">&lt;-</span> <span class="fu">sampleOccurrences</span>(new.pres,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">n =</span> <span class="dv">300</span>, <span class="co"># The number of points to sample</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">type =</span> <span class="st">&quot;presence-absence&quot;</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sample.prevalence =</span> <span class="fl">0.6</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">detection.probability =</span> <span class="dv">1</span>,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">correct.by.suitability =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">plot =</span> <span class="cn">TRUE</span>)  </span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAA/FBMVEUAAAAAADoAAGYAOjoAOpAAZrYApgAFqAAMqgASrAAZrwAfsQAmswAttQA1uAA6AAA6ADo6AGY6Ojo6OpA6kNs7ugBDvQBMvwBTwQBcxABjxgBmAABmtv9syAB0ygB9zQCFzwCP0QCQOgCQZgCQ2/+Z1ACh1gCs2AC02gC2ZgC2//+/3QDI3wDT4QDbkDrb2//b///c4wDm1hLm3Avm5ALnyiLnzxvowTPoxSvpuUPpvDzqtFbqtk3rsWfrsW7rsl3ssXjssn/ts4nttZHuuJruu6Tvvqzvw7XwyL3wzsfw08/x29jx4uDy6+ry8vL/tmb/25D//7b//9v///91yzxNAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAOi0lEQVR4nO2dB5vcuA2GkcsZ6XGKU53q1L0kk0vv9S49kdfW//8vEQmQBNU+aVZazYzxnW+fmRFFie8CIFg0S61rVnT0DVy6HBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCGhjQLS7tr3fBS266OoOuMDOF3RAj1vdARfY+YIO6HGrO+ACO1/w/OoW9k9vLCBaeO6bCoiCBenJs7Z0pYCW5XHN4IMsIvk/vIz/sjgUk3+drhXQmdWNASo/OjgCJRaN/12tBU1Xl2wqWMJABQ8FPANAhU8+4dYA5dg7CkgJqfUIFR66mC1+Y4DC22hDzSD+RDXFZkKQpuxuI/ajMLe9X6zdAcX+qeVRA7KAQsliOgqJh4W3vV+sXQHFbk1cZqJ8drF4anYudTMpUkreWgwiCb/dT+apBEDtpa0ApUBdFSS6tSBNIfJI9J1LlDMHikgLIJajelgquaFuvgmtDVElImLuuidwbonOXNwy8wmutnQ8sqV2dbGWk0lQAwCRAGHND0lDkDGgFMkfWWsu+Or5s+7nyy6uvPXOkuqySUgaOHsbIVhxY3Jr6eOz/2kkv+wYFAGd3n43vPrKguoa04/PjtKaMo7rA0ol8khkxf1uorWAFE3EhKvjDGjWwTKgpiZkSuQEacX9bqK1gO6fRkAvJ5ysX11Ja+YqjukAcVPOiJGoV49kDCvudxPta0GpuV3b5iqWEiRRuUuZmGNW2CuBQe+hdYDCL/pJm8L1gurSlEVo8nTFOfPJWfRUicsG1EZGH/h215FN8BmO5s3MzvhwTEpp8zmC4CGGfPDSAa2qLnZdOfmbBpSmO1rNEUcc6TpcbKaW4ZRr51QxucmEJnt60igt3qgjjrqwng8B7bCYv1uiGIJtGs1L+3hiOp7alEtK105k5kliVaUvRIA+pNrO0HZLFBv7G5QAQxNGJC3v+InNNUomD8iy+YB8szvlw6rjAC3r5rtwowZEMR0WEwnBd5xQRBMPk84tanyn2P+VpQ4E6COq4wAtSRQ1kVFzaGXlpnvLVCXUVL1OPNPPMnvPpX+DLvZR1UVbEEXriUPykg0LoYqPCTM9PoEl2QUyIbYgSH9MdRSgJYkiRfcKDsVcpqJjT0/EtqROQ3MOV8SFVAnbxcXQnEBLH1cdA6hdlCiGf9GZQviIQMI0Bqd80V44m8UIn2rtRy0Ix6BPqEaLdf1vd/OqU3eViZ6m36ItJS4mETcDitNlcbxhTEqm01KOaI1Gg1VTAco/5i//SdVYsZfhV5sIneLveQGhPTJpNQIZckrLWQkVt5OIo6Gc7ZIYl3X6/KKsTM9f/nOqkWKvXwSzv3uib56UN7hF20kcJ0ZpMZgYh2WEFeelSQnVLmVshaXLKiv1Bd0CF/u8aqSY9L8n6X4PB9RIV8/SVUk+E3BRJBT5tKbTMsZS7fHoLdTjIP0F1chQ4/5TwbtSfnKwi3EcWXUkSGamJbIoDjUgG31Yk4A4piWJ8HIe19EaAfqiaqSYhJ8chKqIjVq0nWRgkeykTUmRrh2WX2lOe8oYIllMLBw9rc6FFgH6kgoCuuss6f7pVGfcb9F2kupiwEmfdBYjUVpjTjSgEoNYqUgnlqY7Mhwd5PNCQF9WjcUg62JVQFrQos00Vh23ySyyi+kL6dFT/BUYsfdLnVaVLC4B9FUVCtI9f1vZogdotLpkExkQl7xHf6QoZTquctzEbgToayrUzQutqRElbNH5GlQXuzRpYQ5BlA1IJ9WaPJ1RsaDkb7a7n7/811UwUTw2Bpn3EUTozyRnJBmImOFEjsQ9X8qbztiYFAT0DdVosZN0XJoDdXewgM/eG6iEiYnYcS6kJD+Uxuk1oTS5YXq2FJXmL/9N1WGD1alaBmmZ/by+Xi5a7CR2+Hn0VYaqpK7HVHDN38d3VJcGaLI6yydsoqKYTjc9E9KUSPn04nSTh7QLJsy+q7oaQHbaMM7asx2BxRzS8NJxbc+/qh8A0PdUxaQfc1XjYdVRGowZmeGG6fg17pQs28RsAOj7quuxIHtoAKixs4lpt30J14lfmU+EgH6gui5AOgtEffshS4HytCFZPpoO5IgFAP1QdVWAOKnPR90rZ4vJy7Sn7xvTEhf7keqqALUNM9EYn0zETC6a0Vf/AY4FLvYT1XUB0omyzMQaU25+CjclNpvOTTs/hoB+rroyQMrF4EnJtAGUuq4mfZ7LJENj7GI/U+FVjU53E4t7uEXna7w6MoSYij01XA3CSq+faFnJXD4A9FMVHKyG93QxgFoDqLRXZ1pN2KHUl+WoU+xuaudQfZ1fqtB0RxuX+LYGtHaftP2cBmHadt5NFZgLsgKVJQQhQL9QoQmz8Ortb+0CaMU+6eoA9fp5zoBKAl1Gr8nxWLAy67w2AvRrlblQOlavaoS3m8egM3a5Wikh9ZwyukrBuShHofCDOYKRIRp44IN+pYKT9sHhdgG0cp90paq7L4DKoLQa0MtARN6WFwDQb1UQUPgNX5oF9XYQNk1Z0TCTG1wGX3n6PhLSwvOt+Y0KrmqENzsACg1btU+6OlZ3ZNyUUFy5VJ4n0+d+JEbrRwDQ71UoSJ/0JvDS6spufu0+aXuoJxtx8gcUH8GzIzKbT09tcizX+J1qQTd/SYmiHBrKAtLZsrinik3grtNwBOhPqiWJ4mMCGnaqk0VMflyWnUmnF6Ubb6qQZLo+gjOKf1DhVY12R0Dak62rjnS6vnhUGqzniVfZLqOAysyibOhbBuiPqmMGqxKkRbibH1/h4OIsnKcKZacCN/pkq+4sT1lj3EaTgjUA9GfVQaN5Dc6LLGjob4mL6cnSJA/phjNi2Y5fXCz/SwOz+db8RXXUdMer58FtlwAaiUmJjyGkY/o84ApuFstK6DFD/NzZzbfmr6rj5oPuujCHAWUALBt/y5aXavI1Pc5he7jG7GGkPENNKbEEgN5TmQpXNnCiRct1omcQUOGjQ80YfVmfJWR9EChHI8MnzmmYKvKChq69ohj0vurIGcX7px8EgEyISWmyjDgbkq2c4kDtkI/sAGZTR17bWGQQ9DfVoVOur19MZ+g1oLRgIWGG85yG7j8bcTDS3Ym1CZmjANDfVRc+J00j4rQXWgjlcv3iwicRSksexaDmL/8P1YUDanvTq/F3z9E4uEdIflqbk0mNLmSl0W1KtZsYhuYv/0/VpQMqj4uZ333p4qtHEipPY9lhbVwp7x6W/fgA0L9UeFXjyG3AQaPLhLmDHwUUt+uxjkE4xZt1QfrfKjhYHYxcYYu2Uamut2hDtdfVJ1F5Tiomixll/KSsbow9MF7X9B8Vmu4Yzn3gFm2iUh0303iGgLJBJTRcyhUfbRjFoP+q0ITZ8fuke6s8POMnYTN+cblet99mW2Ra0M3/T7VoyvXIbcB975qznzibbwhRr6wN0siCRpSOVZP2R28kr2wnP4QgqOR4dUoMzeaTuoE5spM8HXOmLhQQS8gtK8jpcHVO74PsUtFwZJcr6RaPs2/tUBcbGHQxGLaJsADSl/2z6+pySqBTH/LZAwbnlxWkCyDiahq6HDQn9T9oLZb0LSAURyDn3+9FdfPWweoAnQ+bcwZ8grikQqWC9gEudlGJYnGpwaBMjw8y6cGNhEem9Zs/Buefp2pV43TkUMM2aAgosKm+S2i84Tze8297v1h7AKIZcQ9OqyeUNxqmmuFwjR8UpM/U3oB4wGcE0LCasKt6BNCNWFC1TaHeroBrYJkuq78H5cZcrCaUX89/E56KkzPdNqC2nhDitMNwQQWJA419ekuA6tATZQD1GzrssOrDtweIh4DSFx+nCY2CKabLnF6PkmiuAdCabcD14wfxeR/tv3u9XGp7eO5XqhglkfPxNY3bQqsBLd8GTJQ5Zf9KlmONK79okquNgchj10fWWkArN3FKeC6Ho5oxQHbObBCizNkr7ncTrQW0dhtw9aXHYztgKBkZwQSS+53bY2hnCxocz0Zgg3F0u2X3cOGAQoPO3gYsBcy0vnGZxa5z0YDaB20DHpal5VzOusAm2i1R3ElXCohsRNlV1wBobtn/TQd0R/Ts/rPvnvG82Fa6bEBha/pdtJ5zu/kH66IBRbuZX3J70wGF3v31j9sZC9pdWzR6jVZdMK9ETiaKI3XSfm8eQ+sueNKl//kH0d5gQOfU6YBAnQ4I1OmAQJ0OCNTpgECdDgjU6YBuWw4IyAEBOSAgBwTkgIAcEJADAnJAQA4IyAEBOSAgBwS0OaD7T8sfzwHPipStNJN6/YL0b4MsfcZ9D20N6NXzuDQEnzaS9cc5vX7RnX8KDBc/urSHNgb0UnbA4ufV8NOQ+aHA5Q+/7aFtAb2kZ7Hl+InH08L2dpaz/PHJPbR5DBJA8JnZu8/Qoj8+dPfWO8sfwN1D+wCCT13Ll6HdQUJhs9/yR7j30EGATNnZAilG3xqghV4x82VoUld0wttwsVPOWZYF6SjQ15/s1zbeVpCGPfOSvzF40j0kt9TNt6nRMLeL7Z0N0uUvEN5SopitAj6WHv7G4GwE0u/EDrUsfcZ9D/lgFcgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwJyQEAOCMgBATkgIAcE5ICAHBCQAwL6P+gPKfz65VzPAAAAAElFTkSuQmCC" /><!-- --></p>
+<p>Get a presence only dataset.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>myPres<span class="ot">=</span>presence.points<span class="sc">$</span>sample.points[<span class="fu">which</span>(presence.points<span class="sc">$</span>sample.points<span class="sc">$</span>Observed<span class="sc">==</span><span class="dv">1</span>), <span class="fu">c</span>( <span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>,  <span class="st">&quot;Observed&quot;</span>)]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coordinates</span>(myPres)<span class="ot">&lt;-</span><span class="er">~</span>x<span class="sc">+</span>y</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">crs</span>(myPres)<span class="ot">&lt;-</span>myCRS</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>myPres</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : SpatialPointsDataFrame </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; features    : 116 </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : -9.083333, 24.91667, 36.08333, 56.75  (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; crs         : +proj=longlat +datum=WGS84 +no_defs </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; variables   : 1</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; names       : Observed </span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; min values  :        1 </span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; max values  :        1</span></span></code></pre></div>
+<p>Find optimal resolution of the sampling grid. First, made a PCA on the whole rasterstack and then use the PC-scores of the first two axes to create a new spatial object.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rpc<span class="ot">&lt;-</span><span class="fu">rasterPCA</span>(envData,<span class="at">spca =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">data.table</span>(<span class="fu">as.data.frame</span>(rpc<span class="sc">$</span>map[[<span class="fu">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>)]], <span class="at">xy =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>dt<span class="ot">=</span><span class="fu">st_as_sf</span>(dt, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>myRes<span class="ot">=</span>UEsampling<span class="sc">::</span><span class="fu">optim_res</span>(<span class="at">sdf=</span>dt, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">grid.res=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>), </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">perc.thr =</span> <span class="dv">10</span>, </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">showOpt =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(myRes)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 2</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ F_val  : num [1:10, 1:2] 5.1 3.07 1.92 1.42 1.24 ...</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;dimnames&quot;)=List of 2</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. ..$ : NULL</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. ..$ : chr [1:2] &quot;Fval&quot; &quot;Res&quot;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Opt_res: int 6</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(myRes<span class="sc">$</span>F_val)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          Fval Res</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] 5.097533   1</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,] 3.074849   2</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,] 1.922605   3</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,] 1.418601   4</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,] 1.239673   5</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,] 1.011860   6</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>myRes<span class="sc">$</span>Opt_res</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 6</span></span></code></pre></div>
+<p>Perform uniform sampling of the environmental space</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>myObs<span class="ot">=</span>UEsampling<span class="sc">::</span><span class="fu">uesampling</span>(<span class="at">sdf=</span>dt, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">grid.res=</span>myRes<span class="sc">$</span>Opt_res, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">n.tr =</span> <span class="dv">5</span>, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">sub.ts =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">n.ts =</span> <span class="dv">2</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">plot_proc =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(myObs)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 2</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Bkg.tr:Classes &#39;sf&#39;, &#39;data.table&#39; and &#39;data.frame&#39;:   152 obs. of  4 variables:</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ x       : num [1:152] 8.92 22.25 8.75 9.08 9.42 ...</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ y       : num [1:152] 59.9 49.2 59.9 59.9 59.8 ...</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ ID      : chr [1:152] &quot;26&quot; &quot;8342&quot; &quot;25&quot; &quot;27&quot; ...</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ geometry:sfc_POINT of length 152; first list element:  &#39;XY&#39; num [1:2] -3.45 -2.94</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. ..- attr(*, &quot;names&quot;)= chr [1:3] &quot;x&quot; &quot;y&quot; &quot;ID&quot;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Bkg.ts:Classes &#39;sf&#39;, &#39;data.table&#39; and &#39;data.frame&#39;:   58 obs. of  4 variables:</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ x       : num [1:58] -8.75 -8.58 -8.58 -8.42 -5.58 ...</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ y       : num [1:58] 41.2 41.4 41.8 42.8 55.8 ...</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ ID      : chr [1:58] &quot;15714&quot; &quot;15587&quot; &quot;15321&quot; &quot;14457&quot; ...</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ geometry:sfc_POINT of length 58; first list element:  &#39;XY&#39; num [1:2] 1.24 6.45</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. ..- attr(*, &quot;names&quot;)= chr [1:3] &quot;x&quot; &quot;y&quot; &quot;ID&quot;</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#background points for the training dataset</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>myObs<span class="sc">$</span>Bkg.tr</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 152 features and 3 fields</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: -12.45646 ymin: -3.826878 xmax: 8.488641 ymax: 7.464948</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CRS:           NA</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; First 10 features:</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              x        y   ID                      geometry</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 26    8.916667 59.91667   26   POINT (-3.445481 -2.938089)</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8342 22.250000 49.25000 8342   POINT (-2.793576 -2.840835)</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 25    8.750000 59.91667   25   POINT (-4.041346 -2.577969)</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 27    9.083333 59.91667   27   POINT (-3.641179 -3.006921)</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 134   9.416667 59.75000  134    POINT (-3.270331 -2.84089)</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2189 24.583333 56.08333 2189  POINT (-0.8097749 -3.806202)</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 160  13.750000 59.75000  160   POINT (-1.680897 -3.138132)</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2727 23.583333 55.08333 2727  POINT (-0.7983818 -3.567333)</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4211 15.416667 53.25000 4211 POINT (-0.05687325 -3.200389)</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4610 22.916667 52.91667 4610  POINT (-0.2636491 -3.826878)</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="co">#background points for the testing dataset</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>myObs<span class="sc">$</span>Bkg.ts</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 58 features and 3 fields</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: -12.93306 ymin: -3.114069 xmax: 7.025441 ymax: 7.10883</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CRS:           NA</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; First 10 features:</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               x        y    ID                   geometry</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15714 -8.750000 41.25000 15714  POINT (1.244926 6.451581)</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15587 -8.583333 41.41667 15587  POINT (1.257106 6.267118)</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15321 -8.583333 41.75000 15321 POINT (0.5891134 6.625584)</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14457 -8.416667 42.75000 14457  POINT (-0.33467 6.342836)</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2288  -5.583333 55.75000  2288 POINT (-5.850938 6.008142)</span></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5741  -9.583333 51.75000  5741 POINT (-4.386699 6.320882)</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2019  -4.916667 56.25000  2019  POINT (-7.873398 7.10883)</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 209    6.250000 59.58333   209 POINT (-9.902761 5.985079)</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17385 -8.916667 38.75000 17385   POINT (4.964672 4.08964)</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18514  7.916667 36.75000 18514  POINT (5.353225 3.712418)</span></span></code></pre></div>
+<p>Uniformly sampling background points in the environmental space, accounting for the species presence points.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>myGrid.psAbs <span class="ot">&lt;-</span> UEsampling<span class="sc">::</span><span class="fu">bkgsampling</span>(<span class="at">env.rast=</span>envData, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">pres=</span>myPres, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">thres=</span><span class="fl">0.75</span>, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">H=</span><span class="cn">NULL</span>, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">grid.res=</span>myRes<span class="sc">$</span>Opt_res, </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">n.tr =</span> <span class="dv">5</span>, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">sub.ts=</span><span class="cn">TRUE</span>, </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">n.ts=</span><span class="dv">5</span>, </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">plot_proc=</span><span class="cn">FALSE</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Deprecated</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(myGrid.psAbs)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 2</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Bkg.tr:Classes &#39;sf&#39; and &#39;data.frame&#39;: 151 obs. of  27 variables:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ KDE     : num [1:151] 0.003485 0.004827 0.002996 0.000631 0.004313 ...</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ myID    : num [1:151] 352 142 14638 351 14637 ...</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ PA      : num [1:151] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ percP   : chr [1:151] &quot;out&quot; &quot;out&quot; &quot;out&quot; &quot;out&quot; ...</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ x       : num [1:151] 9.58 11.58 22.58 9.42 22.42 ...</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ y       : num [1:151] 59.8 59.9 49.1 59.8 49.1 ...</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio1    : num [1:151] 38 46 51 27 55 60 71 53 42 52 ...</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio2    : num [1:151] 72 69 82 73 84 89 82 65 75 66 ...</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio3    : num [1:151] 25 24 27 26 27 29 25 21 25 22 ...</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio4    : num [1:151] 7389 7597 7529 7300 7621 ...</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio5    : num [1:151] 191 199 201 180 207 212 239 210 200 209 ...</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio6    : num [1:151] -90 -85 -95 -100 -94 -91 -87 -90 -90 -89 ...</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio7    : num [1:151] 281 284 296 280 301 303 326 300 290 298 ...</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio8    : num [1:151] 92 99 143 113 147 139 177 65 130 146 ...</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio9    : num [1:151] -18 -13 -41 -29 -38 -31 -34 -17 -14 -17 ...</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio10   : num [1:151] 135 146 143 123 147 153 177 159 141 157 ...</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio11   : num [1:151] -56 -50 -51 -65 -49 -42 -46 -48 -55 -48 ...</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio12   : num [1:151] 772 798 845 806 825 772 538 689 740 695 ...</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio13   : num [1:151] 95 90 114 99 111 115 72 78 93 78 ...</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio14   : num [1:151] 38 41 46 41 45 38 24 33 35 34 ...</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio15   : num [1:151] 28 26 33 27 32 42 36 28 30 29 ...</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio16   : num [1:151] 261 261 315 269 307 318 206 225 253 231 ...</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio17   : num [1:151] 124 132 146 130 142 118 77 112 116 110 ...</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio18   : num [1:151] 243 246 315 255 307 310 206 201 239 210 ...</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio19   : num [1:151] 145 156 159 155 156 125 87 143 135 143 ...</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ ID      : chr [1:151] &quot;63&quot; &quot;30&quot; &quot;1641&quot; &quot;62&quot; ...</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ geometry:sfc_POINT of length 151; first list element:  &#39;XY&#39; num [1:2] -2.7 -2.7</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA NA NA ...</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. ..- attr(*, &quot;names&quot;)= chr [1:26] &quot;KDE&quot; &quot;myID&quot; &quot;PA&quot; &quot;percP&quot; ...</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Bkg.ts:Classes &#39;sf&#39; and &#39;data.frame&#39;: 142 obs. of  27 variables:</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ KDE     : num [1:142] 0.001637 0.001193 0.00162 0.001174 0.000779 ...</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ myID    : num [1:142] 25330 25328 25329 25551 27055 ...</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ PA      : num [1:142] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ percP   : chr [1:142] &quot;out&quot; &quot;out&quot; &quot;out&quot; &quot;out&quot; ...</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ x       : num [1:142] -8.42 -8.75 -8.58 -8.58 20.08 ...</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ y       : num [1:142] 40.9 40.9 40.9 40.8 39.8 ...</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio1    : num [1:142] 138 148 144 148 157 124 131 122 120 116 ...</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio2    : num [1:142] 91 80 85 83 97 80 86 98 93 92 ...</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio3    : num [1:142] 43 45 44 45 36 40 41 40 39 38 ...</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio4    : num [1:142] 4165 3411 3706 3584 5865 ...</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio5    : num [1:142] 252 235 243 241 307 234 249 262 258 258 ...</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio6    : num [1:142] 41 60 53 58 39 38 40 19 20 16 ...</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio7    : num [1:142] 211 175 190 183 268 196 209 243 238 242 ...</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio8    : num [1:142] 92 110 104 108 99 82 84 59 58 53 ...</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio9    : num [1:142] 190 188 189 191 234 174 187 188 186 186 ...</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio10   : num [1:142] 191 190 191 192 234 176 188 189 187 186 ...</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio11   : num [1:142] 84 102 95 100 86 78 77 59 58 53 ...</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio12   : num [1:142] 1218 1078 1130 1058 1283 ...</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio13   : num [1:142] 169 147 154 145 219 174 206 196 205 207 ...</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio14   : num [1:142] 15 13 14 12 14 37 24 17 16 15 ...</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio15   : num [1:142] 52 52 52 52 66 40 50 53 55 56 ...</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio16   : num [1:142] 492 434 458 426 602 470 554 542 556 557 ...</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio17   : num [1:142] 83 73 77 70 57 141 112 94 93 90 ...</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio18   : num [1:142] 96 88 93 84 57 159 125 98 94 90 ...</span></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ bio19   : num [1:142] 477 419 437 412 554 444 549 542 556 557 ...</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ ID      : chr [1:142] &quot;4143&quot; &quot;4141&quot; &quot;4142&quot; &quot;4213&quot; ...</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ geometry:sfc_POINT of length 142; first list element:  &#39;XY&#39; num [1:2] 1.26 5.81</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA NA NA ...</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. ..- attr(*, &quot;names&quot;)= chr [1:26] &quot;KDE&quot; &quot;myID&quot; &quot;PA&quot; &quot;percP&quot; ...</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a><span class="co">#background points for the training dataset</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>myGrid.psAbs<span class="sc">$</span>Bkg.tr</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 151 features and 26 fields</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: -11.87687 ymin: -4.435394 xmax: 6.384825 ymax: 7.37198</span></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CRS:           NA</span></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; First 10 features:</span></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               KDE  myID PA percP         x        y bio1 bio2 bio3 bio4 bio5</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 63   0.0034854319   352  0   out  9.583333 59.75000   38   72   25 7389  191</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 30   0.0048266103   142  0   out 11.583333 59.91667   46   69   24 7597  199</span></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1641 0.0029962382 14638  0   out 22.583333 49.08333   51   82   27 7529  201</span></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 62   0.0006311931   351  0   out  9.416667 59.75000   27   73   26 7300  180</span></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1640 0.0043125298 14637  0   out 22.416667 49.08333   55   84   27 7621  207</span></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1713 0.0137957512 15762  0   out 24.916667 48.25000   60   89   29 7625  212</span></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1115 0.0118114112  9749  0   out 21.750000 52.75000   71   82   25 8646  239</span></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 226  0.0117530426  1774  0   out 24.583333 58.75000   53   65   21 8165  210</span></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 22   0.0039660991   131  0   out  9.750000 59.91667   42   75   25 7617  200</span></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 180  0.0096068175  1330  0   out 24.583333 59.08333   52   66   22 8077  209</span></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      bio6 bio7 bio8 bio9 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18</span></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 63    -90  281   92  -18   135   -56   772    95    38    28   261   124   243</span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 30    -85  284   99  -13   146   -50   798    90    41    26   261   132   246</span></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1641  -95  296  143  -41   143   -51   845   114    46    33   315   146   315</span></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 62   -100  280  113  -29   123   -65   806    99    41    27   269   130   255</span></span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1640  -94  301  147  -38   147   -49   825   111    45    32   307   142   307</span></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1713  -91  303  139  -31   153   -42   772   115    38    42   318   118   310</span></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1115  -87  326  177  -34   177   -46   538    72    24    36   206    77   206</span></span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 226   -90  300   65  -17   159   -48   689    78    33    28   225   112   201</span></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 22    -90  290  130  -14   141   -55   740    93    35    30   253   116   239</span></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 180   -89  298  146  -17   157   -48   695    78    34    29   231   110   210</span></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      bio19   ID                    geometry</span></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 63     145   63 POINT (-2.696467 -2.695892)</span></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 30     156   30 POINT (-2.562465 -2.663995)</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1641   159 1641  POINT (-2.890885 -2.57662)</span></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 62     155   62  POINT (-3.270331 -2.84089)</span></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1640   156 1640 POINT (-2.589624 -2.691705)</span></span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1713   125 1713 POINT (-1.862147 -2.582667)</span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1115    87 1115 POINT (0.1037224 -4.435394)</span></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 226    143  226 POINT (-1.751617 -3.252683)</span></span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 22     135   22 POINT (-2.177035 -3.114069)</span></span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 180    143  180 POINT (-1.653198 -3.588369)</span></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a><span class="co">#background points for the testing dataset</span></span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>myGrid.psAbs<span class="sc">$</span>Bkg.ts</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 142 features and 26 fields</span></span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: -12.45646 ymin: -4.470215 xmax: 6.895105 ymax: 6.93704</span></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CRS:           NA</span></span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; First 10 features:</span></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               KDE  myID PA percP         x        y bio1 bio2 bio3 bio4 bio5</span></span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4143 0.0016368467 25330  0   out -8.416667 40.91667  138   91   43 4165  252</span></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4141 0.0011930825 25328  0   out -8.750000 40.91667  148   80   45 3411  235</span></span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4142 0.0016202085 25329  0   out -8.583333 40.91667  144   85   44 3706  243</span></span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4213 0.0011737641 25551  0   out -8.583333 40.75000  148   83   45 3584  241</span></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4752 0.0007789755 27055  0   out 20.083333 39.75000  157   97   36 5865  307</span></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3204 0.0018050505 22446  0   out -8.083333 43.08333  124   80   40 3884  234</span></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3703 0.0008389139 23998  0   out -8.416667 41.91667  131   86   41 4323  249</span></span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3975 0.0024237229 24889  0   out -7.916667 41.25000  122   98   40 5086  262</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4146 0.0021299288 25333  0   out -7.916667 40.91667  120   93   39 5062  258</span></span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4147 0.0025282850 25334  0   out -7.750000 40.91667  116   92   38 5256  258</span></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      bio6 bio7 bio8 bio9 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18</span></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4143   41  211   92  190   191    84  1218   169    15    52   492    83    96</span></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4141   60  175  110  188   190   102  1078   147    13    52   434    73    88</span></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4142   53  190  104  189   191    95  1130   154    14    52   458    77    93</span></span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4213   58  183  108  191   192   100  1058   145    12    52   426    70    84</span></span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4752   39  268   99  234   234    86  1283   219    14    66   602    57    57</span></span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3204   38  196   82  174   176    78  1257   174    37    40   470   141   159</span></span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3703   40  209   84  187   188    77  1398   206    24    50   554   112   125</span></span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3975   19  243   59  188   189    59  1345   196    17    53   542    94    98</span></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4146   20  238   58  186   187    58  1370   205    16    55   556    93    94</span></span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4147   16  242   53  186   186    53  1363   207    15    56   557    90    90</span></span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      bio19   ID                     geometry</span></span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4143   477 4143    POINT (1.264748 5.807711)</span></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4141   419 4141    POINT (1.769022 5.931826)</span></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4142   437 4142    POINT (1.601843 5.831809)</span></span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4213   412 4213    POINT (1.986263 5.723278)</span></span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4752   554 4752    POINT (2.347694 5.856895)</span></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3204   444 3204    POINT (-0.546969 5.69943)</span></span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3703   549 3703 POINT (-0.04972531 6.573345)</span></span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3975   542 3975   POINT (0.4765325 5.623394)</span></span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4146   556 4146   POINT (0.2395791 5.799775)</span></span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4147   557 4147   POINT (0.1700701 5.615775)</span></span></code></pre></div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
