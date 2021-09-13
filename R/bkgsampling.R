@@ -13,10 +13,11 @@
 #' @param n.tr (integer) number of background points for the training dataset to sample in each cell of the sampling grid
 #' @param n.ts (integer; optional) number of background points for the testing dataset to sample in each cell of the sampling grid. sub.ts argument must be TRUE.
 #' @param sub.ts (logical) sample the validation background points
+#' @param prev (double) prevalence value to be specified instead of n.tr and n.ts
 #' @param plot_proc (logical) plot progress of the sampling, default FALSE
 #' @return A spatial point data frame with the coordinates of the background points both in the geographical and environmental space.
 #' @export
-bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n.tr = 5, sub.ts=FALSE, n.ts=5, plot_proc=FALSE) {
+bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n.tr = 5, sub.ts=FALSE, n.ts=5, prev=NULL, plot_proc=FALSE) {
   if(!require(raster)) install.packages('raster')
   if(!require(RStoolbox)) install.packages('RStoolbox')
   if(!require(terra)) install.packages('terra')
@@ -37,7 +38,16 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
   if (is.null(grid.res)){
     stop('A grid resolution must be provided as length-one integer')
   }
-  
+  if (is.null(prev)){
+    n.tr= n.tr 
+    n.ts= n.ts
+    estPrev=round(nrow(pres)/(n.tr*(grid.res^2)),2)
+    message(paste("Estimated prevalence of", estPrev))
+  } else {
+    n.tr=(nrow(pres)/prev)/(grid.res^2)
+    n.ts=(nrow(pres)/prev)/(grid.res^2)
+    message(paste("User-defined prevalence of", prev))
+  }
   message("Computing PCA and presences kernel density estimation in the PC-space")
   grid.vec<-vect(rasterToPoints(env.rast, spatial = TRUE))
   pen.vec<-vect(pres)
@@ -80,8 +90,8 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
     st_as_sf(coords = c("PC1", "PC2"))
 
   message("Performing background points sampling in the environmental space")
-  Res <- uesampling(sdf = fullDB.sp, grid.res=grid.res,  n.tr = n.tr, sub.ts = sub.ts, n.ts = n.ts, 
-                  plot_proc = plot_proc)
+  Res <- uesampling(sdf = fullDB.sp, grid.res=grid.res,  n.tr = n.tr, sub.ts = sub.ts, n.ts = n.ts,
+                    plot_proc = plot_proc)
  
   if(sub.ts) {
     
