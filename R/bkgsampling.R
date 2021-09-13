@@ -89,17 +89,18 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
     drop_na() %>% 
     st_as_sf(coords = c("PC1", "PC2"))
 
-  message("Performing background points sampling in the environmental space")
+  message("\nPerforming background points sampling in the environmental space\n")
   Res <- uesampling(sdf = fullDB.sp, grid.res=grid.res,  n.tr = n.tr, sub.ts = sub.ts, n.ts = n.ts,
                     plot_proc = plot_proc)
  
   if(sub.ts) {
     
-    message(paste(nrow(Res$Bkg.tr), "training background points sampled in the environmental space, \n and", nrow(Res$Bkg.ts), "testing background points sampled in the environmental space.",  sep = " "))  
-  
+    message("\n", paste(nrow(Res$Bkg.tr), "training background points sampled in the environmental space, \n and", nrow(Res$Bkg.ts), "testing background points sampled in the environmental space.",  sep = " "), "\n")  
+    message("\n",paste("Estimated final prevalence of", round(nrow(pres)/nrow(Res$Bkg.tr),2), "instead of", prev ), "\n")
     } else {
     
-      message(paste(nrow(Res$Bkg.tr), "training background points sampled in the environmental space", sep = " ")) 
+      message("\n",paste(nrow(Res), "training background points sampled in the environmental space", sep = " "), "\n") 
+      message("\n",paste("Estimated final prevalence of", round(nrow(pres)/nrow(Res),2), "instead of", prev ),"\n")
   
       }
   
