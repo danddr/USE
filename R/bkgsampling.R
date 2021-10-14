@@ -56,9 +56,9 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
   dt$myID<-seq_len(nrow(dt))
   
   id<-dt[,c("x", "y", "myID")]
-  id_rast<-rasterFromXYZ(id,res=res(env.rast),digits = 10) 
+  id_rast<-rasterFromXYZ(id,res=raster::res(env.rast),digits = 10) 
   id_rast<-raster::resample(id_rast,env.rast)
-  extent(id_rast)<-extent(env.rast)
+  raster::extent(id_rast)<-raster::extent(env.rast)
   
   PC12<-stack(rpc$map[[c("PC1", "PC2")]],id_rast)
   abio.st<-rast(stack(id_rast, env.rast))
