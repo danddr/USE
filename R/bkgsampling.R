@@ -15,9 +15,10 @@
 #' @param sub.ts (logical) sample the validation background points
 #' @param prev (double) prevalence value to be specified instead of n.tr and n.ts
 #' @param plot_proc (logical) plot progress of the sampling, default FALSE
+#' @param verbose (logical) Print verbose
 #' @return A spatial point data frame with the coordinates of the background points both in the geographical and environmental space.
 #' @export
-bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n.tr = 5, sub.ts=FALSE, n.ts=5, prev=NULL, plot_proc=FALSE) {
+bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n.tr = 5, sub.ts=FALSE, n.ts=5, prev=NULL, plot_proc=FALSE, verbose=FALSE) {
   if(!require(raster)) install.packages('raster')
   if(!require(RStoolbox)) install.packages('RStoolbox')
   if(!require(terra)) install.packages('terra')
@@ -56,9 +57,9 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
   dt$myID<-seq_len(nrow(dt))
   
   id<-dt[,c("x", "y", "myID")]
-  id_rast<-rasterFromXYZ(id,res=raster::res(env.rast),digits = 10) 
+  id_rast<-rasterFromXYZ(id,res=res(env.rast),digits = 10) 
   id_rast<-raster::resample(id_rast,env.rast)
-  raster::extent(id_rast)<-raster::extent(env.rast)
+  extent(id_rast)<-extent(env.rast)
   
   PC12<-stack(rpc$map[[c("PC1", "PC2")]],id_rast)
   abio.st<-rast(stack(id_rast, env.rast))
@@ -69,7 +70,7 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
   PC12ex=PC12ex %>% 
     left_join(PC12pen,by='myID') %>% 
     mutate(PA=ifelse(is.na(ID.y),0,1)) %>% 
-    dplyr::select("ID.x", "PC1.x", "PC2.x", "myID", "PA" ) %>% 
+    select("ID.x", "PC1.x", "PC2.x", "myID", "PA" ) %>% 
     rename(ID="ID.x", PC1="PC1.x" ,PC2=   "PC2.x") %>% 
     drop_na()
 
@@ -88,10 +89,12 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
     filter(PA == 0 & percP == "out") %>% 
     drop_na() %>% 
     st_as_sf(coords = c("PC1", "PC2"))
-
+  
+  
+  mybgk=floor(nrow(pres)/prev) 
   message("\nPerforming background points sampling in the environmental space\n")
-  Res <- uesampling(sdf = fullDB.sp, grid.res=grid.res,  n.tr = n.tr, sub.ts = sub.ts, n.ts = n.ts,
-                    plot_proc = plot_proc)
+  Res <- uesampling(sdf = fullDB.sp, grid.res=grid.res,  n.tr = n.tr, n.prev = mybgk, sub.ts = sub.ts, n.ts = n.ts,
+                    plot_proc = plot_proc, verbose=verbose)
  
   if(sub.ts) {
     
