@@ -77,7 +77,7 @@ dt <- na.omit(data.table(as.data.frame(rpc$map[[c("PC1", "PC2")]], xy = TRUE)))
 dt=st_as_sf(dt, coords = c("PC1", "PC2"))
 ```
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=TRUE}
 myRes=UEsampling::optim_res(sdf=dt, 
                             grid.res=c(1:10), 
                             perc.thr = 10, 
@@ -115,12 +115,13 @@ myGrid.psAbs <- UEsampling::bkgsampling(env.rast=envData,
                                         pres=myPres, 
                                         thres=0.75, 
                                         H=NULL, 
-                                        grid.res=myRes$Opt_res, 
+                                        grid.res=as.numeric(myRes$Opt_res), 
                                         n.tr = 5, 
                                         prev=0.3,
                                         sub.ts=TRUE, 
                                         n.ts=5, 
-                                        plot_proc=FALSE, verbose)
+                                        plot_proc=FALSE, 
+                                        verbose=FALSE)
 ```
 
 ```{r, eval=TRUE}
