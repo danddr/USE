@@ -70,8 +70,8 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
   PC12ex=PC12ex %>% 
     left_join(PC12pen,by='myID') %>% 
     mutate(PA=ifelse(is.na(ID.y),0,1)) %>% 
-    select("ID.x", "PC1.x", "PC2.x", "myID", "PA" ) %>% 
-    rename(ID="ID.x", PC1="PC1.x" ,PC2=   "PC2.x") %>% 
+    dplyr::select("ID.x", "PC1.x", "PC2.x", "myID", "PA" ) %>% 
+    dplyr::rename(ID="ID.x", PC1="PC1.x" ,PC2=   "PC2.x") %>% 
     drop_na()
 
   if (is.null(H)) {
