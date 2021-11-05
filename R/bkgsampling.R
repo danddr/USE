@@ -81,16 +81,17 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
   estimate <- data.frame(KDE=kde(PC12ex[,c( "PC1", "PC2")], 
                                  eval.points = PC12ex[,c( "PC1", "PC2")],h=H)$estimate, PC12ex[,-1])
   quantP<-quantile(estimate[estimate$PA=='1',1], thres)
-  estimate$percP= ifelse(estimate$KDE <= unname(quantP[1]),'out','in')
-  
+  #estimate$percP= ifelse(estimate$KDE <= unname(quantP[1]),'out','in')
+  # invertendo dovremmo considerare fuori i PC scores con densità minori, e quindi quelli dove abbiamo minore probabilità di trovare delle presenze
+  estimate$percP= ifelse(estimate$KDE <= unname(quantP[1]),'in', 'out') 
+    
   fullDB.sp=estimate %>% 
     left_join(dt[,c("x", "y", "myID")],by='myID') %>% 
     left_join(abio.ex[,2:ncol(abio.ex)],by='myID') %>% 
     filter(PA == 0 & percP == "out") %>% 
     drop_na() %>% 
     st_as_sf(coords = c("PC1", "PC2"))
-  
-  
+    
   if(is.null(prev)) {
   mybgk=NULL  
   } else {
