@@ -91,7 +91,12 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
     st_as_sf(coords = c("PC1", "PC2"))
   
   
-  mybgk=floor(nrow(pres)/prev) 
+  if(is.null(prev)) {
+  mybgk=NULL  
+  } else {
+    mybgk=floor(nrow(pres)/prev) 
+  }
+  
   message("\nPerforming background points sampling in the environmental space\n")
   Res <- uesampling(sdf = fullDB.sp, grid.res=grid.res,  n.tr = n.tr, n.prev = mybgk, sub.ts = sub.ts, n.ts = n.ts,
                     plot_proc = plot_proc, verbose=verbose)
