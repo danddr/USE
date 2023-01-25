@@ -1,18 +1,18 @@
-Package: UEsampling
-Title: Uniform Environmental sampling
+Package: USE
+Title: Uniform Sampling of the Environmental space
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Daniele", "Da Re", email = "daniele.dare@uclouvain.be", role = c("aut","cre")),
+    person("Daniele", "Da Re", email = "dare.daniele@gmail.com", role = c("aut","cre")),
     person("Enrico", "Tordoni", email = "enrico.tordoni@ut.ee", role = "aut"), 
     person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", role = "aut"))
-Description: UEsampling performs uniform sampling of the environmental space.
+Description: USE performs uniform sampling of the environmental space.
 Depends: R (>= 3.6.0)
 Imports: data.table, tidyverse, ggplot2, sf, assertive, raster, RStoolbox, terra, ks
 License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.2
 Suggests: 
     rmarkdown,
     knitr

@@ -4,25 +4,24 @@
 #' It requires an sf object having point geometry given by the PC-scores values (the first two axes of a PCA computed on the environmental variables of interest), and the 
 #' bounding box of the environmental space (defined by the extent of the PC-scores values).
 #' A resolution of the sampling grid must be provided by the user. The resolution can be arbitrarily selected or 
-#' or defined using the Optim_res() function. 
-#' The functions allows to retrieve both a training and a testing dataset (optional) of uniformely sampled background points. 
-#' The user must provide suitable numbers of background points to be sampled in each cell of the sampling grid 
-#' (n.tr: background points for the training dataset; n.ts: background points for the testing dataset). 
+#' or defined using the \code{optimRes()} function. 
+#' The functions allows to retrieve both a training and a testing dataset (optional) of uniformly sampled points. 
+#' The user must provide suitable numbers of points to be sampled in each cell of the sampling grid 
+#' (n.tr: points for the training dataset; n.ts: points for the testing dataset). 
 #' Notice that the final number of sampled background points depends on the PC-scores configuration in the environmental space. 
 #'
 #' @param sdf an sf object having point geometry given by the PC-scores values
-#' @param grid.res (integer) resolution of the sampling grid. The resolution can be arbitrarily selected or defined using the Optim_res() function. 
-#' @param n.tr (integer) number of background points for the training dataset to sample in each cell of the sampling grid
-#' @param n.tr (integer; optional) number of expected background given a certain prevalence thresholdpoints for the training dataset
-#' @param n.ts (integer; optional) number of background points for the testing dataset to sample in each cell of the sampling grid. sub.ts argument must be TRUE.
-#' @param sub.ts (logical) sample the validation background points
+#' @param grid.res (integer) resolution of the sampling grid. The resolution can be arbitrarily selected or defined using the \code{optimRes()} function. 
+#' @param n.tr (integer) number of points for the training dataset to sample in each cell of the sampling grid
+#' @param n.tr (integer; optional) number of expected points given a certain prevalence threshold for the training dataset.
+#' @param n.ts (integer; optional) number of  points for the testing dataset to sample in each cell of the sampling grid. sub.ts argument must be TRUE.
+#' @param n.prev (double) sample prevalence
+#' @param sub.ts (logical) sample the validation points
 #' @param plot_proc (logical) plot progress of the sampling
 #' @param verbose (logical) Print verbose
-#' @return A spatial point data frame with the coordinates of the sampled background points both in the geographical and environmental space
+#' @return A spatial point data frame with the coordinates of the sampled points both in the geographical and environmental space
 #' @export
-uesampling <- function(sdf, grid.res, n.tr = 5, n.prev = NULL, sub.ts = FALSE, n.ts = 5, plot_proc = FALSE, verbose = FALSE) {
-  if(!require(sf)) install.packages('sf')
-  if(!require(assertive)) install.packages('assertive')
+uniformSampling <- function(sdf, grid.res, n.tr = 5, n.prev = NULL, sub.ts = FALSE, n.ts = 5, plot_proc = FALSE, verbose = FALSE) {
   if(!(all(st_is(sdf, "POINT")))) {
     stop("sdf object must have a sf POINT GEOMETRY class")
   }

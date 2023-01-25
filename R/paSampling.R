@@ -1,24 +1,24 @@
-#' Background points training and testing dataset sampling 
+#' Sampling pseudo-absences for the training and testing datasets.  
 #'
-#' This function internally calls the uesampling() function to perform the uniform sampling of the environmental space. 
+#' This function internally calls the \code{uniformSampling()} function to perform the uniform sampling of the environmental space. 
 #' Before performing the uniform sampling of the environmental space, a set of PC-scores within a core area associated with the species presences 
 #' is filtered out using a kernel density estimation approach. 
-#' The bandwith of the kernel can be either defined by the user or automatically estimated, allowing the user to account for metapopulation dynamics (e.g. sink-source populations).
+#' The bandwidth of the kernel can be either defined by the user or automatically estimated, allowing the user to account for meta population dynamics (e.g. sink-source populations).
 #'
 #' @param env.rast A raster stack or raster brick object comprising the variables describing the environmental space. 
-#' @param pres A SpatialPointDataFrame including species of interest presence-only.
+#' @param pres A SpatialPointDataframe including species of interest presence-only.
 #' @param thres Kernel density threshold SPIEGARE
 #' @param H Parameter defining kernel bandwidth, it can be provided by the user or automatically estimated via SPIEGARE
-#' @param grid.res (integer) resolution of the sampling grid. The resolution can be arbitrarily selected or defined using the Optim_res() function. 
+#' @param grid.res (integer) resolution of the sampling grid. The resolution can be arbitrarily selected or defined using the \code{optimRes} function. 
 #' @param n.tr (integer) number of background points for the training dataset to sample in each cell of the sampling grid
 #' @param n.ts (integer; optional) number of background points for the testing dataset to sample in each cell of the sampling grid. sub.ts argument must be TRUE.
 #' @param sub.ts (logical) sample the validation background points
 #' @param prev (double) prevalence value to be specified instead of n.tr and n.ts
 #' @param plot_proc (logical) plot progress of the sampling, default FALSE
 #' @param verbose (logical) Print verbose
-#' @return A spatial point data frame with the coordinates of the background points both in the geographical and environmental space.
+#' @return A SpatialPointDataframe with the coordinates of the background points both in the geographical and environmental space.
 #' @export
-bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n.tr = 5, sub.ts=FALSE, n.ts=5, prev=NULL, plot_proc=FALSE, verbose=FALSE) {
+paSampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n.tr = 5, sub.ts=FALSE, n.ts=5, prev=NULL, plot_proc=FALSE, verbose=FALSE) {
   if(!require(raster)) install.packages('raster')
   if(!require(RStoolbox)) install.packages('RStoolbox')
   if(!require(terra)) install.packages('terra')
@@ -97,7 +97,7 @@ bkgsampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, 
   }
   
   message("\nPerforming background points sampling in the environmental space\n")
-  Res <- uesampling(sdf = fullDB.sp, grid.res=grid.res,  n.tr = n.tr, n.prev = mybgk, sub.ts = sub.ts, n.ts = n.ts,
+  Res <- uniformSampling(sdf = fullDB.sp, grid.res=grid.res,  n.tr = n.tr, n.prev = mybgk, sub.ts = sub.ts, n.ts = n.ts,
                     plot_proc = plot_proc, verbose=verbose)
  
   if(sub.ts) {
