@@ -16,8 +16,7 @@
 #' @return It returns a list with: i) a matrix reporting the values of the function to be minimized, along with the corresponding resolution; ii) the optimal resolution.
 #' @export
 optimRes <- function(sdf, grid.res, perc.thr = 10, showOpt = TRUE) {
-  if(!require(sf)) install.packages('sf')
-  stopifnot(exprs = {
+   stopifnot(exprs = {
     is.numeric(perc.thr)
     is.numeric(grid.res)
     is.logical(showOpt)

@@ -19,13 +19,6 @@
 #' @return A SpatialPointDataframe with the coordinates of the background points both in the geographical and environmental space.
 #' @export
 paSampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n.tr = 5, sub.ts=FALSE, n.ts=5, prev=NULL, plot_proc=FALSE, verbose=FALSE) {
-  if(!require(raster)) install.packages('raster')
-  if(!require(RStoolbox)) install.packages('RStoolbox')
-  if(!require(terra)) install.packages('terra')
-  if(!require(tidyverse)) install.packages('tidyverse') 
-  if(!require(data.table)) install.packages('data.table')
-  if(!require(ks)) install.packages('ks')  
-  if(!require(sf)) install.packages('sf')  
   if (!inherits(env.rast, "BasicRaster")) {
     stop("Data provided in a non convenient from")
   }
@@ -57,7 +50,7 @@ paSampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n
   dt$myID<-seq_len(nrow(dt))
   
   id<-dt[,c("x", "y", "myID")]
-  id_rast<-rasterFromXYZ(id,res=res(env.rast),digits = 10) 
+  id_rast<-raster::rasterFromXYZ(id,res=res(env.rast),digits = 10) 
   id_rast<-raster::resample(id_rast,env.rast)
   extent(id_rast)<-extent(env.rast)
   

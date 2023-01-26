@@ -14,6 +14,119 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+In this vignette we will go trough the UEsampling package. 
+
+```{r setup, message=FALSE}
+Sys.setlocale("LC_ALL", "English")
 library(USE)
+library(raster)
+library(virtualspecies)
+library(RStoolbox)
+library(data.table)
+library(sf)
+myCRS<-"+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
 ```
+
+Download bioclimatic variables from WorldClim
+```{r, eval=TRUE, message=FALSE}
+Worldclim<-raster::getData('worldclim', var='bio', res=10) 
+```
+Crop the bioclimatic variables to the European extent
+```{r, eval=TRUE}
+envData<-crop(Worldclim, extent(-12, 25, 36, 60))
+envData
+```
+
+Create virtual species. For details about the methodology used, see the  [vignette](http://borisleroy.com/files/virtualspecies-tutorial.html#introduction) of the **virtualspecies** R package
+```{r, eval=TRUE, message=FALSE}
+#create virtual species
+myRandNum=sample(1:19,size=5, replace = FALSE)
+random.sp <- virtualspecies::generateRandomSp(envData[[myRandNum]], 
+                                              convert.to.PA = FALSE, 
+                                              species.type = "additive",
+                                              realistic.sp = TRUE, 
+                                              plot = FALSE)
+#reclassify suitability raster using a probability conversion rule
+new.pres<-convertToPA(x=random.sp, 
+                      beta=0.55,
+                      alpha = -0.05, plot = FALSE)
+#Sample true occurrences
+presence.points <- sampleOccurrences(new.pres,
+                                     n = 300, # The number of points to sample
+                                     type = "presence-absence",
+                                     sample.prevalence = 0.6,
+                                     detection.probability = 1,
+                                     correct.by.suitability = TRUE,
+                                     plot = TRUE)  
+```
+
+Get a presence only dataset.
+```{r, eval=TRUE}
+myPres=presence.points$sample.points[which(presence.points$sample.points$Observed==1), c( "x", "y",  "Observed")]
+coordinates(myPres)<-~x+y
+crs(myPres)<-myCRS
+myPres
+```
+
+Find optimal resolution of the sampling grid. First, made a PCA on the whole raster stack and then use the PC-scores of the first two axes to create a new spatial object. 
+```{r, eval=TRUE}
+rpc<-rasterPCA(envData,spca = TRUE)
+dt <- na.omit(data.table(as.data.frame(rpc$map[[c("PC1", "PC2")]], xy = TRUE)))
+dt=st_as_sf(dt, coords = c("PC1", "PC2"))
+```
+
+```{r, eval=FALSE, echo=TRUE}
+myRes=USE::optimRes(sdf=dt,
+                    grid.res=c(1:10),
+                    perc.thr = 10,
+                    showOpt = TRUE)
+```
+```{r, eval=TRUE, echo=FALSE, message=FALSE, results="hide"}
+myRes=list()
+myRes$Opt_res
+myRes$Opt_res=6
+```
+```{r, eval=TRUE}
+myRes$Opt_res
+```
+
+Perform uniform sampling of the environmental space
+```{r, eval=TRUE, message=FALSE}
+myObs=USE::uniformSampling(sdf=dt, 
+                           grid.res=myRes$Opt_res,
+                           n.tr = 5,
+                           sub.ts = TRUE,
+                           n.ts = 2,
+                           plot_proc = FALSE)
+```
+```{r, eval=TRUE}
+str(myObs)
+#background points for the training dataset
+myObs$Bkg.tr
+#background points for the testing dataset
+myObs$Bkg.ts
+```
+
+Uniformly sampling background points in the environmental space, accounting for the species presence points. 
+```{r, eval=TRUE, message=FALSE}
+myGrid.psAbs <- USE::paSampling(env.rast=envData,
+                                pres=myPres,
+                                thres=0.75,
+                                H=NULL,
+                                grid.res=as.numeric(myRes$Opt_res),
+                                n.tr = 5,
+                                prev=0.3,
+                                sub.ts=TRUE,
+                                n.ts=5,
+                                plot_proc=FALSE,
+                                verbose=FALSE)
+```
+
+```{r, eval=TRUE}
+str(myGrid.psAbs)
+#background points for the training dataset
+myGrid.psAbs$Bkg.tr
+#background points for the testing dataset
+myGrid.psAbs$Bkg.ts
+```
+
