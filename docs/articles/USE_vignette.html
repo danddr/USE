@@ -4,76 +4,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="USE">
 <title>USE_vignette • USE</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="USE_vignette">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="USE_vignette">
 <meta property="og:description" content="USE">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">USE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">USE</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/USE_vignette.html">USE_vignette</a>
-    </li>
-  </ul>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/USE_vignette.html">USE_vignette</a>
+  </div>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav"></ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>USE_vignette</h1>
+
+
+<div class="row">
+  <main id="main"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>USE_vignette</h1>
             
       
       
-      <div class="hidden name"><code>USE_vignette.Rmd</code></div>
-
+      <div class="d-none name"><code>USE_vignette.Rmd</code></div>
     </div>
 
     
@@ -140,8 +132,8 @@ of the <strong>virtualspecies</strong> R package</p>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">myPres</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">myCRS</span>
 <span class="va">myPres</span>
 <span class="co">#&gt; class       : SpatialPointsDataFrame </span>
-<span class="co">#&gt; features    : 108 </span>
-<span class="co">#&gt; extent      : -9.75, 24.91667, 36.08333, 58.75  (xmin, xmax, ymin, ymax)</span>
+<span class="co">#&gt; features    : 118 </span>
+<span class="co">#&gt; extent      : -8.916667, 24.75, 36.25, 59.91667  (xmin, xmax, ymin, ymax)</span>
 <span class="co">#&gt; crs         : +proj=longlat +datum=WGS84 +no_defs </span>
 <span class="co">#&gt; variables   : 1</span>
 <span class="co">#&gt; names       : Observed </span>
@@ -174,18 +166,18 @@ to create a new spatial object.</p>
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">myObs</span><span class="op">)</span>
 <span class="co">#&gt; List of 2</span>
 <span class="co">#&gt;  $ Bkg.tr:Classes 'sf', 'data.table' and 'data.frame':   152 obs. of  4 variables:</span>
-<span class="co">#&gt;   ..$ x       : num [1:152] 22.58 10.08 22.25 8.92 9.08 ...</span>
-<span class="co">#&gt;   ..$ y       : num [1:152] 49.1 59.9 49.2 59.9 59.8 ...</span>
-<span class="co">#&gt;   ..$ ID      : chr [1:152] "8504" "33" "8342" "26" ...</span>
-<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 152; first list element:  'XY' num [1:2] -2.89 -2.58</span>
+<span class="co">#&gt;   ..$ x       : num [1:152] 10.08 9.08 9.58 8.92 22.25 ...</span>
+<span class="co">#&gt;   ..$ y       : num [1:152] 59.9 59.9 59.8 59.9 49.2 ...</span>
+<span class="co">#&gt;   ..$ ID      : chr [1:152] "33" "27" "135" "26" ...</span>
+<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 152; first list element:  'XY' num [1:2] -2.87 -2.95</span>
 <span class="co">#&gt;   ..- attr(*, "sf_column")= chr "geometry"</span>
 <span class="co">#&gt;   ..- attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA</span>
 <span class="co">#&gt;   .. ..- attr(*, "names")= chr [1:3] "x" "y" "ID"</span>
 <span class="co">#&gt;  $ Bkg.ts:Classes 'sf', 'data.table' and 'data.frame':   58 obs. of  4 variables:</span>
-<span class="co">#&gt;   ..$ x       : num [1:58] -8.58 -8.25 -7.92 -8.25 -6.42 ...</span>
-<span class="co">#&gt;   ..$ y       : num [1:58] 40.8 40.6 40.9 42.9 56.6 ...</span>
-<span class="co">#&gt;   ..$ ID      : chr [1:58] "16090" "16219" "15969" "14306" ...</span>
-<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 58; first list element:  'XY' num [1:2] 1.99 5.72</span>
+<span class="co">#&gt;   ..$ x       : num [1:58] -8.42 19.92 -7.92 -8.25 -9.75 ...</span>
+<span class="co">#&gt;   ..$ y       : num [1:58] 41.1 39.8 40.9 41.8 51.9 ...</span>
+<span class="co">#&gt;   ..$ ID      : chr [1:58] "15843" "16869" "15969" "15323" ...</span>
+<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 58; first list element:  'XY' num [1:2] 1.78 5.66</span>
 <span class="co">#&gt;   ..- attr(*, "sf_column")= chr "geometry"</span>
 <span class="co">#&gt;   ..- attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA</span>
 <span class="co">#&gt;   .. ..- attr(*, "names")= chr [1:3] "x" "y" "ID"</span>
@@ -194,39 +186,39 @@ to create a new spatial object.</p>
 <span class="co">#&gt; Simple feature collection with 152 features and 3 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: -13.2887 ymin: -3.662752 xmax: 6.715327 ymax: 7.500397</span>
+<span class="co">#&gt; Bounding box:  xmin: -12.67491 ymin: -3.910377 xmax: 6.722185 ymax: 7.026533</span>
 <span class="co">#&gt; CRS:           NA</span>
 <span class="co">#&gt; First 10 features:</span>
 <span class="co">#&gt;              x        y   ID                     geometry</span>
-<span class="co">#&gt; 8504 22.583333 49.08333 8504   POINT (-2.890885 -2.57662)</span>
 <span class="co">#&gt; 33   10.083333 59.91667   33  POINT (-2.869542 -2.947099)</span>
-<span class="co">#&gt; 8342 22.250000 49.25000 8342  POINT (-2.793576 -2.840835)</span>
+<span class="co">#&gt; 27    9.083333 59.91667   27  POINT (-3.641179 -3.006921)</span>
+<span class="co">#&gt; 135   9.583333 59.75000  135  POINT (-2.696467 -2.695892)</span>
 <span class="co">#&gt; 26    8.916667 59.91667   26  POINT (-3.445481 -2.938089)</span>
-<span class="co">#&gt; 132   9.083333 59.75000  132  POINT (-2.755422 -2.649471)</span>
-<span class="co">#&gt; 3286 19.916667 54.25000 3286 POINT (-0.7662644 -2.931211)</span>
-<span class="co">#&gt; 5297 14.750000 52.25000 5297  POINT (0.5242052 -3.119347)</span>
-<span class="co">#&gt; 3564 17.750000 53.91667 3564  POINT (-0.8618309 -3.24597)</span>
-<span class="co">#&gt; 1111 24.416667 58.08333 1111  POINT (-1.261726 -3.662752)</span>
-<span class="co">#&gt; 823  13.583333 58.58333  823 POINT (-0.7705429 -2.731619)</span>
+<span class="co">#&gt; 8342 22.250000 49.25000 8342  POINT (-2.793576 -2.840835)</span>
+<span class="co">#&gt; 2733 24.583333 55.08333 2733 POINT (-0.6853182 -3.910377)</span>
+<span class="co">#&gt; 1099 16.083333 58.08333 1099 POINT (-0.6229326 -2.678767)</span>
+<span class="co">#&gt; 101  23.083333 59.91667  101    POINT (-1.03258 -3.72142)</span>
+<span class="co">#&gt; 5485 14.416667 52.08333 5485  POINT (0.2914915 -2.718696)</span>
+<span class="co">#&gt; 646  15.083333 58.91667  646 POINT (-0.8403172 -2.762483)</span>
 <span class="co">#background points for the testing dataset</span>
 <span class="va">myObs</span><span class="op">$</span><span class="va">Bkg.ts</span>
 <span class="co">#&gt; Simple feature collection with 58 features and 3 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: -12.45646 ymin: -3.465912 xmax: 6.990233 ymax: 6.93704</span>
+<span class="co">#&gt; Bounding box:  xmin: -11.38069 ymin: -3.124905 xmax: 6.499994 ymax: 6.759477</span>
 <span class="co">#&gt; CRS:           NA</span>
 <span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;               x        y    ID                   geometry</span>
-<span class="co">#&gt; 16090 -8.583333 40.75000 16090  POINT (1.986263 5.723278)</span>
-<span class="co">#&gt; 16219 -8.250000 40.58333 16219  POINT (1.118266 5.630017)</span>
-<span class="co">#&gt; 15969 -7.916667 40.91667 15969 POINT (0.2395791 5.799775)</span>
-<span class="co">#&gt; 14306 -8.250000 42.91667 14306 POINT (-0.2905432 6.00018)</span>
-<span class="co">#&gt; 1825  -6.416667 56.58333  1825 POINT (-5.047199 5.817151)</span>
-<span class="co">#&gt; 5556  -9.250000 51.91667  5556 POINT (-3.927985 5.638636)</span>
-<span class="co">#&gt; 1830  -5.583333 56.58333  1830  POINT (-7.442602 6.93704)</span>
-<span class="co">#&gt; 2199  -5.250000 55.91667  2199  POINT (-6.542086 6.44212)</span>
-<span class="co">#&gt; 18414  7.916667 36.91667 18414  POINT (5.259752 3.966571)</span>
-<span class="co">#&gt; 17480 -8.583333 38.58333 17480  POINT (5.268476 3.646357)</span></code></pre></div>
+<span class="co">#&gt;               x        y    ID                    geometry</span>
+<span class="co">#&gt; 15843 -8.416667 41.08333 15843    POINT (1.77913 5.663723)</span>
+<span class="co">#&gt; 16869 19.916667 39.75000 16869   POINT (2.095304 5.620229)</span>
+<span class="co">#&gt; 15969 -7.916667 40.91667 15969  POINT (0.2395791 5.799775)</span>
+<span class="co">#&gt; 15323 -8.250000 41.75000 15323 POINT (-0.04943301 6.02367)</span>
+<span class="co">#&gt; 5553  -9.750000 51.91667  5553  POINT (-4.675884 6.306583)</span>
+<span class="co">#&gt; 5176  -9.583333 52.25000  5176  POINT (-3.398675 5.650272)</span>
+<span class="co">#&gt; 2013  -5.916667 56.25000  2013  POINT (-6.845422 6.759477)</span>
+<span class="co">#&gt; 2012  -6.083333 56.25000  2012  POINT (-6.598367 6.716999)</span>
+<span class="co">#&gt; 18417  8.416667 36.91667 18417   POINT (5.561003 4.316671)</span>
+<span class="co">#&gt; 18410  7.250000 36.91667 18410   POINT (5.130598 4.250942)</span></code></pre></div>
 <p>Uniformly sampling background points in the environmental space,
 accounting for the species presence points.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -248,175 +240,169 @@ accounting for the species presence points.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">myGrid.psAbs</span><span class="op">)</span>
 <span class="co">#&gt; List of 2</span>
-<span class="co">#&gt;  $ Bkg.tr:Classes 'sf' and 'data.frame': 378 obs. of  27 variables:</span>
-<span class="co">#&gt;   ..$ KDE     : num [1:378] 0.000631 0.00038 0.001166 0.000499 0.004313 ...</span>
-<span class="co">#&gt;   ..$ myID    : num [1:378] 351 128 130 348 14637 ...</span>
-<span class="co">#&gt;   ..$ PA      : num [1:378] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#&gt;   ..$ percP   : chr [1:378] "out" "out" "out" "out" ...</span>
-<span class="co">#&gt;   ..$ x       : num [1:378] 9.42 9.25 9.58 8.92 22.42 ...</span>
-<span class="co">#&gt;   ..$ y       : num [1:378] 59.8 59.9 59.9 59.8 49.1 ...</span>
-<span class="co">#&gt;   ..$ bio1    : int [1:378] 27 16 35 18 55 44 51 13 25 38 ...</span>
-<span class="co">#&gt;   ..$ bio2    : int [1:378] 73 76 76 73 84 70 82 75 73 72 ...</span>
-<span class="co">#&gt;   ..$ bio3    : int [1:378] 26 26 26 26 27 24 27 27 26 25 ...</span>
-<span class="co">#&gt;   ..$ bio4    : int [1:378] 7300 7328 7619 7051 7621 7577 7529 7053 7183 7389 ...</span>
-<span class="co">#&gt;   ..$ bio5    : int [1:378] 180 171 193 168 207 197 201 164 176 191 ...</span>
-<span class="co">#&gt;   ..$ bio6    : int [1:378] -100 -113 -98 -106 -94 -88 -95 -112 -102 -90 ...</span>
-<span class="co">#&gt;   ..$ bio7    : int [1:378] 280 284 291 274 301 285 296 276 278 281 ...</span>
-<span class="co">#&gt;   ..$ bio8    : int [1:378] 113 101 123 71 147 96 143 66 109 92 ...</span>
-<span class="co">#&gt;   ..$ bio9    : int [1:378] -29 -40 -21 -37 -38 -16 -41 -42 -31 -18 ...</span>
-<span class="co">#&gt;   ..$ bio10   : int [1:378] 123 112 134 111 147 143 143 106 119 135 ...</span>
-<span class="co">#&gt;   ..$ bio11   : int [1:378] -65 -77 -62 -70 -49 -53 -51 -76 -66 -56 ...</span>
-<span class="co">#&gt;   ..$ bio12   : int [1:378] 806 820 756 839 825 793 845 844 817 772 ...</span>
-<span class="co">#&gt;   ..$ bio13   : int [1:378] 99 102 95 103 111 90 114 103 101 95 ...</span>
-<span class="co">#&gt;   ..$ bio14   : int [1:378] 41 41 37 41 45 41 46 41 41 38 ...</span>
-<span class="co">#&gt;   ..$ bio15   : int [1:378] 27 28 29 28 32 26 33 27 28 28 ...</span>
-<span class="co">#&gt;   ..$ bio16   : int [1:378] 269 277 258 281 307 258 315 282 273 261 ...</span>
-<span class="co">#&gt;   ..$ bio17   : int [1:378] 130 130 119 133 142 131 146 134 131 124 ...</span>
-<span class="co">#&gt;   ..$ bio18   : int [1:378] 255 265 245 262 307 248 315 264 258 243 ...</span>
-<span class="co">#&gt;   ..$ bio19   : int [1:378] 155 158 140 167 156 154 159 171 159 145 ...</span>
-<span class="co">#&gt;   ..$ ID      : chr [1:378] "67" "20" "21" "65" ...</span>
-<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 378; first list element:  'XY' num [1:2] -3.27 -2.84</span>
+<span class="co">#&gt;  $ Bkg.tr:Classes 'sf' and 'data.frame': 405 obs. of  27 variables:</span>
+<span class="co">#&gt;   ..$ KDE     : num [1:405] 0.003407 0.002996 0.004313 0.000499 0.001166 ...</span>
+<span class="co">#&gt;   ..$ myID    : num [1:405] 143 14638 14637 348 130 ...</span>
+<span class="co">#&gt;   ..$ PA      : num [1:405] 0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="co">#&gt;   ..$ percP   : chr [1:405] "out" "out" "out" "out" ...</span>
+<span class="co">#&gt;   ..$ x       : num [1:405] 11.75 22.58 22.42 8.92 9.58 ...</span>
+<span class="co">#&gt;   ..$ y       : num [1:405] 59.9 49.1 49.1 59.8 59.9 ...</span>
+<span class="co">#&gt;   ..$ bio1    : int [1:405] 44 51 55 18 35 27 25 46 16 38 ...</span>
+<span class="co">#&gt;   ..$ bio2    : int [1:405] 70 82 84 73 76 73 73 69 76 72 ...</span>
+<span class="co">#&gt;   ..$ bio3    : int [1:405] 24 27 27 26 26 26 26 24 26 25 ...</span>
+<span class="co">#&gt;   ..$ bio4    : int [1:405] 7577 7529 7621 7051 7619 7300 7183 7597 7328 7389 ...</span>
+<span class="co">#&gt;   ..$ bio5    : int [1:405] 197 201 207 168 193 180 176 199 171 191 ...</span>
+<span class="co">#&gt;   ..$ bio6    : int [1:405] -88 -95 -94 -106 -98 -100 -102 -85 -113 -90 ...</span>
+<span class="co">#&gt;   ..$ bio7    : int [1:405] 285 296 301 274 291 280 278 284 284 281 ...</span>
+<span class="co">#&gt;   ..$ bio8    : int [1:405] 96 143 147 71 123 113 109 99 101 92 ...</span>
+<span class="co">#&gt;   ..$ bio9    : int [1:405] -16 -41 -38 -37 -21 -29 -31 -13 -40 -18 ...</span>
+<span class="co">#&gt;   ..$ bio10   : int [1:405] 143 143 147 111 134 123 119 146 112 135 ...</span>
+<span class="co">#&gt;   ..$ bio11   : int [1:405] -53 -51 -49 -70 -62 -65 -66 -50 -77 -56 ...</span>
+<span class="co">#&gt;   ..$ bio12   : int [1:405] 793 845 825 839 756 806 817 798 820 772 ...</span>
+<span class="co">#&gt;   ..$ bio13   : int [1:405] 90 114 111 103 95 99 101 90 102 95 ...</span>
+<span class="co">#&gt;   ..$ bio14   : int [1:405] 41 46 45 41 37 41 41 41 41 38 ...</span>
+<span class="co">#&gt;   ..$ bio15   : int [1:405] 26 33 32 28 29 27 28 26 28 28 ...</span>
+<span class="co">#&gt;   ..$ bio16   : int [1:405] 258 315 307 281 258 269 273 261 277 261 ...</span>
+<span class="co">#&gt;   ..$ bio17   : int [1:405] 131 146 142 133 119 130 131 132 130 124 ...</span>
+<span class="co">#&gt;   ..$ bio18   : int [1:405] 248 315 307 262 245 255 258 246 265 243 ...</span>
+<span class="co">#&gt;   ..$ bio19   : int [1:405] 154 159 156 167 140 155 159 156 158 145 ...</span>
+<span class="co">#&gt;   ..$ ID      : chr [1:405] "31" "2181" "2180" "64" ...</span>
+<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 405; first list element:  'XY' num [1:2] -2.64 -2.74</span>
 <span class="co">#&gt;   ..- attr(*, "sf_column")= chr "geometry"</span>
 <span class="co">#&gt;   ..- attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA NA NA NA NA NA NA NA ...</span>
 <span class="co">#&gt;   .. ..- attr(*, "names")= chr [1:26] "KDE" "myID" "PA" "percP" ...</span>
-<span class="co">#&gt;  $ Bkg.ts:Classes 'sf' and 'data.frame': 255 obs. of  27 variables:</span>
-<span class="co">#&gt;   ..$ KDE     : num [1:255] 0.000674 0.000582 0.001805 0.000245 0.002528 ...</span>
-<span class="co">#&gt;   ..$ myID    : num [1:255] 24884 23553 22446 23110 25334 ...</span>
-<span class="co">#&gt;   ..$ PA      : num [1:255] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#&gt;   ..$ percP   : chr [1:255] "out" "out" "out" "out" ...</span>
-<span class="co">#&gt;   ..$ x       : num [1:255] -8.75 -8.58 -8.08 -8.42 -7.75 ...</span>
-<span class="co">#&gt;   ..$ y       : num [1:255] 41.2 42.2 43.1 42.6 40.9 ...</span>
-<span class="co">#&gt;   ..$ bio1    : int [1:255] 144 140 124 125 116 140 129 131 137 134 ...</span>
-<span class="co">#&gt;   ..$ bio2    : int [1:255] 84 71 80 77 92 73 93 79 88 68 ...</span>
-<span class="co">#&gt;   ..$ bio3    : int [1:255] 45 39 40 38 38 41 41 40 41 40 ...</span>
-<span class="co">#&gt;   ..$ bio4    : int [1:255] 3633 3920 3884 4118 5256 3689 4546 4035 4297 3439 ...</span>
-<span class="co">#&gt;   ..$ bio5    : int [1:255] 241 239 234 238 258 236 254 239 255 229 ...</span>
-<span class="co">#&gt;   ..$ bio6    : int [1:255] 57 60 38 39 16 62 31 46 44 60 ...</span>
-<span class="co">#&gt;   ..$ bio7    : int [1:255] 184 179 196 199 242 174 223 193 211 169 ...</span>
-<span class="co">#&gt;   ..$ bio8    : int [1:255] 98 98 82 81 53 101 80 88 90 100 ...</span>
-<span class="co">#&gt;   ..$ bio9    : int [1:255] 188 190 174 178 186 187 187 183 192 177 ...</span>
-<span class="co">#&gt;   ..$ bio10   : int [1:255] 190 191 176 180 186 188 188 184 193 181 ...</span>
-<span class="co">#&gt;   ..$ bio11   : int [1:255] 98 91 78 75 53 94 72 81 83 93 ...</span>
-<span class="co">#&gt;   ..$ bio12   : int [1:255] 1217 1470 1257 1474 1363 1376 1317 1467 1320 1166 ...</span>
-<span class="co">#&gt;   ..$ bio13   : int [1:255] 166 236 174 225 207 195 189 217 186 158 ...</span>
-<span class="co">#&gt;   ..$ bio14   : int [1:255] 15 30 37 37 15 21 16 25 19 34 ...</span>
-<span class="co">#&gt;   ..$ bio15   : int [1:255] 51 50 40 46 56 51 53 50 50 40 ...</span>
-<span class="co">#&gt;   ..$ bio16   : int [1:255] 483 592 470 573 557 552 530 586 523 445 ...</span>
-<span class="co">#&gt;   ..$ bio17   : int [1:255] 83 123 141 144 90 101 90 114 98 132 ...</span>
-<span class="co">#&gt;   ..$ bio18   : int [1:255] 101 140 159 160 90 122 97 130 114 155 ...</span>
-<span class="co">#&gt;   ..$ bio19   : int [1:255] 483 584 444 556 557 547 525 585 519 407 ...</span>
-<span class="co">#&gt;   ..$ ID      : chr [1:255] "6126" "5624" "5207" "5467" ...</span>
-<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 255; first list element:  'XY' num [1:2] 1.24 6.45</span>
+<span class="co">#&gt;  $ Bkg.ts:Classes 'sf' and 'data.frame': 253 obs. of  27 variables:</span>
+<span class="co">#&gt;   ..$ KDE     : num [1:253] 0.001431 0.000335 0.000686 0.000972 0.002528 ...</span>
+<span class="co">#&gt;   ..$ myID    : num [1:253] 22885 23111 23328 23999 25334 ...</span>
+<span class="co">#&gt;   ..$ PA      : num [1:253] 0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="co">#&gt;   ..$ percP   : chr [1:253] "out" "out" "out" "out" ...</span>
+<span class="co">#&gt;   ..$ x       : num [1:253] -8.92 -8.25 -9.08 -8.25 -7.75 ...</span>
+<span class="co">#&gt;   ..$ y       : num [1:253] 42.8 42.6 42.4 41.9 40.9 ...</span>
+<span class="co">#&gt;   ..$ bio1    : int [1:253] 139 118 149 115 116 108 125 129 135 140 ...</span>
+<span class="co">#&gt;   ..$ bio2    : int [1:253] 62 81 59 86 92 86 83 71 71 73 ...</span>
+<span class="co">#&gt;   ..$ bio3    : int [1:253] 38 39 39 39 38 38 40 38 41 41 ...</span>
+<span class="co">#&gt;   ..$ bio4    : int [1:253] 3472 4224 3285 4568 5256 4700 4092 3702 3465 3689 ...</span>
+<span class="co">#&gt;   ..$ bio5    : int [1:253] 229 236 230 238 258 235 240 233 231 236 ...</span>
+<span class="co">#&gt;   ..$ bio6    : int [1:253] 67 29 81 22 16 14 36 50 60 62 ...</span>
+<span class="co">#&gt;   ..$ bio7    : int [1:253] 162 207 149 216 242 221 204 183 171 174 ...</span>
+<span class="co">#&gt;   ..$ bio8    : int [1:253] 104 72 116 66 53 58 80 92 100 101 ...</span>
+<span class="co">#&gt;   ..$ bio9    : int [1:253] 182 173 190 174 186 170 179 176 178 187 ...</span>
+<span class="co">#&gt;   ..$ bio10   : int [1:253] 185 175 192 175 186 171 181 179 182 188 ...</span>
+<span class="co">#&gt;   ..$ bio11   : int [1:253] 96 68 107 59 53 52 77 84 93 94 ...</span>
+<span class="co">#&gt;   ..$ bio12   : int [1:253] 1217 1440 1163 1460 1363 1429 1288 1303 1153 1376 ...</span>
+<span class="co">#&gt;   ..$ bio13   : int [1:253] 176 214 162 206 207 201 186 183 155 195 ...</span>
+<span class="co">#&gt;   ..$ bio14   : int [1:253] 31 36 25 27 15 30 35 37 34 21 ...</span>
+<span class="co">#&gt;   ..$ bio15   : int [1:253] 45 45 47 49 56 47 43 42 39 51 ...</span>
+<span class="co">#&gt;   ..$ bio16   : int [1:253] 483 553 467 573 557 554 486 499 436 552 ...</span>
+<span class="co">#&gt;   ..$ bio17   : int [1:253] 124 143 107 123 90 130 134 143 131 101 ...</span>
+<span class="co">#&gt;   ..$ bio18   : int [1:253] 147 157 130 132 90 137 149 165 153 122 ...</span>
+<span class="co">#&gt;   ..$ bio19   : int [1:253] 437 538 422 569 557 549 468 463 403 547 ...</span>
+<span class="co">#&gt;   ..$ ID      : chr [1:253] "4784" "4864" "4975" "5200" ...</span>
+<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 253; first list element:  'XY' num [1:2] -0.16 6.29</span>
 <span class="co">#&gt;   ..- attr(*, "sf_column")= chr "geometry"</span>
 <span class="co">#&gt;   ..- attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA NA NA NA NA NA NA NA ...</span>
 <span class="co">#&gt;   .. ..- attr(*, "names")= chr [1:26] "KDE" "myID" "PA" "percP" ...</span>
 <span class="co">#background points for the training dataset</span>
 <span class="va">myGrid.psAbs</span><span class="op">$</span><span class="va">Bkg.tr</span>
-<span class="co">#&gt; Simple feature collection with 378 features and 26 fields</span>
+<span class="co">#&gt; Simple feature collection with 405 features and 26 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: -13.58791 ymin: -4.390149 xmax: 7.109969 ymax: 7.093614</span>
+<span class="co">#&gt; Bounding box:  xmin: -13.2887 ymin: -4.198544 xmax: 6.97369 ymax: 7.500397</span>
 <span class="co">#&gt; CRS:           NA</span>
 <span class="co">#&gt; First 10 features:</span>
 <span class="co">#&gt;               KDE  myID PA percP         x        y bio1 bio2 bio3 bio4 bio5</span>
-<span class="co">#&gt; 67   0.0006311931   351  0   out  9.416667 59.75000   27   73   26 7300  180</span>
-<span class="co">#&gt; 20   0.0003799395   128  0   out  9.250000 59.91667   16   76   26 7328  171</span>
-<span class="co">#&gt; 21   0.0011658064   130  0   out  9.583333 59.91667   35   76   26 7619  193</span>
-<span class="co">#&gt; 65   0.0004986511   348  0   out  8.916667 59.75000   18   73   26 7051  168</span>
-<span class="co">#&gt; 2474 0.0043125298 14637  0   out 22.416667 49.08333   55   84   27 7621  207</span>
 <span class="co">#&gt; 31   0.0034065575   143  0   out 11.750000 59.91667   44   70   24 7577  197</span>
-<span class="co">#&gt; 2475 0.0029962382 14638  0   out 22.583333 49.08333   51   82   27 7529  201</span>
-<span class="co">#&gt; 19   0.0003518053   125  0   out  8.750000 59.91667   13   75   27 7053  164</span>
-<span class="co">#&gt; 66   0.0006048808   350  0   out  9.250000 59.75000   25   73   26 7183  176</span>
-<span class="co">#&gt; 68   0.0034854319   352  0   out  9.583333 59.75000   38   72   25 7389  191</span>
+<span class="co">#&gt; 2181 0.0029962382 14638  0   out 22.583333 49.08333   51   82   27 7529  201</span>
+<span class="co">#&gt; 2180 0.0043125298 14637  0   out 22.416667 49.08333   55   84   27 7621  207</span>
+<span class="co">#&gt; 64   0.0004986511   348  0   out  8.916667 59.75000   18   73   26 7051  168</span>
+<span class="co">#&gt; 21   0.0011658064   130  0   out  9.583333 59.91667   35   76   26 7619  193</span>
+<span class="co">#&gt; 66   0.0006311931   351  0   out  9.416667 59.75000   27   73   26 7300  180</span>
+<span class="co">#&gt; 65   0.0006048808   350  0   out  9.250000 59.75000   25   73   26 7183  176</span>
+<span class="co">#&gt; 30   0.0048266103   142  0   out 11.583333 59.91667   46   69   24 7597  199</span>
+<span class="co">#&gt; 20   0.0003799395   128  0   out  9.250000 59.91667   16   76   26 7328  171</span>
+<span class="co">#&gt; 67   0.0034854319   352  0   out  9.583333 59.75000   38   72   25 7389  191</span>
 <span class="co">#&gt;      bio6 bio7 bio8 bio9 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18</span>
-<span class="co">#&gt; 67   -100  280  113  -29   123   -65   806    99    41    27   269   130   255</span>
-<span class="co">#&gt; 20   -113  284  101  -40   112   -77   820   102    41    28   277   130   265</span>
-<span class="co">#&gt; 21    -98  291  123  -21   134   -62   756    95    37    29   258   119   245</span>
-<span class="co">#&gt; 65   -106  274   71  -37   111   -70   839   103    41    28   281   133   262</span>
-<span class="co">#&gt; 2474  -94  301  147  -38   147   -49   825   111    45    32   307   142   307</span>
 <span class="co">#&gt; 31    -88  285   96  -16   143   -53   793    90    41    26   258   131   248</span>
-<span class="co">#&gt; 2475  -95  296  143  -41   143   -51   845   114    46    33   315   146   315</span>
-<span class="co">#&gt; 19   -112  276   66  -42   106   -76   844   103    41    27   282   134   264</span>
-<span class="co">#&gt; 66   -102  278  109  -31   119   -66   817   101    41    28   273   131   258</span>
-<span class="co">#&gt; 68    -90  281   92  -18   135   -56   772    95    38    28   261   124   243</span>
+<span class="co">#&gt; 2181  -95  296  143  -41   143   -51   845   114    46    33   315   146   315</span>
+<span class="co">#&gt; 2180  -94  301  147  -38   147   -49   825   111    45    32   307   142   307</span>
+<span class="co">#&gt; 64   -106  274   71  -37   111   -70   839   103    41    28   281   133   262</span>
+<span class="co">#&gt; 21    -98  291  123  -21   134   -62   756    95    37    29   258   119   245</span>
+<span class="co">#&gt; 66   -100  280  113  -29   123   -65   806    99    41    27   269   130   255</span>
+<span class="co">#&gt; 65   -102  278  109  -31   119   -66   817   101    41    28   273   131   258</span>
+<span class="co">#&gt; 30    -85  284   99  -13   146   -50   798    90    41    26   261   132   246</span>
+<span class="co">#&gt; 20   -113  284  101  -40   112   -77   820   102    41    28   277   130   265</span>
+<span class="co">#&gt; 67    -90  281   92  -18   135   -56   772    95    38    28   261   124   243</span>
 <span class="co">#&gt;      bio19   ID                    geometry</span>
-<span class="co">#&gt; 67     155   67  POINT (-3.270331 -2.84089)</span>
-<span class="co">#&gt; 20     158   20 POINT (-3.741414 -3.044682)</span>
-<span class="co">#&gt; 21     140   21 POINT (-2.552753 -3.139665)</span>
-<span class="co">#&gt; 65     167   65 POINT (-3.853077 -2.523284)</span>
-<span class="co">#&gt; 2474   156 2474 POINT (-2.589624 -2.691705)</span>
 <span class="co">#&gt; 31     154   31 POINT (-2.641587 -2.743201)</span>
-<span class="co">#&gt; 2475   159 2475  POINT (-2.890885 -2.57662)</span>
-<span class="co">#&gt; 19     171   19 POINT (-4.041346 -2.577969)</span>
-<span class="co">#&gt; 66     159   66 POINT (-3.430072 -2.760282)</span>
-<span class="co">#&gt; 68     145   68 POINT (-2.696467 -2.695892)</span>
+<span class="co">#&gt; 2181   159 2181  POINT (-2.890885 -2.57662)</span>
+<span class="co">#&gt; 2180   156 2180 POINT (-2.589624 -2.691705)</span>
+<span class="co">#&gt; 64     167   64 POINT (-3.853077 -2.523284)</span>
+<span class="co">#&gt; 21     140   21 POINT (-2.552753 -3.139665)</span>
+<span class="co">#&gt; 66     155   66  POINT (-3.270331 -2.84089)</span>
+<span class="co">#&gt; 65     159   65 POINT (-3.430072 -2.760282)</span>
+<span class="co">#&gt; 30     156   30 POINT (-2.562465 -2.663995)</span>
+<span class="co">#&gt; 20     158   20 POINT (-3.741414 -3.044682)</span>
+<span class="co">#&gt; 67     145   67 POINT (-2.696467 -2.695892)</span>
 <span class="co">#background points for the testing dataset</span>
 <span class="va">myGrid.psAbs</span><span class="op">$</span><span class="va">Bkg.ts</span>
-<span class="co">#&gt; Simple feature collection with 255 features and 26 fields</span>
+<span class="co">#&gt; Simple feature collection with 253 features and 26 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: -13.2887 ymin: -4.320804 xmax: 6.8402 ymax: 7.630419</span>
+<span class="co">#&gt; Bounding box:  xmin: -13.58791 ymin: -4.279468 xmax: 6.702113 ymax: 7.123497</span>
 <span class="co">#&gt; CRS:           NA</span>
 <span class="co">#&gt; First 10 features:</span>
 <span class="co">#&gt;               KDE  myID PA percP         x        y bio1 bio2 bio3 bio4 bio5</span>
-<span class="co">#&gt; 6126 0.0006744193 24884  0   out -8.750000 41.25000  144   84   45 3633  241</span>
-<span class="co">#&gt; 5624 0.0005817627 23553  0   out -8.583333 42.25000  140   71   39 3920  239</span>
-<span class="co">#&gt; 5207 0.0018050505 22446  0   out -8.083333 43.08333  124   80   40 3884  234</span>
-<span class="co">#&gt; 5467 0.0002450630 23110  0   out -8.416667 42.58333  125   77   38 4118  238</span>
-<span class="co">#&gt; 6316 0.0025282850 25334  0   out -7.750000 40.91667  116   92   38 5256  258</span>
-<span class="co">#&gt; 5820 0.0006984876 23996  0   out -8.750000 41.91667  140   73   41 3689  236</span>
-<span class="co">#&gt; 6313 0.0011968109 25331  0   out -8.250000 40.91667  129   93   41 4546  254</span>
-<span class="co">#&gt; 5821 0.0006715987 23997  0   out -8.583333 41.91667  131   79   40 4035  239</span>
-<span class="co">#&gt; 5889 0.0006920303 24220  0   out -8.416667 41.75000  137   88   41 4297  255</span>
-<span class="co">#&gt; 5126 0.0023260366 22221  0   out -8.583333 43.25000  134   68   40 3439  229</span>
+<span class="co">#&gt; 4784 0.0014309988 22885  0   out -8.916667 42.75000  139   62   38 3472  229</span>
+<span class="co">#&gt; 4864 0.0003354085 23111  0   out -8.250000 42.58333  118   81   39 4224  236</span>
+<span class="co">#&gt; 4975 0.0006859871 23328  0   out -9.083333 42.41667  149   59   39 3285  230</span>
+<span class="co">#&gt; 5200 0.0009719302 23999  0   out -8.250000 41.91667  115   86   39 4568  238</span>
+<span class="co">#&gt; 5685 0.0025282850 25334  0   out -7.750000 40.91667  116   92   38 5256  258</span>
+<span class="co">#&gt; 5094 0.0011762273 23778  0   out -8.083333 42.08333  108   86   38 4700  235</span>
+<span class="co">#&gt; 4789 0.0022378595 22890  0   out -8.083333 42.75000  125   83   40 4092  240</span>
+<span class="co">#&gt; 4611 0.0015476630 22443  0   out -8.583333 43.08333  129   71   38 3702  233</span>
+<span class="co">#&gt; 4536 0.0022959744 22222  0   out -8.416667 43.25000  135   71   41 3465  231</span>
+<span class="co">#&gt; 5197 0.0006984876 23996  0   out -8.750000 41.91667  140   73   41 3689  236</span>
 <span class="co">#&gt;      bio6 bio7 bio8 bio9 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18</span>
-<span class="co">#&gt; 6126   57  184   98  188   190    98  1217   166    15    51   483    83   101</span>
-<span class="co">#&gt; 5624   60  179   98  190   191    91  1470   236    30    50   592   123   140</span>
-<span class="co">#&gt; 5207   38  196   82  174   176    78  1257   174    37    40   470   141   159</span>
-<span class="co">#&gt; 5467   39  199   81  178   180    75  1474   225    37    46   573   144   160</span>
-<span class="co">#&gt; 6316   16  242   53  186   186    53  1363   207    15    56   557    90    90</span>
-<span class="co">#&gt; 5820   62  174  101  187   188    94  1376   195    21    51   552   101   122</span>
-<span class="co">#&gt; 6313   31  223   80  187   188    72  1317   189    16    53   530    90    97</span>
-<span class="co">#&gt; 5821   46  193   88  183   184    81  1467   217    25    50   586   114   130</span>
-<span class="co">#&gt; 5889   44  211   90  192   193    83  1320   186    19    50   523    98   114</span>
-<span class="co">#&gt; 5126   60  169  100  177   181    93  1166   158    34    40   445   132   155</span>
-<span class="co">#&gt;      bio19   ID                     geometry</span>
-<span class="co">#&gt; 6126   483 6126    POINT (1.244926 6.451581)</span>
-<span class="co">#&gt; 5624   584 5624  POINT (-0.7204456 7.630419)</span>
-<span class="co">#&gt; 5207   444 5207    POINT (-0.546969 5.69943)</span>
-<span class="co">#&gt; 5467   556 5467   POINT (-1.317769 6.855289)</span>
-<span class="co">#&gt; 6316   557 6316   POINT (0.1700701 5.615775)</span>
-<span class="co">#&gt; 5820   547 5820  POINT (0.08635421 7.123497)</span>
-<span class="co">#&gt; 6313   525 6313   POINT (0.6675827 5.896631)</span>
-<span class="co">#&gt; 5821   585 5821  POINT (-0.5705304 7.139334)</span>
-<span class="co">#&gt; 5889   519 5889   POINT (0.6812513 6.188195)</span>
-<span class="co">#&gt; 5126   407 5126 POINT (-0.09016363 5.843338)</span></code></pre></div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-      </div>
-
+<span class="co">#&gt; 4784   67  162  104  182   185    96  1217   176    31    45   483   124   147</span>
+<span class="co">#&gt; 4864   29  207   72  173   175    68  1440   214    36    45   553   143   157</span>
+<span class="co">#&gt; 4975   81  149  116  190   192   107  1163   162    25    47   467   107   130</span>
+<span class="co">#&gt; 5200   22  216   66  174   175    59  1460   206    27    49   573   123   132</span>
+<span class="co">#&gt; 5685   16  242   53  186   186    53  1363   207    15    56   557    90    90</span>
+<span class="co">#&gt; 5094   14  221   58  170   171    52  1429   201    30    47   554   130   137</span>
+<span class="co">#&gt; 4789   36  204   80  179   181    77  1288   186    35    43   486   134   149</span>
+<span class="co">#&gt; 4611   50  183   92  176   179    84  1303   183    37    42   499   143   165</span>
+<span class="co">#&gt; 4536   60  171  100  178   182    93  1153   155    34    39   436   131   153</span>
+<span class="co">#&gt; 5197   62  174  101  187   188    94  1376   195    21    51   552   101   122</span>
+<span class="co">#&gt;      bio19   ID                    geometry</span>
+<span class="co">#&gt; 4784   437 4784    POINT (-0.159892 6.2896)</span>
+<span class="co">#&gt; 4864   538 4864  POINT (-1.280663 6.432327)</span>
+<span class="co">#&gt; 4975   422 4975  POINT (0.5691984 6.403731)</span>
+<span class="co">#&gt; 5200   569 5200 POINT (-0.9404954 6.246143)</span>
+<span class="co">#&gt; 5685   557 5685  POINT (0.1700701 5.615775)</span>
+<span class="co">#&gt; 5094   549 5094  POINT (-1.181429 5.817373)</span>
+<span class="co">#&gt; 4789   468 4789    POINT (-0.39166 5.84771)</span>
+<span class="co">#&gt; 4611   463 4611 POINT (-0.7602314 6.140005)</span>
+<span class="co">#&gt; 4536   403 4536   POINT (0.06820822 5.7994)</span>
+<span class="co">#&gt; 5197   547 5197 POINT (0.08635421 7.123497)</span></code></pre></div>
+  </main>
 </div>
 
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by Daniele Da Re, Enrico Tordoni, Manuele Bazzichetto.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-
 
   
 

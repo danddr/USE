@@ -4,7 +4,7 @@
 \alias{optimRes}
 \title{Get optimal resolution of the sampling grid}
 \usage{
-optimRes(sdf, grid.res, perc.thr = 10, showOpt = TRUE)
+optimRes(sdf, grid.res, perc.thr = 10, cr = 1, showOpt = TRUE)
 }
 \arguments{
 \item{sdf}{an sf object having point geometry given by the PC-scores values}
@@ -12,6 +12,8 @@ optimRes(sdf, grid.res, perc.thr = 10, showOpt = TRUE)
 \item{grid.res}{(integer) a vector of resolutions to be tested, i.e seq(1,100, by=1)}
 
 \item{perc.thr}{rate of change (expressed in percentage) of the function to be minimized for selecting the optimal resolution.}
+
+\item{cr}{(integer) number of cores for parallel computing.}
 
 \item{showOpt}{(logical) plot the result.}
 }
