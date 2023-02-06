@@ -1,14 +1,13 @@
 #' Sampling pseudo-absences for the training and testing datasets.  
 #'
-#' This function internally calls the \code{uniformSampling()} function to perform the uniform sampling of the environmental space. 
-#' Before performing the uniform sampling of the environmental space, a set of PC-scores within a core area associated with the species presences 
-#' is filtered out using a kernel density estimation approach. 
-#' The bandwidth of the kernel can be either defined by the user or automatically estimated, allowing the user to account for meta population dynamics (e.g. sink-source populations).
+#' \code{paSampling} internally calls the \code{uniformSampling} function, which performs the uniform sampling of the environmental space. 
+#' Before performing the uniform sampling of the environmental space, the environmental space is partitioned: a kernel density estimate of the species presence observations identifies and excludes the portion of the environmental space associated with environmental conditions likely suitable for the species to establish. 
+#' The bandwidth of the kernel can be estimated automatically or defined by the user,  allowing one to account for meta-population dynamics (e.g. sink-source populations).
 #'
 #' @param env.rast A raster stack or raster brick object comprising the variables describing the environmental space. 
 #' @param pres A SpatialPointDataframe including species of interest presence-only.
-#' @param thres Kernel density threshold SPIEGARE
-#' @param H Parameter defining kernel bandwidth, it can be provided by the user or automatically estimated via SPIEGARE
+#' @param thres (double) The kernel bandwidth (i.e., the width of the kernel density function that defines its shape) excluding the portion of the environmental space associated with environmental conditions likely suitable for the species. It  can be either defined by the user (default \code{thres=0.75} or automatically estimated by \code{paSampling} via \code{ks::Hpi}. 
+#' @param H  SPIEGARE Parameter defining kernel bandwidth, it can be provided by the user or automatically estimated via 
 #' @param grid.res (integer) resolution of the sampling grid. The resolution can be arbitrarily selected or defined using the \code{optimRes} function. 
 #' @param n.tr (integer) number of background points for the training dataset to sample in each cell of the sampling grid
 #' @param n.ts (integer; optional) number of background points for the testing dataset to sample in each cell of the sampling grid. sub.ts argument must be TRUE.
@@ -43,8 +42,8 @@ paSampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n
     message(paste("User-defined prevalence of", prev))
   }
   message("Computing PCA and presences kernel density estimation in the PC-space")
-  grid.vec<-vect(rasterToPoints(env.rast, spatial = TRUE))
-  pen.vec<-vect(pres)
+  grid.vec<-terra::vect(rasterToPoints(env.rast, spatial = TRUE))
+  pen.vec<-terra::vect(pres)
   rpc<-rasterPCA(env.rast,spca = TRUE)
   dt <- data.table(raster::as.data.frame(rpc$map[[c("PC1", "PC2")]], xy = TRUE))
   dt$myID<-seq_len(nrow(dt))

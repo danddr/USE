@@ -1,14 +1,10 @@
 #' Uniform sampling of the environmental space
 #'
-#' This function allows to perform a uniform sampling of the environmental space. 
-#' It requires an sf object having point geometry given by the PC-scores values (the first two axes of a PCA computed on the environmental variables of interest), and the 
-#' bounding box of the environmental space (defined by the extent of the PC-scores values).
-#' A resolution of the sampling grid must be provided by the user. The resolution can be arbitrarily selected or 
-#' or defined using the \code{optimRes()} function. 
-#' The functions allows to retrieve both a training and a testing dataset (optional) of uniformly sampled points. 
-#' The user must provide suitable numbers of points to be sampled in each cell of the sampling grid 
-#' (n.tr: points for the training dataset; n.ts: points for the testing dataset). 
-#' Notice that the final number of sampled background points depends on the PC-scores configuration in the environmental space. 
+#'\code{uniformSampling} performs the uniform sampling of the environmental space.
+#'It requires an sf object of geometry type “POINT”. Points are the scores of the first two axes of a principal component analysis performed on the correlation matrix of a set of environmental variables. The resolution of the sampling grid used to systematically collect observations within the environmental space must be provided. The resolution can be either set to an arbitrary value by the user or selected using the \code{optimRes()} function.
+#'\code{uniformSampling} allows collecting observations to populate both training and (optional) a testing dataset.
+#'In both cases, the user must provide a number of points to be sampled in each cell of the sampling grid (\code{n.tr:} points for the training dataset; \code{n.ts}: points for the testing dataset).
+#'Note that the number of pseudo-absences eventually sampled depends on the configuration of the points within the environmental space. Usually, some cells of the sampling grid are empty (i.e., do not include points), as points are not covering the whole extent of the environmental space. For this reason, the number of pseudo-absences eventually collected is likely to be lower than the product between the resolution of the sampling grid and \code{n.tr}(or \code{n.ts}). 
 #'
 #' @param sdf an sf object having point geometry given by the PC-scores values
 #' @param grid.res (integer) resolution of the sampling grid. The resolution can be arbitrarily selected or defined using the \code{optimRes()} function. 
@@ -25,8 +21,8 @@ uniformSampling <- function(sdf, grid.res, n.tr = 5, n.prev = NULL, sub.ts = FAL
   if(!(all(st_is(sdf, "POINT")))) {
     stop("sdf object must have a sf POINT GEOMETRY class")
   }
-  if(!is_numeric(n.tr)) stop(paste(n.tr, "is not of class 'numeric'.", sep = " "))
-  if(!is_logical(plot_proc)) stop("plot_proc is not of class 'logical'; it has class 'numeric'.")
+  if(!is.numeric(n.tr)) stop(paste(n.tr, "is not of class 'numeric'.", sep = " "))
+  if(!is.logical(plot_proc)) stop("plot_proc is not of class 'logical'; it has class 'numeric'.")
   grid <- st_make_grid(sdf, n = grid.res)
   sdf$ID <- row.names(sdf)
   res <- do.call(rbind, lapply(seq_len(length(grid)), function(i) {

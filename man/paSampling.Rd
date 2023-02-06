@@ -23,9 +23,9 @@ paSampling(
 
 \item{pres}{A SpatialPointDataframe including species of interest presence-only.}
 
-\item{thres}{Kernel density threshold SPIEGARE}
+\item{thres}{(double) The kernel bandwidth (i.e., the width of the kernel density function that defines its shape) excluding the portion of the environmental space associated with environmental conditions likely suitable for the species. It  can be either defined by the user (default \code{thres=0.75} or automatically estimated by \code{paSampling} via \code{ks::Hpi}.}
 
-\item{H}{Parameter defining kernel bandwidth, it can be provided by the user or automatically estimated via SPIEGARE}
+\item{H}{SPIEGARE Parameter defining kernel bandwidth, it can be provided by the user or automatically estimated via}
 
 \item{grid.res}{(integer) resolution of the sampling grid. The resolution can be arbitrarily selected or defined using the \code{optimRes} function.}
 
@@ -45,8 +45,7 @@ paSampling(
 A SpatialPointDataframe with the coordinates of the background points both in the geographical and environmental space.
 }
 \description{
-This function internally calls the \code{uniformSampling()} function to perform the uniform sampling of the environmental space.
-Before performing the uniform sampling of the environmental space, a set of PC-scores within a core area associated with the species presences
-is filtered out using a kernel density estimation approach.
-The bandwidth of the kernel can be either defined by the user or automatically estimated, allowing the user to account for meta population dynamics (e.g. sink-source populations).
+\code{paSampling} internally calls the \code{uniformSampling} function, which performs the uniform sampling of the environmental space.
+Before performing the uniform sampling of the environmental space, the environmental space is partitioned: a kernel density estimate of the species presence observations identifies and excludes the portion of the environmental space associated with environmental conditions likely suitable for the species to establish.
+The bandwidth of the kernel can be estimated automatically or defined by the user,  allowing one to account for meta-population dynamics (e.g. sink-source populations).
 }
