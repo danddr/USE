@@ -21,19 +21,19 @@ paSampling(
 \arguments{
 \item{env.rast}{A raster stack or raster brick object comprising the variables describing the environmental space.}
 
-\item{pres}{A SpatialPointDataframe including species of interest presence-only.}
+\item{pres}{A SpatialPointsDataframe including species of interest presence-only.}
 
-\item{thres}{(double) The kernel bandwidth (i.e., the width of the kernel density function that defines its shape) excluding the portion of the environmental space associated with environmental conditions likely suitable for the species. It  can be either defined by the user (default \code{thres=0.75} or automatically estimated by \code{paSampling} via \code{ks::Hpi}.}
+\item{thres}{(double) This value identifies the quantile value used to specify the boundary of the kernel density estimate (default \code{thres=0.75} ). Thus, probability values higher than the threshold should indicate portions of the multivariate space likely associated with presence points. #'}
 
-\item{H}{SPIEGARE Parameter defining kernel bandwidth, it can be provided by the user or automatically estimated via}
+\item{H}{The kernel bandwidth (i.e., the width of the kernel density function that defines its shape) excluding the portion of the environmental space associated with environmental conditions likely suitable for the species. It can be either defined by the user or automatically estimated by \code{paSampling} via \code{ks::Hpi}.}
 
 \item{grid.res}{(integer) resolution of the sampling grid. The resolution can be arbitrarily selected or defined using the \code{optimRes} function.}
 
-\item{n.tr}{(integer) number of background points for the training dataset to sample in each cell of the sampling grid}
+\item{n.tr}{(integer) number of pseudo-absences for the training dataset to sample in each cell of the sampling grid}
 
-\item{sub.ts}{(logical) sample the validation background points}
+\item{sub.ts}{(logical) sample the validation pseudo-absences}
 
-\item{n.ts}{(integer; optional) number of background points for the testing dataset to sample in each cell of the sampling grid. sub.ts argument must be TRUE.}
+\item{n.ts}{(integer; optional) number of pseudo-absences for the testing dataset to sample in each cell of the sampling grid. sub.ts argument must be TRUE.}
 
 \item{prev}{(double) prevalence value to be specified instead of n.tr and n.ts}
 
@@ -42,10 +42,10 @@ paSampling(
 \item{verbose}{(logical) Print verbose}
 }
 \value{
-A SpatialPointDataframe with the coordinates of the background points both in the geographical and environmental space.
+A SpatialPointsDataframe with the coordinates of the pseudo-absences both in the geographical and environmental space.
 }
 \description{
 \code{paSampling} internally calls the \code{uniformSampling} function, which performs the uniform sampling of the environmental space.
-Before performing the uniform sampling of the environmental space, the environmental space is partitioned: a kernel density estimate of the species presence observations identifies and excludes the portion of the environmental space associated with environmental conditions likely suitable for the species to establish.
-The bandwidth of the kernel can be estimated automatically or defined by the user,  allowing one to account for meta-population dynamics (e.g. sink-source populations).
+Before performing the uniform sampling of the environmental space, the environmental space is partitioned as follows: a kernel density estimate of the species presence observations identifies and excludes the portion of the environmental space associated with environmental conditions likely suitable for the species to establish using a threshold specified by the user.
+The bandwidth of the kernel can be estimated automatically or defined by the user, allowing to account for meta-population dynamics (e.g. sink-source populations).
 }

@@ -15,7 +15,7 @@ You can install the development version of USE like so:
 
 ``` r
 # Install the released version from CRAN
-install.packages("USE")
+# install.packages("USE") #not available yet
 # Or the development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("danddr/USE")

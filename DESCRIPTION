@@ -7,13 +7,11 @@ Authors@R: c(
     person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", role = "aut"))
 Description: USE performs uniform sampling of the environmental space.
 Depends: R (>= 3.6.0)
-Imports: data.table, tidyverse, ggplot2, sf, assertive, raster, RStoolbox, terra, ks
+Imports: data.table, dplyr, tidyr,  ggplot2, sf, assertive, raster, RStoolbox, parallel, terra, ks
 License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.2
-Suggests: 
-    rmarkdown,
-    knitr
+Suggests: rmarkdown, knitr
 VignetteBuilder: knitr

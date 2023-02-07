@@ -34,10 +34,9 @@ Worldclim<-raster::getData('worldclim', var='bio', res=10)
 Crop the bioclimatic variables to the European extent
 ```{r, eval=TRUE}
 envData<-crop(Worldclim, extent(-12, 25, 36, 60))
-envData
 ```
 
-Create virtual species. For details about the methodology used, see the  [vignette](http://borisleroy.com/files/virtualspecies-tutorial.html#introduction) of the **virtualspecies** R package
+Create a virtual species. For details about the methodology used, see the  [vignette](http://borisleroy.com/files/virtualspecies-tutorial.html#introduction) of the **virtualspecies** R package
 ```{r, eval=TRUE, message=FALSE}
 #create virtual species
 myRandNum=sample(1:19,size=5, replace = FALSE)
@@ -47,11 +46,11 @@ random.sp <- virtualspecies::generateRandomSp(envData[[myRandNum]],
                                               realistic.sp = TRUE, 
                                               plot = FALSE)
 #reclassify suitability raster using a probability conversion rule
-new.pres<-convertToPA(x=random.sp, 
+new.pres<-virtualspecies::convertToPA(x=random.sp, 
                       beta=0.55,
                       alpha = -0.05, plot = FALSE)
 #Sample true occurrences
-presence.points <- sampleOccurrences(new.pres,
+presence.points <- virtualspecies::sampleOccurrences(new.pres,
                                      n = 300, # The number of points to sample
                                      type = "presence-absence",
                                      sample.prevalence = 0.6,
@@ -60,7 +59,7 @@ presence.points <- sampleOccurrences(new.pres,
                                      plot = TRUE)  
 ```
 
-Get a presence only dataset.
+Create a presence only data set.
 ```{r, eval=TRUE}
 myPres=presence.points$sample.points[which(presence.points$sample.points$Observed==1), c( "x", "y",  "Observed")]
 coordinates(myPres)<-~x+y
@@ -68,7 +67,7 @@ crs(myPres)<-myCRS
 myPres
 ```
 
-Find optimal resolution of the sampling grid. First, made a PCA on the whole raster stack and then use the PC-scores of the first two axes to create a new spatial object. 
+Find the optimal resolution of the sampling grid. First, made a PCA on the whole raster stack and then use the PC-scores of the first two axes to create a new spatial object. 
 ```{r, eval=TRUE}
 rpc<-rasterPCA(envData,spca = TRUE)
 dt <- na.omit(data.table(as.data.frame(rpc$map[[c("PC1", "PC2")]], xy = TRUE)))
@@ -79,7 +78,8 @@ dt=st_as_sf(dt, coords = c("PC1", "PC2"))
 myRes=USE::optimRes(sdf=dt,
                     grid.res=c(1:10),
                     perc.thr = 10,
-                    showOpt = TRUE)
+                    showOpt = TRUE, 
+                    cr=2)
 ```
 ```{r, eval=TRUE, echo=FALSE, message=FALSE, results="hide"}
 myRes=list()
