@@ -18,7 +18,7 @@
 #' @return A spatial point data frame with the coordinates of the sampled points both in the geographical and environmental space
 #' @export
 uniformSampling <- function(sdf, grid.res, n.tr = 5, n.prev = NULL, sub.ts = FALSE, n.ts = 5, plot_proc = FALSE, verbose = FALSE) {
-  if(!(all(st_is(sdf, "POINT")))) {
+  if(!(all(sf::st_is(sdf, "POINT")))) {
     stop("sdf object must have a sf POINT GEOMETRY class")
   }
   if(!is.numeric(n.tr)) stop(paste(n.tr, "is not of class 'numeric'.", sep = " "))

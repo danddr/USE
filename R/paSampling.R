@@ -42,19 +42,19 @@ paSampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n
     message(paste("User-defined prevalence of", prev))
   }
   message("Computing PCA and presences kernel density estimation in the PC-space")
-  grid.vec<-terra::vect(rasterToPoints(env.rast, spatial = TRUE))
+  grid.vec<-terra::vect(raster::rasterToPoints(env.rast, spatial = TRUE))
   pen.vec<-terra::vect(pres)
-  rpc<-rasterPCA(env.rast,spca = TRUE)
-  dt <- data.table(raster::as.data.frame(rpc$map[[c("PC1", "PC2")]], xy = TRUE))
+  rpc<-RStoolbox::rasterPCA(env.rast,spca = TRUE)
+  dt <- data.table::data.table(raster::as.data.frame(rpc$map[[c("PC1", "PC2")]], xy = TRUE))
   dt$myID<-seq_len(nrow(dt))
   
   id<-dt[,c("x", "y", "myID")]
-  id_rast<-raster::rasterFromXYZ(id,res=res(env.rast),digits = 10) 
+  id_rast<-raster::rasterFromXYZ(id,res=raster::res(env.rast),digits = 10) 
   id_rast<-raster::resample(id_rast,env.rast)
-  extent(id_rast)<-extent(env.rast)
+  raster::extent(id_rast)<-raster::extent(env.rast)
   
   PC12<-stack(rpc$map[[c("PC1", "PC2")]],id_rast)
-  abio.st<-terra::rast(stack(id_rast, env.rast))
+  abio.st<-terra::rast(raster::stack(id_rast, env.rast))
   abio.ex<-na.omit(terra::extract(abio.st, grid.vec, cells=FALSE, df=TRUE))
   PC12ex<-na.omit(terra::extract(terra::rast(PC12), grid.vec, cells=FALSE,df=TRUE))
   PC12pen<-terra::extract(terra::rast(PC12),pen.vec,cells=FALSE,df=TRUE)

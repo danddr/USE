@@ -87,7 +87,9 @@
 <span class="va">myCRS</span><span class="op">&lt;-</span><span class="st">"+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"</span></code></pre></div>
 <p>Download bioclimatic variables from WorldClim</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Worldclim</span><span class="op">&lt;-</span><span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="st">'worldclim'</span>, var<span class="op">=</span><span class="st">'bio'</span>, res<span class="op">=</span><span class="fl">10</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span class="va">Worldclim</span><span class="op">&lt;-</span><span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="st">'worldclim'</span>, var<span class="op">=</span><span class="st">'bio'</span>, res<span class="op">=</span><span class="fl">10</span><span class="op">)</span> 
+<span class="co">#&gt; Warning in raster::getData("worldclim", var = "bio", res = 10): getData will be removed in a future version of raster</span>
+<span class="co">#&gt; . Please use the geodata package instead</span></code></pre></div>
 <p>Crop the bioclimatic variables to the European extent</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">envData</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">Worldclim</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/extent.html" class="external-link">extent</a></span><span class="op">(</span><span class="op">-</span><span class="fl">12</span>, <span class="fl">25</span>, <span class="fl">36</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -122,8 +124,8 @@ of the <strong>virtualspecies</strong> R package</p>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">myPres</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">myCRS</span>
 <span class="va">myPres</span>
 <span class="co">#&gt; class       : SpatialPointsDataFrame </span>
-<span class="co">#&gt; features    : 106 </span>
-<span class="co">#&gt; extent      : -7.916667, 24.91667, 36.08333, 59.91667  (xmin, xmax, ymin, ymax)</span>
+<span class="co">#&gt; features    : 142 </span>
+<span class="co">#&gt; extent      : -10.25, 24.58333, 36.08333, 59.58333  (xmin, xmax, ymin, ymax)</span>
 <span class="co">#&gt; crs         : +proj=longlat +datum=WGS84 +no_defs </span>
 <span class="co">#&gt; variables   : 1</span>
 <span class="co">#&gt; names       : Observed </span>
@@ -157,18 +159,18 @@ axes to create a new spatial object.</p>
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">myObs</span><span class="op">)</span>
 <span class="co">#&gt; List of 2</span>
 <span class="co">#&gt;  $ Bkg.tr:Classes 'sf', 'data.table' and 'data.frame':   152 obs. of  4 variables:</span>
-<span class="co">#&gt;   ..$ x       : num [1:152] 8.75 9.25 10.08 8.92 9.42 ...</span>
-<span class="co">#&gt;   ..$ y       : num [1:152] 59.9 59.9 59.9 59.9 59.8 ...</span>
-<span class="co">#&gt;   ..$ ID      : chr [1:152] "25" "28" "33" "26" ...</span>
-<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 152; first list element:  'XY' num [1:2] -4.04 -2.58</span>
+<span class="co">#&gt;   ..$ x       : num [1:152] 8.92 9.25 9.25 22.58 9.08 ...</span>
+<span class="co">#&gt;   ..$ y       : num [1:152] 59.9 59.7 59.9 49.1 59.9 ...</span>
+<span class="co">#&gt;   ..$ ID      : chr [1:152] "26" "133" "28" "8504" ...</span>
+<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 152; first list element:  'XY' num [1:2] -3.45 -2.94</span>
 <span class="co">#&gt;   ..- attr(*, "sf_column")= chr "geometry"</span>
 <span class="co">#&gt;   ..- attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA</span>
 <span class="co">#&gt;   .. ..- attr(*, "names")= chr [1:3] "x" "y" "ID"</span>
 <span class="co">#&gt;  $ Bkg.ts:Classes 'sf', 'data.table' and 'data.frame':   58 obs. of  4 variables:</span>
-<span class="co">#&gt;   ..$ x       : num [1:58] -8.58 -8.58 -8.42 -8.75 -9.75 ...</span>
-<span class="co">#&gt;   ..$ y       : num [1:58] 41.4 41.2 43.2 42.9 51.6 ...</span>
-<span class="co">#&gt;   ..$ ID      : chr [1:58] "15587" "15715" "13984" "14303" ...</span>
-<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 58; first list element:  'XY' num [1:2] 1.26 6.27</span>
+<span class="co">#&gt;   ..$ x       : num [1:58] -8.75 20.08 -8.92 -8.92 -10.42 ...</span>
+<span class="co">#&gt;   ..$ y       : num [1:58] 40.7 39.7 42.2 42.9 52.1 ...</span>
+<span class="co">#&gt;   ..$ ID      : chr [1:58] "16089" "16870" "14895" "14302" ...</span>
+<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 58; first list element:  'XY' num [1:2] 1.76 5.9</span>
 <span class="co">#&gt;   ..- attr(*, "sf_column")= chr "geometry"</span>
 <span class="co">#&gt;   ..- attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA</span>
 <span class="co">#&gt;   .. ..- attr(*, "names")= chr [1:3] "x" "y" "ID"</span>
@@ -177,39 +179,39 @@ axes to create a new spatial object.</p>
 <span class="co">#&gt; Simple feature collection with 152 features and 3 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: -11.84538 ymin: -3.491445 xmax: 6.260598 ymax: 7.123497</span>
+<span class="co">#&gt; Bounding box:  xmin: -13.58791 ymin: -3.72142 xmax: 6.800077 ymax: 7.139334</span>
 <span class="co">#&gt; CRS:           NA</span>
 <span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;               x        y    ID                     geometry</span>
-<span class="co">#&gt; 25     8.750000 59.91667    25  POINT (-4.041346 -2.577969)</span>
-<span class="co">#&gt; 28     9.250000 59.91667    28  POINT (-3.741414 -3.044682)</span>
-<span class="co">#&gt; 33    10.083333 59.91667    33  POINT (-2.869542 -2.947099)</span>
-<span class="co">#&gt; 26     8.916667 59.91667    26  POINT (-3.445481 -2.938089)</span>
-<span class="co">#&gt; 134    9.416667 59.75000   134   POINT (-3.270331 -2.84089)</span>
-<span class="co">#&gt; 7090  20.750000 50.58333  7090 POINT (-0.4954103 -3.389847)</span>
-<span class="co">#&gt; 10435 24.583333 47.25000 10435 POINT (-0.4773481 -2.924775)</span>
-<span class="co">#&gt; 1813  23.583333 56.75000  1813  POINT (-1.092767 -3.491445)</span>
-<span class="co">#&gt; 3882  18.750000 53.58333  3882 POINT (0.02702374 -3.233211)</span>
-<span class="co">#&gt; 2446  22.083333 55.58333  2446  POINT (-1.766941 -2.630861)</span>
+<span class="co">#&gt;              x        y   ID                     geometry</span>
+<span class="co">#&gt; 26    8.916667 59.91667   26  POINT (-3.445481 -2.938089)</span>
+<span class="co">#&gt; 133   9.250000 59.75000  133  POINT (-3.430072 -2.760282)</span>
+<span class="co">#&gt; 28    9.250000 59.91667   28  POINT (-3.741414 -3.044682)</span>
+<span class="co">#&gt; 8504 22.583333 49.08333 8504   POINT (-2.890885 -2.57662)</span>
+<span class="co">#&gt; 27    9.083333 59.91667   27  POINT (-3.641179 -3.006921)</span>
+<span class="co">#&gt; 3861 15.250000 53.58333 3861 POINT (-0.2643998 -3.070108)</span>
+<span class="co">#&gt; 850  22.750000 58.58333  850 POINT (-0.9664201 -3.180859)</span>
+<span class="co">#&gt; 4232 18.916667 53.25000 4232 POINT (0.04427603 -3.332483)</span>
+<span class="co">#&gt; 101  23.083333 59.91667  101    POINT (-1.03258 -3.72142)</span>
+<span class="co">#&gt; 736  14.750000 58.75000  736 POINT (-0.8184523 -2.743218)</span>
 <span class="co">#background points for the testing dataset</span>
 <span class="va">myObs</span><span class="op">$</span><span class="va">Bkg.ts</span>
 <span class="co">#&gt; Simple feature collection with 58 features and 3 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: -11.01883 ymin: -3.835986 xmax: 6.386018 ymax: 6.675364</span>
+<span class="co">#&gt; Bounding box:  xmin: -11.38069 ymin: -3.633896 xmax: 6.491139 ymax: 6.959128</span>
 <span class="co">#&gt; CRS:           NA</span>
 <span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;               x        y    ID                    geometry</span>
-<span class="co">#&gt; 15587 -8.583333 41.41667 15587   POINT (1.257106 6.267118)</span>
-<span class="co">#&gt; 15715 -8.583333 41.25000 15715   POINT (1.307622 6.109559)</span>
-<span class="co">#&gt; 13984 -8.416667 43.25000 13984   POINT (0.06820822 5.7994)</span>
-<span class="co">#&gt; 14303 -8.750000 42.91667 14303 POINT (-0.4827864 6.262874)</span>
-<span class="co">#&gt; 5922  -9.750000 51.58333  5922  POINT (-4.086229 6.367474)</span>
-<span class="co">#&gt; 6095  -9.750000 51.41667  6095  POINT (-4.028328 6.393714)</span>
-<span class="co">#&gt; 1829  -5.750000 56.58333  1829  POINT (-6.889477 6.675364)</span>
-<span class="co">#&gt; 2197  -5.583333 55.91667  2197  POINT (-6.636126 6.429048)</span>
-<span class="co">#&gt; 18488  3.583333 36.75000 18488   POINT (5.029053 3.902954)</span>
-<span class="co">#&gt; 17196 -8.250000 39.08333 17196    POINT (4.89765 3.611034)</span></code></pre></div>
+<span class="co">#&gt;                x        y    ID                    geometry</span>
+<span class="co">#&gt; 16089  -8.750000 40.75000 16089   POINT (1.759328 5.903501)</span>
+<span class="co">#&gt; 16870  20.083333 39.75000 16870   POINT (2.347694 5.856895)</span>
+<span class="co">#&gt; 14895  -8.916667 42.25000 14895  POINT (0.1535594 6.959128)</span>
+<span class="co">#&gt; 14302  -8.916667 42.91667 14302 POINT (-0.4818205 6.108024)</span>
+<span class="co">#&gt; 5360  -10.416667 52.08333  5360   POINT (-4.456471 6.41753)</span>
+<span class="co">#&gt; 5176   -9.583333 52.25000  5176  POINT (-3.398675 5.650272)</span>
+<span class="co">#&gt; 1546   -4.916667 57.08333  1546  POINT (-6.493316 5.645063)</span>
+<span class="co">#&gt; 1923   -5.750000 56.41667  1923  POINT (-6.801299 6.590234)</span>
+<span class="co">#&gt; 17386  -8.750000 38.75000 17386   POINT (5.037107 3.941326)</span>
+<span class="co">#&gt; 18247   9.416667 37.25000 18247   POINT (5.392803 3.673602)</span></code></pre></div>
 <p>Uniformly sampling background points in the environmental space,
 accounting for the species presence points.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -223,157 +225,154 @@ accounting for the species presence points.</p>
                                 sub.ts<span class="op">=</span><span class="cn">TRUE</span>,
                                 n.ts<span class="op">=</span><span class="fl">5</span>,
                                 plot_proc<span class="op">=</span><span class="cn">FALSE</span>,
-                                verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; Warning: [vect] argument 'crs' should be a character value</span>
-
-<span class="co">#&gt; Warning: [vect] argument 'crs' should be a character value</span></code></pre></div>
+                                verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">myGrid.psAbs</span><span class="op">)</span>
 <span class="co">#&gt; List of 2</span>
-<span class="co">#&gt;  $ Bkg.tr:Classes 'sf' and 'data.frame': 378 obs. of  27 variables:</span>
-<span class="co">#&gt;   ..$ KDE     : num [1:378] 0.003485 0.000605 0.000352 0.000631 0.000499 ...</span>
-<span class="co">#&gt;   ..$ myID    : num [1:378] 352 350 125 351 348 ...</span>
-<span class="co">#&gt;   ..$ PA      : num [1:378] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#&gt;   ..$ percP   : chr [1:378] "out" "out" "out" "out" ...</span>
-<span class="co">#&gt;   ..$ x       : num [1:378] 9.58 9.25 8.75 9.42 8.92 ...</span>
-<span class="co">#&gt;   ..$ y       : num [1:378] 59.8 59.8 59.9 59.8 59.8 ...</span>
-<span class="co">#&gt;   ..$ bio1    : int [1:378] 38 25 13 27 18 51 16 35 46 51 ...</span>
-<span class="co">#&gt;   ..$ bio2    : int [1:378] 72 73 75 73 73 82 76 76 69 72 ...</span>
-<span class="co">#&gt;   ..$ bio3    : int [1:378] 25 26 27 26 26 27 26 26 24 25 ...</span>
-<span class="co">#&gt;   ..$ bio4    : int [1:378] 7389 7183 7053 7300 7051 7529 7328 7619 7597 7304 ...</span>
-<span class="co">#&gt;   ..$ bio5    : int [1:378] 191 176 164 180 168 201 171 193 199 200 ...</span>
-<span class="co">#&gt;   ..$ bio6    : int [1:378] -90 -102 -112 -100 -106 -95 -113 -98 -85 -78 ...</span>
-<span class="co">#&gt;   ..$ bio7    : int [1:378] 281 278 276 280 274 296 284 291 284 278 ...</span>
-<span class="co">#&gt;   ..$ bio8    : int [1:378] 92 109 66 113 71 143 101 123 99 103 ...</span>
-<span class="co">#&gt;   ..$ bio9    : int [1:378] -18 -31 -42 -29 -37 -41 -40 -21 -13 -8 ...</span>
-<span class="co">#&gt;   ..$ bio10   : int [1:378] 135 119 106 123 111 143 112 134 146 147 ...</span>
-<span class="co">#&gt;   ..$ bio11   : int [1:378] -56 -66 -76 -65 -70 -51 -77 -62 -50 -41 ...</span>
-<span class="co">#&gt;   ..$ bio12   : int [1:378] 772 817 844 806 839 845 820 756 798 731 ...</span>
-<span class="co">#&gt;   ..$ bio13   : int [1:378] 95 101 103 99 103 114 102 95 90 83 ...</span>
-<span class="co">#&gt;   ..$ bio14   : int [1:378] 38 41 41 41 41 46 41 37 41 36 ...</span>
-<span class="co">#&gt;   ..$ bio15   : int [1:378] 28 28 27 27 28 33 28 29 26 27 ...</span>
-<span class="co">#&gt;   ..$ bio16   : int [1:378] 261 273 282 269 281 315 277 258 261 238 ...</span>
-<span class="co">#&gt;   ..$ bio17   : int [1:378] 124 131 134 130 133 146 130 119 132 119 ...</span>
-<span class="co">#&gt;   ..$ bio18   : int [1:378] 243 258 264 255 262 315 265 245 246 225 ...</span>
-<span class="co">#&gt;   ..$ bio19   : int [1:378] 145 159 171 155 167 159 158 140 156 143 ...</span>
-<span class="co">#&gt;   ..$ ID      : chr [1:378] "68" "66" "19" "67" ...</span>
-<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 378; first list element:  'XY' num [1:2] -2.7 -2.7</span>
+<span class="co">#&gt;  $ Bkg.tr:Classes 'sf' and 'data.frame': 494 obs. of  27 variables:</span>
+<span class="co">#&gt;   ..$ KDE     : num [1:494] 0.000352 0.00038 0.001166 0.004827 0.003407 ...</span>
+<span class="co">#&gt;   ..$ myID    : num [1:494] 125 128 130 142 143 348 350 351 352 150 ...</span>
+<span class="co">#&gt;   ..$ PA      : num [1:494] 0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="co">#&gt;   ..$ percP   : chr [1:494] "out" "out" "out" "out" ...</span>
+<span class="co">#&gt;   ..$ x       : num [1:494] 8.75 9.25 9.58 11.58 11.75 ...</span>
+<span class="co">#&gt;   ..$ y       : num [1:494] 59.9 59.9 59.9 59.9 59.9 ...</span>
+<span class="co">#&gt;   ..$ bio1    : num [1:494] 13 16 35 46 44 18 25 27 38 45 ...</span>
+<span class="co">#&gt;   ..$ bio2    : num [1:494] 75 76 76 69 70 73 73 73 72 76 ...</span>
+<span class="co">#&gt;   ..$ bio3    : num [1:494] 27 26 26 24 24 26 26 26 25 26 ...</span>
+<span class="co">#&gt;   ..$ bio4    : num [1:494] 7053 7328 7619 7597 7577 ...</span>
+<span class="co">#&gt;   ..$ bio5    : num [1:494] 164 171 193 199 197 168 176 180 191 200 ...</span>
+<span class="co">#&gt;   ..$ bio6    : num [1:494] -112 -113 -98 -85 -88 -106 -102 -100 -90 -90 ...</span>
+<span class="co">#&gt;   ..$ bio7    : num [1:494] 276 284 291 284 285 274 278 280 281 290 ...</span>
+<span class="co">#&gt;   ..$ bio8    : num [1:494] 66 101 123 99 96 71 109 113 92 131 ...</span>
+<span class="co">#&gt;   ..$ bio9    : num [1:494] -42 -40 -21 -13 -16 -37 -31 -29 -18 -14 ...</span>
+<span class="co">#&gt;   ..$ bio10   : num [1:494] 106 112 134 146 143 111 119 123 135 144 ...</span>
+<span class="co">#&gt;   ..$ bio11   : num [1:494] -76 -77 -62 -50 -53 -70 -66 -65 -56 -51 ...</span>
+<span class="co">#&gt;   ..$ bio12   : num [1:494] 844 820 756 798 793 839 817 806 772 703 ...</span>
+<span class="co">#&gt;   ..$ bio13   : num [1:494] 103 102 95 90 90 103 101 99 95 83 ...</span>
+<span class="co">#&gt;   ..$ bio14   : num [1:494] 41 41 37 41 41 41 41 41 38 34 ...</span>
+<span class="co">#&gt;   ..$ bio15   : num [1:494] 27 28 29 26 26 28 28 27 28 29 ...</span>
+<span class="co">#&gt;   ..$ bio16   : num [1:494] 282 277 258 261 258 281 273 269 261 238 ...</span>
+<span class="co">#&gt;   ..$ bio17   : num [1:494] 134 130 119 132 131 133 131 130 124 112 ...</span>
+<span class="co">#&gt;   ..$ bio18   : num [1:494] 264 265 245 246 248 262 258 255 243 230 ...</span>
+<span class="co">#&gt;   ..$ bio19   : num [1:494] 171 158 140 156 154 167 159 155 145 131 ...</span>
+<span class="co">#&gt;   ..$ ID      : chr [1:494] "16" "17" "18" "25" ...</span>
+<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 494; first list element:  'XY' num [1:2] -4.04 -2.58</span>
 <span class="co">#&gt;   ..- attr(*, "sf_column")= chr "geometry"</span>
 <span class="co">#&gt;   ..- attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA NA NA NA NA NA NA NA ...</span>
 <span class="co">#&gt;   .. ..- attr(*, "names")= chr [1:26] "KDE" "myID" "PA" "percP" ...</span>
-<span class="co">#&gt;  $ Bkg.ts:Classes 'sf' and 'data.frame': 230 obs. of  27 variables:</span>
-<span class="co">#&gt;   ..$ KDE     : num [1:230] 0.001136 0.000962 0.000729 0.000692 0.001663 ...</span>
-<span class="co">#&gt;   ..$ myID    : num [1:230] 27054 23107 23106 24220 23112 ...</span>
-<span class="co">#&gt;   ..$ PA      : num [1:230] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#&gt;   ..$ percP   : chr [1:230] "out" "out" "out" "out" ...</span>
-<span class="co">#&gt;   ..$ x       : num [1:230] 19.92 -8.92 -9.08 -8.42 -8.08 ...</span>
-<span class="co">#&gt;   ..$ y       : num [1:230] 39.8 42.6 42.6 41.8 42.6 ...</span>
-<span class="co">#&gt;   ..$ bio1    : int [1:230] 151 142 146 137 119 123 129 131 115 124 ...</span>
-<span class="co">#&gt;   ..$ bio2    : int [1:230] 93 61 59 88 85 85 68 79 86 87 ...</span>
-<span class="co">#&gt;   ..$ bio3    : int [1:230] 36 38 39 41 40 39 39 40 39 40 ...</span>
-<span class="co">#&gt;   ..$ bio4    : int [1:230] 5722 3414 3312 4297 4352 4514 3584 4035 4568 4556 ...</span>
-<span class="co">#&gt;   ..$ bio5    : int [1:230] 296 229 229 255 239 244 228 239 238 247 ...</span>
-<span class="co">#&gt;   ..$ bio6    : int [1:230] 38 72 78 44 27 29 54 46 22 30 ...</span>
-<span class="co">#&gt;   ..$ bio7    : int [1:230] 258 157 151 211 212 215 174 193 216 217 ...</span>
-<span class="co">#&gt;   ..$ bio8    : int [1:230] 96 108 113 90 71 74 94 88 66 75 ...</span>
-<span class="co">#&gt;   ..$ bio9    : int [1:230] 227 185 188 192 176 182 174 183 174 183 ...</span>
-<span class="co">#&gt;   ..$ bio10   : int [1:230] 227 187 190 193 177 182 178 184 175 184 ...</span>
-<span class="co">#&gt;   ..$ bio11   : int [1:230] 82 100 105 83 67 68 86 81 59 68 ...</span>
-<span class="co">#&gt;   ..$ bio12   : int [1:230] 1250 1219 1142 1320 1345 1396 1261 1467 1460 1375 ...</span>
-<span class="co">#&gt;   ..$ bio13   : int [1:230] 208 175 161 186 197 210 177 217 206 202 ...</span>
-<span class="co">#&gt;   ..$ bio14   : int [1:230] 15 29 26 19 34 30 36 25 27 27 ...</span>
-<span class="co">#&gt;   ..$ bio15   : int [1:230] 64 45 45 50 44 47 41 50 49 48 ...</span>
-<span class="co">#&gt;   ..$ bio16   : int [1:230] 581 486 457 523 512 543 487 586 573 536 ...</span>
-<span class="co">#&gt;   ..$ bio17   : int [1:230] 61 119 111 98 135 128 140 114 123 121 ...</span>
-<span class="co">#&gt;   ..$ bio18   : int [1:230] 61 142 135 114 148 139 163 130 132 131 ...</span>
-<span class="co">#&gt;   ..$ bio19   : int [1:230] 527 442 409 519 498 532 445 585 569 526 ...</span>
-<span class="co">#&gt;   ..$ ID      : chr [1:230] "6539" "5063" "5062" "5472" ...</span>
-<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 230; first list element:  'XY' num [1:2] 2.1 5.62</span>
+<span class="co">#&gt;  $ Bkg.ts:Classes 'sf' and 'data.frame': 313 obs. of  27 variables:</span>
+<span class="co">#&gt;   ..$ KDE     : num [1:313] 0.000842 0.001535 0.001566 0.000774 0.000791 ...</span>
+<span class="co">#&gt;   ..$ myID    : num [1:313] 22886 22888 25332 24218 23551 ...</span>
+<span class="co">#&gt;   ..$ PA      : num [1:313] 0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="co">#&gt;   ..$ percP   : chr [1:313] "out" "out" "out" "out" ...</span>
+<span class="co">#&gt;   ..$ x       : num [1:313] -8.75 -8.42 -8.08 -8.75 -8.92 ...</span>
+<span class="co">#&gt;   ..$ y       : num [1:313] 42.7 42.7 40.9 41.7 42.2 ...</span>
+<span class="co">#&gt;   ..$ bio1    : num [1:313] 137 136 126 137 148 123 132 133 140 129 ...</span>
+<span class="co">#&gt;   ..$ bio2    : num [1:313] 65 75 94 76 61 85 80 65 83 68 ...</span>
+<span class="co">#&gt;   ..$ bio3    : num [1:313] 38 38 40 42 39 39 39 39 40 39 ...</span>
+<span class="co">#&gt;   ..$ bio4    : num [1:313] 3649 3992 4825 3718 3445 ...</span>
+<span class="co">#&gt;   ..$ bio5    : num [1:313] 233 245 259 235 232 244 245 225 255 228 ...</span>
+<span class="co">#&gt;   ..$ bio6    : num [1:313] 63 51 26 57 78 29 43 60 50 54 ...</span>
+<span class="co">#&gt;   ..$ bio7    : num [1:313] 170 194 233 178 154 215 202 165 205 174 ...</span>
+<span class="co">#&gt;   ..$ bio8    : num [1:313] 100 94 66 91 112 74 87 100 94 94 ...</span>
+<span class="co">#&gt;   ..$ bio9    : num [1:313] 183 188 188 184 191 182 184 175 195 174 ...</span>
+<span class="co">#&gt;   ..$ bio10   : num [1:313] 186 190 189 186 192 182 187 179 196 178 ...</span>
+<span class="co">#&gt;   ..$ bio11   : num [1:313] 92 88 66 91 104 68 83 91 86 86 ...</span>
+<span class="co">#&gt;   ..$ bio12   : num [1:313] 1303 1331 1337 1370 1293 ...</span>
+<span class="co">#&gt;   ..$ bio13   : num [1:313] 191 197 196 187 181 210 194 164 203 177 ...</span>
+<span class="co">#&gt;   ..$ bio14   : num [1:313] 33 35 15 19 26 30 35 33 24 36 ...</span>
+<span class="co">#&gt;   ..$ bio15   : num [1:313] 45 45 54 51 48 47 44 42 49 41 ...</span>
+<span class="co">#&gt;   ..$ bio16   : num [1:313] 512 513 539 550 520 543 503 458 527 487 ...</span>
+<span class="co">#&gt;   ..$ bio17   : num [1:313] 131 133 90 96 109 128 134 132 111 140 ...</span>
+<span class="co">#&gt;   ..$ bio18   : num [1:313] 152 152 94 117 131 139 152 156 126 163 ...</span>
+<span class="co">#&gt;   ..$ bio19   : num [1:313] 475 487 539 550 486 532 482 408 515 445 ...</span>
+<span class="co">#&gt;   ..$ ID      : chr [1:313] "3076" "3078" "3790" "3434" ...</span>
+<span class="co">#&gt;   ..$ geometry:sfc_POINT of length 313; first list element:  'XY' num [1:2] -0.472 6.57</span>
 <span class="co">#&gt;   ..- attr(*, "sf_column")= chr "geometry"</span>
 <span class="co">#&gt;   ..- attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA NA NA NA NA NA NA NA ...</span>
 <span class="co">#&gt;   .. ..- attr(*, "names")= chr [1:26] "KDE" "myID" "PA" "percP" ...</span>
 <span class="co">#background points for the training dataset</span>
 <span class="va">myGrid.psAbs</span><span class="op">$</span><span class="va">Bkg.tr</span>
-<span class="co">#&gt; Simple feature collection with 378 features and 26 fields</span>
+<span class="co">#&gt; Simple feature collection with 494 features and 26 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: -13.58791 ymin: -4.256078 xmax: 6.872754 ymax: 7.500397</span>
+<span class="co">#&gt; Bounding box:  xmin: -13.58791 ymin: -4.483249 xmax: 6.97369 ymax: 7.630419</span>
 <span class="co">#&gt; CRS:           NA</span>
 <span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;               KDE  myID PA percP         x        y bio1 bio2 bio3 bio4 bio5</span>
-<span class="co">#&gt; 68   0.0034854319   352  0   out  9.583333 59.75000   38   72   25 7389  191</span>
-<span class="co">#&gt; 66   0.0006048808   350  0   out  9.250000 59.75000   25   73   26 7183  176</span>
-<span class="co">#&gt; 19   0.0003518053   125  0   out  8.750000 59.91667   13   75   27 7053  164</span>
-<span class="co">#&gt; 67   0.0006311931   351  0   out  9.416667 59.75000   27   73   26 7300  180</span>
-<span class="co">#&gt; 65   0.0004986511   348  0   out  8.916667 59.75000   18   73   26 7051  168</span>
-<span class="co">#&gt; 2283 0.0029962382 14638  0   out 22.583333 49.08333   51   82   27 7529  201</span>
-<span class="co">#&gt; 20   0.0003799395   128  0   out  9.250000 59.91667   16   76   26 7328  171</span>
-<span class="co">#&gt; 21   0.0011658064   130  0   out  9.583333 59.91667   35   76   26 7619  193</span>
-<span class="co">#&gt; 30   0.0048266103   142  0   out 11.583333 59.91667   46   69   24 7597  199</span>
-<span class="co">#&gt; 158  0.0117269891   814  0   out 12.583333 59.41667   51   72   25 7304  200</span>
-<span class="co">#&gt;      bio6 bio7 bio8 bio9 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18</span>
-<span class="co">#&gt; 68    -90  281   92  -18   135   -56   772    95    38    28   261   124   243</span>
-<span class="co">#&gt; 66   -102  278  109  -31   119   -66   817   101    41    28   273   131   258</span>
-<span class="co">#&gt; 19   -112  276   66  -42   106   -76   844   103    41    27   282   134   264</span>
-<span class="co">#&gt; 67   -100  280  113  -29   123   -65   806    99    41    27   269   130   255</span>
-<span class="co">#&gt; 65   -106  274   71  -37   111   -70   839   103    41    28   281   133   262</span>
-<span class="co">#&gt; 2283  -95  296  143  -41   143   -51   845   114    46    33   315   146   315</span>
-<span class="co">#&gt; 20   -113  284  101  -40   112   -77   820   102    41    28   277   130   265</span>
-<span class="co">#&gt; 21    -98  291  123  -21   134   -62   756    95    37    29   258   119   245</span>
-<span class="co">#&gt; 30    -85  284   99  -13   146   -50   798    90    41    26   261   132   246</span>
-<span class="co">#&gt; 158   -78  278  103   -8   147   -41   731    83    36    27   238   119   225</span>
-<span class="co">#&gt;      bio19   ID                    geometry</span>
-<span class="co">#&gt; 68     145   68 POINT (-2.696467 -2.695892)</span>
-<span class="co">#&gt; 66     159   66 POINT (-3.430072 -2.760282)</span>
-<span class="co">#&gt; 19     171   19 POINT (-4.041346 -2.577969)</span>
-<span class="co">#&gt; 67     155   67  POINT (-3.270331 -2.84089)</span>
-<span class="co">#&gt; 65     167   65 POINT (-3.853077 -2.523284)</span>
-<span class="co">#&gt; 2283   159 2283  POINT (-2.890885 -2.57662)</span>
-<span class="co">#&gt; 20     158   20 POINT (-3.741414 -3.044682)</span>
-<span class="co">#&gt; 21     140   21 POINT (-2.552753 -3.139665)</span>
-<span class="co">#&gt; 30     156   30 POINT (-2.562465 -2.663995)</span>
-<span class="co">#&gt; 158    143  158 POINT (-1.955669 -2.607403)</span>
+<span class="co">#&gt;             KDE myID PA percP         x        y bio1 bio2 bio3 bio4 bio5 bio6</span>
+<span class="co">#&gt; 16 0.0003518053  125  0   out  8.750000 59.91667   13   75   27 7053  164 -112</span>
+<span class="co">#&gt; 17 0.0003799395  128  0   out  9.250000 59.91667   16   76   26 7328  171 -113</span>
+<span class="co">#&gt; 18 0.0011658064  130  0   out  9.583333 59.91667   35   76   26 7619  193  -98</span>
+<span class="co">#&gt; 25 0.0048266103  142  0   out 11.583333 59.91667   46   69   24 7597  199  -85</span>
+<span class="co">#&gt; 26 0.0034065575  143  0   out 11.750000 59.91667   44   70   24 7577  197  -88</span>
+<span class="co">#&gt; 56 0.0004986511  348  0   out  8.916667 59.75000   18   73   26 7051  168 -106</span>
+<span class="co">#&gt; 57 0.0006048808  350  0   out  9.250000 59.75000   25   73   26 7183  176 -102</span>
+<span class="co">#&gt; 58 0.0006311931  351  0   out  9.416667 59.75000   27   73   26 7300  180 -100</span>
+<span class="co">#&gt; 59 0.0034854319  352  0   out  9.583333 59.75000   38   72   25 7389  191  -90</span>
+<span class="co">#&gt; 31 0.0089087937  150  0   out 12.916667 59.91667   45   76   26 7563  200  -90</span>
+<span class="co">#&gt;    bio7 bio8 bio9 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18 bio19</span>
+<span class="co">#&gt; 16  276   66  -42   106   -76   844   103    41    27   282   134   264   171</span>
+<span class="co">#&gt; 17  284  101  -40   112   -77   820   102    41    28   277   130   265   158</span>
+<span class="co">#&gt; 18  291  123  -21   134   -62   756    95    37    29   258   119   245   140</span>
+<span class="co">#&gt; 25  284   99  -13   146   -50   798    90    41    26   261   132   246   156</span>
+<span class="co">#&gt; 26  285   96  -16   143   -53   793    90    41    26   258   131   248   154</span>
+<span class="co">#&gt; 56  274   71  -37   111   -70   839   103    41    28   281   133   262   167</span>
+<span class="co">#&gt; 57  278  109  -31   119   -66   817   101    41    28   273   131   258   159</span>
+<span class="co">#&gt; 58  280  113  -29   123   -65   806    99    41    27   269   130   255   155</span>
+<span class="co">#&gt; 59  281   92  -18   135   -56   772    95    38    28   261   124   243   145</span>
+<span class="co">#&gt; 31  290  131  -14   144   -51   703    83    34    29   238   112   230   131</span>
+<span class="co">#&gt;    ID                    geometry</span>
+<span class="co">#&gt; 16 16 POINT (-4.041346 -2.577969)</span>
+<span class="co">#&gt; 17 17 POINT (-3.741414 -3.044682)</span>
+<span class="co">#&gt; 18 18 POINT (-2.552753 -3.139665)</span>
+<span class="co">#&gt; 25 25 POINT (-2.562465 -2.663995)</span>
+<span class="co">#&gt; 26 26 POINT (-2.641587 -2.743201)</span>
+<span class="co">#&gt; 56 56 POINT (-3.853077 -2.523284)</span>
+<span class="co">#&gt; 57 57 POINT (-3.430072 -2.760282)</span>
+<span class="co">#&gt; 58 58  POINT (-3.270331 -2.84089)</span>
+<span class="co">#&gt; 59 59 POINT (-2.696467 -2.695892)</span>
+<span class="co">#&gt; 31 31 POINT (-1.878144 -3.179145)</span>
 <span class="co">#background points for the testing dataset</span>
 <span class="va">myGrid.psAbs</span><span class="op">$</span><span class="va">Bkg.ts</span>
-<span class="co">#&gt; Simple feature collection with 230 features and 26 fields</span>
+<span class="co">#&gt; Simple feature collection with 313 features and 26 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: -13.2887 ymin: -4.409304 xmax: 6.340094 ymax: 7.139334</span>
+<span class="co">#&gt; Bounding box:  xmin: -12.93306 ymin: -4.46269 xmax: 6.838346 ymax: 7.188879</span>
 <span class="co">#&gt; CRS:           NA</span>
 <span class="co">#&gt; First 10 features:</span>
 <span class="co">#&gt;               KDE  myID PA percP         x        y bio1 bio2 bio3 bio4 bio5</span>
-<span class="co">#&gt; 6539 0.0011360617 27054  0   out 19.916667 39.75000  151   93   36 5722  296</span>
-<span class="co">#&gt; 5063 0.0009620637 23107  0   out -8.916667 42.58333  142   61   38 3414  229</span>
-<span class="co">#&gt; 5062 0.0007291183 23106  0   out -9.083333 42.58333  146   59   39 3312  229</span>
-<span class="co">#&gt; 5472 0.0006920303 24220  0   out -8.416667 41.75000  137   88   41 4297  255</span>
-<span class="co">#&gt; 5068 0.0016633382 23112  0   out -8.083333 42.58333  119   85   40 4352  239</span>
-<span class="co">#&gt; 5222 0.0017867435 23555  0   out -8.250000 42.25000  123   85   39 4514  244</span>
-<span class="co">#&gt; 4809 0.0017581440 22442  0   out -8.750000 43.08333  129   68   39 3584  228</span>
-<span class="co">#&gt; 5407 0.0006715987 23997  0   out -8.583333 41.91667  131   79   40 4035  239</span>
-<span class="co">#&gt; 5409 0.0009719302 23999  0   out -8.250000 41.91667  115   86   39 4568  238</span>
-<span class="co">#&gt; 5300 0.0022087607 23777  0   out -8.250000 42.08333  124   87   40 4556  247</span>
+<span class="co">#&gt; 3076 0.0008424206 22886  0   out -8.750000 42.75000  137   65   38 3649  233</span>
+<span class="co">#&gt; 3078 0.0015354148 22888  0   out -8.416667 42.75000  136   75   38 3992  245</span>
+<span class="co">#&gt; 3790 0.0015664237 25332  0   out -8.083333 40.91667  126   94   40 4825  259</span>
+<span class="co">#&gt; 3434 0.0007744988 24218  0   out -8.750000 41.75000  137   76   42 3718  235</span>
+<span class="co">#&gt; 3230 0.0007908221 23551  0   out -8.916667 42.25000  148   61   39 3445  232</span>
+<span class="co">#&gt; 3234 0.0017867435 23555  0   out -8.250000 42.25000  123   85   39 4514  244</span>
+<span class="co">#&gt; 3079 0.0021191116 22889  0   out -8.250000 42.75000  132   80   39 4069  245</span>
+<span class="co">#&gt; 2926 0.0023685764 22441  0   out -8.916667 43.08333  133   65   39 3398  225</span>
+<span class="co">#&gt; 3302 0.0007172080 23776  0   out -8.416667 42.08333  140   83   40 4278  255</span>
+<span class="co">#&gt; 2927 0.0017581440 22442  0   out -8.750000 43.08333  129   68   39 3584  228</span>
 <span class="co">#&gt;      bio6 bio7 bio8 bio9 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18</span>
-<span class="co">#&gt; 6539   38  258   96  227   227    82  1250   208    15    64   581    61    61</span>
-<span class="co">#&gt; 5063   72  157  108  185   187   100  1219   175    29    45   486   119   142</span>
-<span class="co">#&gt; 5062   78  151  113  188   190   105  1142   161    26    45   457   111   135</span>
-<span class="co">#&gt; 5472   44  211   90  192   193    83  1320   186    19    50   523    98   114</span>
-<span class="co">#&gt; 5068   27  212   71  176   177    67  1345   197    34    44   512   135   148</span>
-<span class="co">#&gt; 5222   29  215   74  182   182    68  1396   210    30    47   543   128   139</span>
-<span class="co">#&gt; 4809   54  174   94  174   178    86  1261   177    36    41   487   140   163</span>
-<span class="co">#&gt; 5407   46  193   88  183   184    81  1467   217    25    50   586   114   130</span>
-<span class="co">#&gt; 5409   22  216   66  174   175    59  1460   206    27    49   573   123   132</span>
-<span class="co">#&gt; 5300   30  217   75  183   184    68  1375   202    27    48   536   121   131</span>
-<span class="co">#&gt;      bio19   ID                     geometry</span>
-<span class="co">#&gt; 6539   527 6539    POINT (2.095304 5.620229)</span>
-<span class="co">#&gt; 5063   442 5063 POINT (-0.01616488 6.420715)</span>
-<span class="co">#&gt; 5062   409 5062    POINT (0.4641462 6.23308)</span>
-<span class="co">#&gt; 5472   519 5472   POINT (0.6812513 6.188195)</span>
-<span class="co">#&gt; 5068   498 5068  POINT (-0.7331267 5.901779)</span>
-<span class="co">#&gt; 5222   532 5222  POINT (-0.6382789 6.180318)</span>
-<span class="co">#&gt; 4809   445 4809  POINT (-0.6801149 6.125918)</span>
-<span class="co">#&gt; 5407   585 5407  POINT (-0.5705304 7.139334)</span>
-<span class="co">#&gt; 5409   569 5409  POINT (-0.9404954 6.246143)</span>
-<span class="co">#&gt; 5300   526 5300  POINT (-0.3063358 6.078132)</span></code></pre></div>
+<span class="co">#&gt; 3076   63  170  100  183   186    92  1303   191    33    45   512   131   152</span>
+<span class="co">#&gt; 3078   51  194   94  188   190    88  1331   197    35    45   513   133   152</span>
+<span class="co">#&gt; 3790   26  233   66  188   189    66  1337   196    15    54   539    90    94</span>
+<span class="co">#&gt; 3434   57  178   91  184   186    91  1370   187    19    51   550    96   117</span>
+<span class="co">#&gt; 3230   78  154  112  191   192   104  1293   181    26    48   520   109   131</span>
+<span class="co">#&gt; 3234   29  215   74  182   182    68  1396   210    30    47   543   128   139</span>
+<span class="co">#&gt; 3079   43  202   87  184   187    83  1321   194    35    44   503   134   152</span>
+<span class="co">#&gt; 2926   60  165  100  175   179    91  1175   164    33    42   458   132   156</span>
+<span class="co">#&gt; 3302   50  205   94  195   196    86  1333   203    24    49   527   111   126</span>
+<span class="co">#&gt; 2927   54  174   94  174   178    86  1261   177    36    41   487   140   163</span>
+<span class="co">#&gt;      bio19   ID                    geometry</span>
+<span class="co">#&gt; 3076   475 3076 POINT (-0.4722045 6.569908)</span>
+<span class="co">#&gt; 3078   487 3078   POINT (-0.33467 6.342836)</span>
+<span class="co">#&gt; 3790   539 3790  POINT (0.5825749 5.827699)</span>
+<span class="co">#&gt; 3434   550 3434  POINT (0.1703095 7.026533)</span>
+<span class="co">#&gt; 3230   486 3230  POINT (0.1535594 6.959128)</span>
+<span class="co">#&gt; 3234   532 3234 POINT (-0.6382789 6.180318)</span>
+<span class="co">#&gt; 3079   482 3079 POINT (-0.3375594 6.131956)</span>
+<span class="co">#&gt; 2926   408 2926  POINT (-0.271826 5.904578)</span>
+<span class="co">#&gt; 3302   515 3302    POINT (0.3737173 6.4411)</span>
+<span class="co">#&gt; 2927   445 2927 POINT (-0.6801149 6.125918)</span></code></pre></div>
   </main>
 </div>
 

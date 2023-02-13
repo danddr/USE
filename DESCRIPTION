@@ -7,7 +7,7 @@ Authors@R: c(
     person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", role = "aut"))
 Description: USE performs uniform sampling of the environmental space.
 Depends: R (>= 3.6.0)
-Imports: data.table, dplyr, tidyr,  ggplot2, sf, assertive, raster, RStoolbox, parallel, terra, ks
+Imports: data.table, dplyr, tidyr, ggplot2, sf, assertive, raster, RStoolbox, parallel, terra, ks
 License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true

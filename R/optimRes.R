@@ -20,9 +20,9 @@ optimRes <- function(sdf, grid.res, perc.thr = 10, cr = 1, showOpt = TRUE) {
     inherits(sdf, "sf")
   })
   if(is.null(cr)) stop("Please, provide a cluster")
-  cl <- makeCluster(spec=cr, type="PSOCK", nnodes=cr, outfile="")
+  cl <- parallel::makeCluster(spec=cr, type="PSOCK", nnodes=cr, outfile="")
   grid.res <- sort(grid.res, decreasing = FALSE)
-  SS_vec <- parSapply(cl, grid.res, function(res) {
+  SS_vec <- parallel::parSapply(cl, grid.res, function(res) {
     Grd <- sf::st_make_grid(sdf, n = res)
     SS_mean <- mean(sapply(Grd, function(i) {
       X <- sdf[i, ]
@@ -37,14 +37,14 @@ optimRes <- function(sdf, grid.res, perc.thr = 10, cr = 1, showOpt = TRUE) {
     }), na.rm = TRUE)
     return(SS_mean)
   })
-  stopCluster(cl) #stop clusters used in parSapply
+  parallel::stopCluster(cl) #stop clusters used in parSapply
   SS_vec <- sqrt(SS_vec)
   Rat_chg <- SS_vec[1:(length(SS_vec) - 1)]/SS_vec[2:length(SS_vec)]
   Res_opt <- grid.res[(which(Rat_chg <= ((perc.thr/100) + 1))[1])]
   if (showOpt) {
     plot(grid.res, SS_vec, type = "b", xlab = "Grid resolution", 
          ylab = "Function", main = "Optimal grid resolution")
-    abline(v = Res_opt, col = "red")
+    graphics::abline(v = Res_opt, col = "red")
   }
   return(list(F_val = cbind(Fval = SS_vec, Res = grid.res), 
               Opt_res = Res_opt))

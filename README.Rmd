@@ -30,7 +30,3 @@ You can install the development version of USE like so:
 # install.packages("devtools")
 devtools::install_github("danddr/USE")
 ```
-## Example
-```{r example}
-## basic example code
-```
