@@ -33,7 +33,7 @@ uniformSampling(
 \item{verbose}{(logical) Print verbose}
 }
 \value{
-A spatial point data frame with the coordinates of the sampled points both in the geographical and environmental space
+An sf object with the coordinates of the sampled points both in the geographical and environmental space
 }
 \description{
 \code{uniformSampling} performs the uniform sampling of the environmental space.

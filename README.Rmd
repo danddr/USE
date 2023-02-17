@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
 An R package to perform uniform sampling in the environmental space
 <!-- badges: start -->
 <!-- badges: end -->
-
 The goal of USE is to perform uniform sampling in the environmental space
 
 ## Installation
@@ -30,3 +29,6 @@ You can install the development version of USE like so:
 # install.packages("devtools")
 devtools::install_github("danddr/USE")
 ```
+
+## Examples
+How to apply **USE** is shown in the vignette or the example provided at https://github.com/danddr/USE_paper/tree/main/Example.

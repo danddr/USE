@@ -30,7 +30,7 @@ The function also provides a plot displaying the function values for each resolu
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/USE_vignette.html">USE_vignette</a>
+    <a class="dropdown-item" href="../articles/USE_vignette.html">USE vignette</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -69,13 +69,17 @@ The function also provides a plot displaying the function values for each resolu
 <dt>perc.thr</dt>
 <dd><p>rate of change (expressed in percentage) of the function to be minimized for selecting the optimal resolution.</p></dd>
 <dt>cr</dt>
-<dd><p>(integer) number of cores for parallel computing.</p></dd>
+<dd><p>(integer) number of cores for parallel computing. The default cluster type is PSOCK.</p></dd>
 <dt>showOpt</dt>
 <dd><p>(logical) plot the result.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>It returns a list with: i) a matrix reporting the values of the function to be minimized, along with the corresponding resolution; ii) the optimal resolution.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>In case the function returns NA as the optimal resolution: i) increase the range of <code>grid.res</code>, ii) increase <code>perc.thr</code>.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

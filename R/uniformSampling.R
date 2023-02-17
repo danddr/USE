@@ -15,7 +15,7 @@
 #' @param sub.ts (logical) sample the validation points
 #' @param plot_proc (logical) plot progress of the sampling
 #' @param verbose (logical) Print verbose
-#' @return A spatial point data frame with the coordinates of the sampled points both in the geographical and environmental space
+#' @return An sf object with the coordinates of the sampled points both in the geographical and environmental space
 #' @export
 uniformSampling <- function(sdf, grid.res, n.tr = 5, n.prev = NULL, sub.ts = FALSE, n.ts = 5, plot_proc = FALSE, verbose = FALSE) {
   if(!(all(sf::st_is(sdf, "POINT")))) {
@@ -23,7 +23,7 @@ uniformSampling <- function(sdf, grid.res, n.tr = 5, n.prev = NULL, sub.ts = FAL
   }
   if(!is.numeric(n.tr)) stop(paste(n.tr, "is not of class 'numeric'.", sep = " "))
   if(!is.logical(plot_proc)) stop("plot_proc is not of class 'logical'; it has class 'numeric'.")
-  grid <- st_make_grid(sdf, n = grid.res)
+  grid <- sf::st_make_grid(sdf, n = grid.res)
   sdf$ID <- row.names(sdf)
   res <- do.call(rbind, lapply(seq_len(length(grid)), function(i) {
     if(isTRUE(verbose)) message(paste("Processing tile", i, sep = " "))
@@ -103,7 +103,7 @@ uniformSampling <- function(sdf, grid.res, n.tr = 5, n.prev = NULL, sub.ts = FAL
         return(subs)
       }
     }))
-    return(list(Bkg.tr = res, Bkg.ts = res_val))
+    return(list(obs.tr = res, obs.ts = res_val))
   } else {
     return(res)
   }

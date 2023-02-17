@@ -28,7 +28,7 @@ The bandwidth of the kernel can be estimated automatically or defined by the use
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/USE_vignette.html">USE_vignette</a>
+    <a class="dropdown-item" href="../articles/USE_vignette.html">USE vignette</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -72,11 +72,11 @@ The bandwidth of the kernel can be estimated automatically or defined by the use
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>env.rast</dt>
-<dd><p>A raster stack or raster brick object comprising the variables describing the environmental space.</p></dd>
+<dd><p>A RasterStack, RasterBrick or a SpatRaster object comprising the variables describing the environmental space.</p></dd>
 <dt>pres</dt>
-<dd><p>A SpatialPointsDataframe including species of interest presence-only.</p></dd>
+<dd><p>A SpatialPointsDataframe, a SpatVector or an sf object including the presence-only observations of the species of interest.</p></dd>
 <dt>thres</dt>
-<dd><p>(double) This value identifies the quantile value used to specify the boundary of the kernel density estimate (default <code>thres=0.75</code> ). Thus, probability values higher than the threshold should indicate portions of the multivariate space likely associated with presence points. #'</p></dd>
+<dd><p>(double) This value identifies the quantile value used to specify the boundary of the kernel density estimate (default <code>thres=0.75</code> ). Thus, probability values higher than the threshold should indicate portions of the multivariate space likely associated with presence points.</p></dd>
 <dt>H</dt>
 <dd><p>The kernel bandwidth (i.e., the width of the kernel density function that defines its shape) excluding the portion of the environmental space associated with environmental conditions likely suitable for the species. It can be either defined by the user or automatically estimated by <code>paSampling</code> via <code><a href="https://rdrr.io/pkg/ks/man/Hpi.html" class="external-link">ks::Hpi</a></code>.</p></dd>
 <dt>grid.res</dt>
@@ -96,7 +96,7 @@ The bandwidth of the kernel can be estimated automatically or defined by the use
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A SpatialPointsDataframe with the coordinates of the pseudo-absences both in the geographical and environmental space.</p>
+    <p>An sf object with the coordinates of the pseudo-absences both in the geographical and environmental space.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

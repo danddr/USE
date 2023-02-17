@@ -19,11 +19,11 @@ paSampling(
 )
 }
 \arguments{
-\item{env.rast}{A raster stack or raster brick object comprising the variables describing the environmental space.}
+\item{env.rast}{A RasterStack, RasterBrick or a SpatRaster object comprising the variables describing the environmental space.}
 
-\item{pres}{A SpatialPointsDataframe including species of interest presence-only.}
+\item{pres}{A SpatialPointsDataframe, a SpatVector or an sf object including the presence-only observations of the species of interest.}
 
-\item{thres}{(double) This value identifies the quantile value used to specify the boundary of the kernel density estimate (default \code{thres=0.75} ). Thus, probability values higher than the threshold should indicate portions of the multivariate space likely associated with presence points. #'}
+\item{thres}{(double) This value identifies the quantile value used to specify the boundary of the kernel density estimate (default \code{thres=0.75} ). Thus, probability values higher than the threshold should indicate portions of the multivariate space likely associated with presence points.}
 
 \item{H}{The kernel bandwidth (i.e., the width of the kernel density function that defines its shape) excluding the portion of the environmental space associated with environmental conditions likely suitable for the species. It can be either defined by the user or automatically estimated by \code{paSampling} via \code{ks::Hpi}.}
 
@@ -42,7 +42,7 @@ paSampling(
 \item{verbose}{(logical) Print verbose}
 }
 \value{
-A SpatialPointsDataframe with the coordinates of the pseudo-absences both in the geographical and environmental space.
+An sf object with the coordinates of the pseudo-absences both in the geographical and environmental space.
 }
 \description{
 \code{paSampling} internally calls the \code{uniformSampling} function, which performs the uniform sampling of the environmental space.

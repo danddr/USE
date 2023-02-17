@@ -3,3 +3,5 @@
 export(optimRes)
 export(paSampling)
 export(uniformSampling)
+importFrom(stats,na.omit)
+importFrom(stats,quantile)

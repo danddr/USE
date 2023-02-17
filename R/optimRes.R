@@ -8,9 +8,10 @@
 #' @param sdf an sf object having point geometry given by the PC-scores values
 #' @param grid.res (integer) a vector of resolutions to be tested, i.e seq(1,100, by=1)
 #' @param perc.thr rate of change (expressed in percentage) of the function to be minimized for selecting the optimal resolution.  
-#' @param cr (integer) number of cores for parallel computing.
+#' @param cr (integer) number of cores for parallel computing. The default cluster type is PSOCK.
 #' @param showOpt (logical) plot the result. 
 #' @return It returns a list with: i) a matrix reporting the values of the function to be minimized, along with the corresponding resolution; ii) the optimal resolution.
+#' @details In case the function returns NA as the optimal resolution: i) increase the range of \code{grid.res}, ii) increase \code{perc.thr}.
 #' @export
 optimRes <- function(sdf, grid.res, perc.thr = 10, cr = 1, showOpt = TRUE) {
   stopifnot(exprs = {

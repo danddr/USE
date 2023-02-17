@@ -3,15 +3,15 @@ Title: Uniform Sampling of the Environmental space
 Version: 0.0.0.9000
 Authors@R: c(
     person("Daniele", "Da Re", email = "dare.daniele@gmail.com", role = c("aut","cre")),
-    person("Enrico", "Tordoni", email = "enrico.tordoni@ut.ee", role = "aut"), 
+    person("Enrico", "Tordoni", email = "e.tordoni@gmail.com", role = "aut"), 
     person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", role = "aut"))
 Description: USE performs uniform sampling of the environmental space.
 Depends: R (>= 3.6.0)
-Imports: data.table, dplyr, tidyr, ggplot2, sf, assertive, raster, RStoolbox, parallel, terra, ks
+Imports: sf, raster, RStoolbox, parallel, terra, ks
 License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.2
-Suggests: rmarkdown, knitr
+Suggests: rmarkdown, knitr, stars, viridis, virtualspecies, ggplot2
 VignetteBuilder: knitr
