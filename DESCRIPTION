@@ -2,9 +2,9 @@ Package: USE
 Title: Uniform Sampling of the Environmental space
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Daniele", "Da Re", email = "dare.daniele@gmail.com", role = c("aut","cre")),
-    person("Enrico", "Tordoni", email = "e.tordoni@gmail.com", role = "aut"), 
-    person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", role = "aut"))
+    person("Daniele", "Da Re", email = "dare.daniele@gmail.com",  comment=c(ORCID = "0000-0002-3398-9295"), role = c("aut","cre")),
+    person("Enrico", "Tordoni", email = "e.tordoni@gmail.com", comment=c(ORCID = "0000-0002-9722-6692"), role = "aut"), 
+    person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", comment=c(ORCID= "0000-0002-9874-5064"),  role = "aut"))
 Description: USE performs uniform sampling of the environmental space.
 Depends: R (>= 3.6.0)
 Imports: sf, raster, RStoolbox, parallel, terra, ks
