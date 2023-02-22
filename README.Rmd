@@ -30,5 +30,14 @@ You can install the development version of USE like so:
 devtools::install_github("danddr/USE")
 ```
 
+## Package overview
+```{r chunk-name, include=FALSE}
+knitr::opts_chunk$set(
+  fig.path = "man/figures/use_website_figure.png"
+)
+```
+
+![](man/figures/use_website_figure.png)
+
 ## Examples
 How to apply **USE** is shown in the vignette or the example provided at https://github.com/danddr/USE_paper/tree/main/Example.
