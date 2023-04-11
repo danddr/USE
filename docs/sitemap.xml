@@ -16,6 +16,9 @@
     <loc>~ https://danddr.github.io/USE/index.html</loc>
   </url>
   <url>
+    <loc>~ https://danddr.github.io/USE/news/index.html</loc>
+  </url>
+  <url>
     <loc>~ https://danddr.github.io/USE/reference/Worldclim_tmp.html</loc>
   </url>
   <url>
@@ -26,6 +29,12 @@
   </url>
   <url>
     <loc>~ https://danddr.github.io/USE/reference/paSampling.html</loc>
+  </url>
+  <url>
+    <loc>~ https://danddr.github.io/USE/reference/pca_predict.html</loc>
+  </url>
+  <url>
+    <loc>~ https://danddr.github.io/USE/reference/rastPCA.html</loc>
   </url>
   <url>
     <loc>~ https://danddr.github.io/USE/reference/uniformSampling.html</loc>

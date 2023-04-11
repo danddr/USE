@@ -32,44 +32,41 @@ paSampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n
     stop('A grid resolution must be provided as length-one integer')
   }
   if (is.null(prev)){
-    # n.tr= n.tr 
-    # n.ts= n.ts
-    estPrev=round(nrow(pres)/(n.tr*(grid.res^2)),2)
+    estPrev <- round(nrow(pres)/(n.tr*(grid.res^2)),2)
     message(paste("Estimated prevalence of", estPrev))
   } else {
-    n.tr=(nrow(pres)/prev)/(grid.res^2)
-    n.ts=(nrow(pres)/prev)/(grid.res^2)
+    n.tr <- (nrow(pres)/prev)/(grid.res^2)
+    n.ts <- (nrow(pres)/prev)/(grid.res^2)
     message(paste("User-defined prevalence of", prev))
   }
   if (inherits(env.rast, "BasicRaster")) {
     env.rast <- terra::rast(env.rast)
-    } 
+  } 
   if (!inherits(pres, "SpatVector")) {
-    occ.vec <-terra::vect(pres)
+    occ.vec <- terra::vect(pres)
   } else {
     occ.vec <- pres
   }
   message("Computing PCA and presences kernel density estimation in the multivariate space")
   grid.vec <-terra::as.points(env.rast)
-  rpc <- RStoolbox::rasterPCA(raster::stack(env.rast), spca = TRUE)
-  dt <- raster::as.data.frame(rpc$map[[c("PC1", "PC2")]], xy = TRUE)
+  rpc <- rastPCA(env.rast, stand = TRUE)
+  dt <- terra::as.data.frame(rpc$PCs[[c("PC1", "PC2")]], xy = TRUE)
   dt$myID <- seq_len(nrow(dt))
   
   id <- dt[,c("x", "y", "myID")]
   id_rast <- terra::rast(id, digits = 10, type="xyz")
-  # id_rast<-terra::rast(id, resolution=terra::res(env.rast), digits = 10, type="xyz")
   id_rast <- terra::resample(id_rast, env.rast)
   terra::ext(id_rast) <- terra::ext(env.rast)
   
-  PC12 <- c(terra::rast(rpc$map[[c("PC1", "PC2")]]), id_rast)
+  PC12 <- c(rpc$PCs[[c("PC1", "PC2")]], id_rast)
   abio.st <- c(id_rast, env.rast)
   abio.ex <- na.omit(terra::extract(abio.st, grid.vec, cells=FALSE, df=TRUE))
   PC12ex <- na.omit(terra::extract(PC12, grid.vec, cells=FALSE, df=TRUE))
   PC12occ <- terra::extract(PC12, occ.vec, cells=FALSE, df=TRUE)
- 
+  
   PC12ex <- merge(x=PC12ex, y=PC12occ, by='myID', all.x=TRUE )
   PC12ex$PA <- ifelse(is.na(PC12ex$ID.y),0,1)
-  PC12ex <- PC12ex[, c("ID.x", "PC1.x", "PC2.x", "myID", "PA" )]
+  PC12ex <- PC12ex[ , c("ID.x", "PC1.x", "PC2.x", "myID", "PA")]
   names(PC12ex) <- c("ID", "PC1", "PC2" ,"myID", "PA")
   PC12ex <- na.omit(PC12ex)
   
@@ -77,19 +74,22 @@ paSampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n
     H <- ks::Hpi(x = PC12ex[,c( "PC1", "PC2")])
   } 
   
-  estimate <- data.frame(KDE=ks::kde(PC12ex[,c( "PC1", "PC2")], 
-                                 eval.points = PC12ex[,c( "PC1", "PC2")],h=H)$estimate, PC12ex[,-1])
-  quantP <- quantile(estimate[estimate$PA == '1',"KDE"], thres)
+  estimate <- data.frame(KDE=ks::kde(PC12ex[PC12ex$PA==1,c( "PC1", "PC2")], 
+                                     eval.points = PC12ex[PC12ex$PA==1,c( "PC1", "PC2")],h=H)$estimate, PC12ex[PC12ex$PA==1,-1])
+  quantP <- quantile(estimate[, "KDE"], thres)
   estimate$percP <- ifelse(estimate$KDE <= unname(quantP[1]),'out','in')
+  estimate<-merge(PC12ex,subset(estimate, estimate$PA==1), by="myID", all.x=TRUE)
+  estimate$percP<-ifelse(is.na(estimate$percP), "out", estimate$percP)
+  estimate<-estimate[, c( "myID", "PC1.x", "PC2.x", "PA.x",  "percP")]
+  names(estimate) <-c( "myID", "PC1", "PC2", "PA",  "percP")
   
   fullDB.sp <- merge(x=estimate, y=dt[,c("x", "y", "myID")], by='myID', all.x=TRUE )
   fullDB.sp <- merge(x=fullDB.sp, y=abio.ex[,2:ncol(abio.ex)], by='myID', all.x=TRUE )
-  fullDB.sp <- subset(fullDB.sp, fullDB.sp$PA == 0 & fullDB.sp$percP == "out" )
   fullDB.sp <- na.omit(fullDB.sp)
   fullDB.sp <- sf::st_as_sf(fullDB.sp, coords = c("PC1", "PC2"))
   
   if(is.null(prev)) {
-  myPas <- NULL  
+    myPas <- NULL  
   } else {
     myPas <- floor(nrow(pres)/prev) 
   }
@@ -103,13 +103,13 @@ paSampling <- function(env.rast, pres=NULL, thres=0.75, H=NULL, grid.res=NULL, n
                          n.ts = n.ts,
                          plot_proc = plot_proc, 
                          verbose=verbose)
- 
+  
   if(sub.ts) {
     message("\n", paste(nrow(Res$obs.tr), "training pseudo-absences sampled in the environmental space, \n and", nrow(Res$obs.ts), "testing pseudo-absences sampled in the environmental space.",  sep = " "), "\n")  
     message("\n",paste("Estimated final prevalence of", round(nrow(pres)/nrow(Res$obs.tr),2), "instead of", prev ), "\n")
-    } else {
-      message("\n",paste(nrow(Res), "training pseudo-absences sampled in the environmental space", sep = " "), "\n") 
-      message("\n",paste("Estimated final prevalence of", round(nrow(pres)/nrow(Res),2), "instead of", prev ),"\n")
-    }
+  } else {
+    message("\n",paste(nrow(Res), "training pseudo-absences sampled in the environmental space", sep = " "), "\n") 
+    message("\n",paste("Estimated final prevalence of", round(nrow(pres)/nrow(Res),2), "instead of", prev ),"\n")
+  }
    return(Res)
 }

@@ -1,15 +1,4 @@
----
-title: "USE vignette"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{USE vignette}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-In this vignette we will go trough the USE package. 
-
-```{r setup, message=FALSE, echo=TRUE, warning=FALSE, results = FALSE}
+## ----setup, message=FALSE, echo=TRUE, warning=FALSE, results = FALSE------------------------------------------------------
 # Sys.setlocale("LC_ALL", "English")
 library(geodata)
 library(USE)
@@ -18,25 +7,22 @@ library(raster)
 library(virtualspecies)
 library(sf)
 library(ggplot2)
-```
 
-## Create Virtual Species
-First, download bioclimatic variables from WorldClim and crop them to the European extent
-```{r, eval=FALSE, message=FALSE}
-Worldclim <- geodata::worldclim_global(var='bio', res=10, path=getwd()) 
-envData <- terra::crop(Worldclim, terra::ext(-12, 25, 36, 60))
-```
-```{r, eval=TRUE, echo=FALSE, message=FALSE, results=FALSE}
+
+## ---- eval=FALSE, message=FALSE-------------------------------------------------------------------------------------------
+## Worldclim <- geodata::worldclim_global(var='bio', res=10, path=getwd())
+## envData <- terra::crop(Worldclim, terra::ext(-12, 25, 36, 60))
+
+## ---- eval=TRUE, echo=FALSE, message=FALSE, results=FALSE-----------------------------------------------------------------
 envData <- USE::Worldclim_tmp
-```
 
-For details about the methodology used to create a virtual species, see the  [vignette](http://borisleroy.com/files/virtualspecies-tutorial.html#introduction) of the **virtualspecies** R package
-```{r, eval=FALSE, message=FALSE}
-#create virtual species
-myRandNum <- sample(1:19,size=5, replace = FALSE)
-envData <- envData[[myRandNum]]
-```
-```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 8, fig.width = 8, fig.align='center'}
+
+## ---- eval=FALSE, message=FALSE-------------------------------------------------------------------------------------------
+## #create virtual species
+## myRandNum <- sample(1:19,size=5, replace = FALSE)
+## envData <- envData[[myRandNum]]
+
+## ---- eval=TRUE, message=FALSE, warning=FALSE, fig.height = 8, fig.width = 8, fig.align='center'--------------------------
 set.seed(123)
 random.sp <- virtualspecies::generateRandomSp(raster::stack(envData), 
                                               convert.to.PA = FALSE, 
@@ -55,57 +41,49 @@ presence.points <- virtualspecies::sampleOccurrences(new.pres,
                                      detection.probability = 1,
                                      correct.by.suitability = TRUE,
                                      plot = TRUE)  
-```
 
-Create a presence only data set.
-```{r, eval=TRUE}
+
+## ---- eval=TRUE-----------------------------------------------------------------------------------------------------------
 myPres <- presence.points$sample.points[which(presence.points$sample.points$Observed==1), c( "x", "y",  "Observed")]
 myPres <- st_as_sf(myPres, coords=c("x", "y"), crs=4326)
-```
 
-## Find the optimal resolution of the sampling grid
-First, made a PCA on the whole raster stack and then use the PC-scores of the first two axes to create a new spatial object. 
-```{r, eval=TRUE}
+
+## ---- eval=TRUE-----------------------------------------------------------------------------------------------------------
 rpc <- rastPCA(envData, stand = TRUE)
 dt <- na.omit(as.data.frame(rpc$PCs[[c("PC1", "PC2")]], xy = TRUE))
 dt <- sf::st_as_sf(dt, coords = c("PC1", "PC2"))
-```
 
-```{r, eval=FALSE, echo=TRUE}
-myRes <- USE::optimRes(sdf=dt,
-                    grid.res=c(1:10),
-                    perc.thr = 20,
-                    showOpt = TRUE, 
-                    cr=5)
-```
 
-![](myOptRes.png)
+## ---- eval=FALSE, echo=TRUE-----------------------------------------------------------------------------------------------
+## myRes <- USE::optimRes(sdf=dt,
+##                     grid.res=c(1:10),
+##                     perc.thr = 20,
+##                     showOpt = TRUE,
+##                     cr=5)
 
-```{r, eval=TRUE, echo=FALSE, message=FALSE, results="hide"}
+
+## ---- eval=TRUE, echo=FALSE, message=FALSE, results="hide"----------------------------------------------------------------
 myRes <- list()
 myRes$Opt_res <- 5
-```
-```{r, eval=TRUE}
+
+## ---- eval=TRUE-----------------------------------------------------------------------------------------------------------
 myRes$Opt_res
-```
-## Uniform sampling of the environmental space
-Perform the uniform sampling of the environmental space
-```{r, eval=TRUE, message=FALSE}
+
+
+## ---- eval=TRUE, message=FALSE--------------------------------------------------------------------------------------------
 myObs <- USE::uniformSampling(sdf=dt, 
                               grid.res=myRes$Opt_res,
                               n.tr = 5,
                               sub.ts = TRUE,
                               n.ts = 2,
                               plot_proc = FALSE)
-```
 
-Have a look to the sampled observations from the training dataset
-```{r, eval=TRUE}
+
+## ---- eval=TRUE-----------------------------------------------------------------------------------------------------------
 head(myObs$obs.tr)
-```
 
-Plot the uniformly sampled PC-scores along with the observed PC-scores in the environmental space.
-```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 6, fig.width = 6, fig.align='center'}
+
+## ---- eval=TRUE, message=FALSE, warning=FALSE, fig.height = 6, fig.width = 6, fig.align='center'--------------------------
 env_pca <- c(rpc$PCs$PC1, rpc$PCs$PC2)
 env_pca <- na.omit(as.data.frame(env_pca))
 
@@ -134,11 +112,9 @@ ggplot(env_pca, aes(x=PC2))+
   theme(legend.pos="bottom",  
         text = element_text(size=14),  
         legend.text=element_text(size=12))
-```
 
-# Uniform sampling of the pseudo-absences
-Now that we have seen how to uniformly sample the environmental space, we can uniformly sampling pseudo-absences in the environmental space while accounting for the environmental space occupied by the species presence points. 
-```{r, eval=TRUE, message=FALSE}
+
+## ---- eval=TRUE, message=FALSE--------------------------------------------------------------------------------------------
 myGrid.psAbs <- USE::paSampling(env.rast=envData,
                                 pres=myPres,
                                 thres=0.75,
@@ -150,9 +126,9 @@ myGrid.psAbs <- USE::paSampling(env.rast=envData,
                                 n.ts=5,
                                 plot_proc=FALSE,
                                 verbose=FALSE)
-```
 
-```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 6, fig.width = 6, fig.align='center'}
+
+## ---- eval=TRUE, message=FALSE, warning=FALSE, fig.height = 6, fig.width = 6, fig.align='center'--------------------------
 ggplot(env_pca, aes(x=PC1))+
   geom_density(aes(color="Environment"), size=1 )+
   geom_density(data=data.frame(st_coordinates(myGrid.psAbs$obs.tr)), 
@@ -182,10 +158,9 @@ ggplot(env_pca, aes(x=PC2))+
   theme(legend.pos="bottom",  
         text = element_text(size=14),  
         legend.text=element_text(size=12))
-```
 
-Plot the pseudo-absences in the geographic space
-```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 6, fig.width = 6, fig.align='center'}
+
+## ---- eval=TRUE, message=FALSE, warning=FALSE, fig.height = 6, fig.width = 6, fig.align='center'--------------------------
 ggplot()+
   stars::geom_stars(data = stars::st_as_stars(new.pres$pa.raster), alpha = 0.5 )+
   scale_fill_manual(values =viridis::viridis(2),  na.value = "transparent", 
@@ -207,4 +182,4 @@ ggplot()+
         legend.text=element_text(size=14), 
         aspect.ratio = 1, 
         panel.spacing.y = unit(2, "lines"))
-```
+

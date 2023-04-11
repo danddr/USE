@@ -2,6 +2,9 @@
 
 export(optimRes)
 export(paSampling)
+export(rastPCA)
 export(uniformSampling)
 importFrom(stats,na.omit)
+importFrom(stats,predict)
+importFrom(stats,princomp)
 importFrom(stats,quantile)

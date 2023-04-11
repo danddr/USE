@@ -1,17 +1,17 @@
 Package: USE
 Title: Uniform Sampling of the Environmental space
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person("Daniele", "Da Re", email = "dare.daniele@gmail.com",  comment=c(ORCID = "0000-0002-3398-9295"), role = c("aut","cre")),
     person("Enrico", "Tordoni", email = "e.tordoni@gmail.com", comment=c(ORCID = "0000-0002-9722-6692"), role = "aut"), 
     person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", comment=c(ORCID= "0000-0002-9874-5064"),  role = "aut"))
 Description: USE performs uniform sampling of the environmental space.
 Depends: R (>= 3.6.0)
-Imports: sf, raster, RStoolbox, parallel, terra, ks
+Imports: sf, parallel, terra, ks
 License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.2
-Suggests: rmarkdown, knitr, stars, viridis, virtualspecies, ggplot2
+Suggests: rmarkdown, knitr, raster, stars, viridis, virtualspecies, ggplot2
 VignetteBuilder: knitr
