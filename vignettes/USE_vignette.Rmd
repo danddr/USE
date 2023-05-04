@@ -9,7 +9,7 @@ vignette: >
 
 In this vignette we will go trough the USE package. 
 
-```{r setup, message=FALSE, echo=TRUE, warning=FALSE, results = FALSE}
+```{r, message=FALSE, echo=TRUE, warning=FALSE, results = FALSE}
 # Sys.setlocale("LC_ALL", "English")
 library(geodata)
 library(USE)
