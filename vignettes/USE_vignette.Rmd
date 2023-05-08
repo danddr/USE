@@ -9,9 +9,8 @@ vignette: >
 
 In this vignette we will go trough the USE package. 
 
-```{r, message=FALSE, echo=TRUE, warning=FALSE, results = FALSE}
+```{r,  eval=TRUE, message=FALSE, echo=TRUE, warning=FALSE, results = FALSE}
 # Sys.setlocale("LC_ALL", "English")
-library(geodata)
 library(USE)
 library(terra)
 library(raster)
@@ -28,6 +27,7 @@ envData <- terra::crop(Worldclim, terra::ext(-12, 25, 36, 60))
 ```
 ```{r, eval=TRUE, echo=FALSE, message=FALSE, results=FALSE}
 envData <- USE::Worldclim_tmp
+envData<-rast(envData,  type="xyz")
 ```
 
 For details about the methodology used to create a virtual species, see the  [vignette](http://borisleroy.com/files/virtualspecies-tutorial.html#introduction) of the **virtualspecies** R package
