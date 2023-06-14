@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">USE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -203,13 +203,48 @@ PC-scores in the environmental space.</p>
 <p><img src="USE_vignette_files/figure-html/unnamed-chunk-13-2.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
+<h2 id="inspecting-the-effect-of-the-kernel-density-threshold-on-the-environmental-space-partitioning">Inspecting the effect of the kernel density threshold on the
+environmental space partitioning<a class="anchor" aria-label="anchor" href="#inspecting-the-effect-of-the-kernel-density-threshold-on-the-environmental-space-partitioning"></a>
+</h2>
+<p>The function performs the uniform sampling of the environmental space
+excluding those environmental conditions most likely associated with the
+presence of the species. The environmental space is partitioned using
+kernel density estimation, a statistical technique used to estimate the
+underlying probability distribution of a set of data points by smoothing
+them with a kernel function. The kernel density is used to calculate the
+probability density function of the presence observations within the
+2-dimensional environmental space. The PC-scores associated with a
+probability threshold equal to or greater than 0.75 (i.e., the default
+threshold value used in the function) are likely to bear environmental
+conditions associated with the presence locations. Thus, the function
+selects these presence locations and generates a convex hull delimiting
+the portion of the environmental space mostly associated with this set
+of presence points within the environmental space. This portion of the
+environmental space, once targeted, will be then excluded from the
+uniform sampling.</p>
+<p>Using the function, we can explore different kernel threshold values
+and the effects this choice will have on the pseudo-absences sampling.
+In principle, setting a low kernel threshold would allow excluding
+accidental presences from unsuitable locations (e.g., ‘sink
+populations’) from the training dataset, while potentially including
+observations from these areas as pseudo-absences.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">USE</span><span class="fu">::</span><span class="fu"><a href="../reference/thresh.inspect.html">thresh.inspect</a></span><span class="op">(</span>env.rast<span class="op">=</span><span class="va">envData</span>,
+                    pres<span class="op">=</span><span class="va">myPres</span>,
+                    thres<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span><span class="op">)</span>,
+                    H<span class="op">=</span><span class="cn">NULL</span>
+                    <span class="op">)</span></code></pre></div>
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-14-1.png" width="864" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level2">
 <h2 id="uniform-sampling-of-the-pseudo-absences">Uniform sampling of the pseudo-absences<a class="anchor" aria-label="anchor" href="#uniform-sampling-of-the-pseudo-absences"></a>
 </h2>
-<p>Now that we have seen how to uniformly sample the environmental
-space, we can uniformly sampling pseudo-absences in the environmental
-space while accounting for the environmental space occupied by the
-species presence points.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>Now that we have seen how to uniformly sample the environmental space
+and the effect of the threshold selection on the partition of the
+environmental space, we can uniformly sampling pseudo-absences in the
+environmental space while accounting for the environmental space
+occupied by the species presence points.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myGrid.psAbs</span> <span class="op">&lt;-</span> <span class="fu">USE</span><span class="fu">::</span><span class="fu"><a href="../reference/paSampling.html">paSampling</a></span><span class="op">(</span>env.rast<span class="op">=</span><span class="va">envData</span>,
                                 pres<span class="op">=</span><span class="va">myPres</span>,
                                 thres<span class="op">=</span><span class="fl">0.75</span>,
@@ -221,7 +256,7 @@ species presence points.</p>
                                 n.ts<span class="op">=</span><span class="fl">5</span>,
                                 plot_proc<span class="op">=</span><span class="cn">FALSE</span>,
                                 verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">env_pca</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">PC1</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"Environment"</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">1</span> <span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span>data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html" class="external-link">st_coordinates</a></span><span class="op">(</span><span class="va">myGrid.psAbs</span><span class="op">$</span><span class="va">obs.tr</span><span class="op">)</span><span class="op">)</span>, 
@@ -236,8 +271,8 @@ species presence points.</p>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.pos<span class="op">=</span><span class="st">"bottom"</span>,  
         text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>,  
         legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">env_pca</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">PC2</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"Environment"</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">1</span> <span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span>data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html" class="external-link">st_coordinates</a></span><span class="op">(</span><span class="va">myGrid.psAbs</span><span class="op">$</span><span class="va">obs.tr</span><span class="op">)</span><span class="op">)</span>, 
@@ -252,9 +287,9 @@ species presence points.</p>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.pos<span class="op">=</span><span class="st">"bottom"</span>,  
         text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>,  
         legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-15-2.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-16-2.png" width="576" style="display: block; margin: auto;"></p>
 <p>Plot the pseudo-absences in the geographic space</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/geom_stars.html" class="external-link">geom_stars</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_as_stars.html" class="external-link">st_as_stars</a></span><span class="op">(</span><span class="va">new.pres</span><span class="op">$</span><span class="va">pa.raster</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span> <span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span><span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,  na.value <span class="op">=</span> <span class="st">"transparent"</span>, 
@@ -276,7 +311,7 @@ species presence points.</p>
         legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>, 
         aspect.ratio <span class="op">=</span> <span class="fl">1</span>, 
         panel.spacing.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">2</span>, <span class="st">"lines"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

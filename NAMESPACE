@@ -3,6 +3,7 @@
 export(optimRes)
 export(paSampling)
 export(rastPCA)
+export(thresh.inspect)
 export(uniformSampling)
 importFrom(stats,na.omit)
 importFrom(stats,predict)

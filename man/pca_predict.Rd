@@ -16,3 +16,4 @@ pca_predict(data, model, nPC)
 \description{
 Predict pca
 }
+\keyword{internal}

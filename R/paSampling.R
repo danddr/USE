@@ -113,6 +113,7 @@ paSampling <- function (env.rast, pres = NULL, thres = 0.75, H = NULL, grid.res 
     myPas <- floor(nrow(pres)/prev)
   }
   message("\nPerforming pseudo-absences sampling in the environmental space\n")
+  fullDB.sp <- subset(fullDB.sp, fullDB.sp$percP == "out")
   Res <- uniformSampling(sdf = fullDB.sp, grid.res = grid.res, 
                          n.tr = n.tr, n.prev = myPas, sub.ts = sub.ts, n.ts = n.ts, 
                          plot_proc = plot_proc, verbose = verbose)

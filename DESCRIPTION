@@ -1,6 +1,6 @@
 Package: USE
 Title: Uniform Sampling of the Environmental space
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Daniele", "Da Re", email = "dare.daniele@gmail.com",  comment=c(ORCID = "0000-0002-3398-9295"), role = c("aut","cre")),
     person("Enrico", "Tordoni", email = "e.tordoni@gmail.com", comment=c(ORCID = "0000-0002-9722-6692"), role = "aut"), 
