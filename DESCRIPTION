@@ -7,11 +7,11 @@ Authors@R: c(
     person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", comment=c(ORCID= "0000-0002-9874-5064"),  role = "aut"))
 Description: USE performs uniform sampling of the environmental space.
 Depends: R (>= 3.6.0)
-Imports: sf, parallel, terra, ks
+Imports: sf, parallel, terra, ks, ggplot2
 License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.2
-Suggests: rmarkdown, knitr, raster, stars, viridis, virtualspecies, ggplot2, dplyr
+Suggests: rmarkdown, knitr, raster, stars, viridis, virtualspecies,  dplyr
 VignetteBuilder: knitr

@@ -36,9 +36,6 @@ uniformSampling(
 An sf object with the coordinates of the sampled points both in the geographical and environmental space
 }
 \description{
-\code{uniformSampling} performs the uniform sampling of the environmental space.
-It requires an sf object of geometry type “POINT”. Points are the scores of the first two axes of a principal component analysis performed on the correlation matrix of a set of environmental variables. The resolution of the sampling grid used to systematically collect observations within the environmental space must be provided. The resolution can be either set to an arbitrary value by the user or selected using the \code{optimRes()} function.
-\code{uniformSampling} allows collecting observations to populate both training and (optional) a testing dataset.
-In both cases, the user must provide a number of points to be sampled in each cell of the sampling grid (\code{n.tr:} points for the training dataset; \code{n.ts}: points for the testing dataset).
-Note that the number of pseudo-absences eventually sampled depends on the spatial configuration of the points within the environmental space. Usually, some cells of the sampling grid are empty (i.e., do not include points), as points are not covering the whole extent of the environmental space. For this reason, the number of pseudo-absences eventually collected is likely to be lower than the product between the resolution of the sampling grid and \code{n.tr}(or \code{n.ts}).
+\code{uniformSampling} performs the uniform sampling of observations within the environmental space. Note that \code{uniformSampling} can be more generally used to sample observations (not necessarily associated with species occurrence data) within bi-dimensional spaces (e.g., vegetation plots). Being designed with species distribution models in mind, \code{uniformSampling} allows collectively sampling observations for both the training and testing dataset (optional).
+In both cases, the user must provide a number of observations that will be sampled in each cell of the sampling grid (\code{n.tr}: points for the training dataset; \code{n.ts}: points for the testing dataset). Note that the optimal resolution of the sampling grid can be found using the \code{optimRes} function.
 }

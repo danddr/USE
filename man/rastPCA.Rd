@@ -19,9 +19,8 @@ rastPCA(env.rast, nPC = NULL, naMask = TRUE, stand = FALSE)
 Returns a named list containing the PCA model object ($pca) and the SpatRaster with the principal component layers ($PCs).
 }
 \description{
-Calculates R-mode PCA for SpatRaster, RasterBrick or RasterStack and returns a SpatRaster with multiple layers of PCA scores.
-
-Internally rastPCA relies on the use of \link[stats]{princomp} (R-mode PCA). The covariance matrix is computed using all the observations and will then be used to calculate princomp and predict the full raster.
+The \code{rastPCA} function calculates the principal component analysis  (PCA) for SpatRaster, RasterBrick, or RasterStack objects and returns a SpatRaster with multiple layers representing the PCA components. Internally, \code{rastPCA} utilizes the \link[stats]{princomp} function for R-mode PCA analysis. The covariance matrix is computed using all the observations within the provided SpatRaster object, which describes the environmental conditions.
+The covariance matrix obtained is subsequently utilized as input for the \code{princomp} function, which conducts the PCA. The resulting PCA components are then used to generate the final SpatRaster, consisting of multiple layers that represent the PCA components.
 }
 \details{
 Pixels with missing values in one or more bands will be set to NA. The built-in check for such pixels can lead to a slow-down of rastPCA.

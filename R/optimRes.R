@@ -1,10 +1,14 @@
 #' Get optimal resolution of the sampling grid 
 #' 
-#' \code{optimRes} identifies the optimal resolution of the sampling grid to be used to perform the uniform environmental sampling.
-#' The function requires an sf object of geometry type “POINT”. Points here are the scores of the first two axes of a principal component analysis performed on the correlation matrix of a set of environmental variables. A set of candidate resolutions must be provided to find the optimal resolution of the sampling grid. For each candidate resolution, \code{optimRes} computes a metric summarizing the average squared Euclidean distance between points within each cell and the centroid of the convex hull built around the points. This metric is then compared across different sampling grids with increasing resolution (i.e., number of cells). The best resolution is selected as the one allowing finding the best trade-off between the number of cells and the average distance among points within cells. In other words, this is the resolution allowing for uniformly sampling the environmental space without overfitting it. This is obtained by choosing when the average distance among pseudo-absences cannot be reduced by more than 10% (10% is the default value, but another threshold can be set by the user).
-#' \code{optimRes} returns a list of length 2 with a matrix reporting the measure computed for each sampling grid at the corresponding resolution and the selected optimal resolution.
-#' The function also provides a plot displaying the function values for each resolution, allowing the user to select a resolution on their own.
+#' \code{optimRes} identifies the optimal resolution of the sampling grid to be used to perform the uniform environmental sampling. 
+#' To find this optimal resolution, a set of candidate resolutions must be provided. For each candidate resolution, \code{optimRes} calculates a metric that summarizes the average squared Euclidean distance between the observations (PC-scores of the first two principal components) within each cell and the centroid of the convex hull encompassing the points. It's important to note that the centroid is specific to each cell.
 #' 
+#' This metric is then compared across different sampling grids with increasing resolution, i.e., an increasing number of cells. The best resolution is selected based on the trade-off between the number of cells and the average distance among observations within each cell. Essentially, the goal is to find the finest resolution of the sampling grid that enables uniform sampling of the environmental space without overfitting it.
+#' 
+#' By default, the optimal resolution is determined as the one where the average distance among observations and the cell-specific centroids cannot be reduced by more than 10%. However, users have the flexibility to adjust this setting according to their needs. The \code{optimRes} function returns a list with two elements. The first element is a matrix that reports the metric calculated for each sampling grid at the corresponding resolution. The second element is the selected optimal resolution.
+#' 
+#' Additionally, the function provides a plot that displays the metric values for each resolution. This allows users to visually analyze the relationship between resolution and the associated metric, thereby empowering them to make an informed decision when selecting a resolution.
+
 #' @param sdf an sf object having point geometry given by the PC-scores values
 #' @param grid.res (integer) a vector of resolutions to be tested, i.e seq(1,100, by=1)
 #' @param perc.thr rate of change (expressed in percentage) of the function to be minimized for selecting the optimal resolution.  

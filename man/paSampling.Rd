@@ -5,7 +5,7 @@
 \title{Sampling pseudo-absences for the training and testing datasets.}
 \usage{
 paSampling(
-  env.rast,
+  env.rast = NULL,
   pres = NULL,
   thres = 0.75,
   H = NULL,
@@ -45,7 +45,11 @@ paSampling(
 An sf object with the coordinates of the pseudo-absences both in the geographical and environmental space.
 }
 \description{
-\code{paSampling} internally calls the \code{uniformSampling} function, which performs the uniform sampling of the environmental space.
-Before performing the uniform sampling of the environmental space, the environmental space is partitioned as follows: a kernel density estimate of the species presence observations identifies and excludes the portion of the environmental space associated with environmental conditions likely suitable for the species to establish using a threshold specified by the user.
-The bandwidth of the kernel can be estimated automatically or defined by the user, allowing to account for meta-population dynamics (e.g. sink-source populations).
+\code{paSampling} performs a two-step procedure for uniformly sampling pseudo-absences within the environmental space.
+In the initial step, a kernel-based filter is utilized to determine the subset of the environmental space that will be subsequently sampled. The kernel-based filter calculates the probability function based on the presence observations, enabling the identification of areas within the environmental space that likely exhibit suitable conditions for the species. To achieve this, a probability threshold value is utilized to assign observations to the corresponding portion of the environmental space. These areas, deemed to have suitable environmental conditions, are excluded from the subsequent uniform sampling process conducted in the second step using the \code{uniformSampling} function, which is internally called.
+The bandwidth of the kernel can be automatically estimated from the presence observations or directly set by the user, providing flexibility in determining the scope and precision of the filter.
+}
+\details{
+Being designed with species distribution models in mind, \code{paSampling} allows collectively sampling pseudo-absences for both the training and testing dataset (optional). In both cases, the user must provide a number of observations that will be sampled in each cell of the sampling grid (\code{n.tr}: points for the training dataset; \code{n.ts}: points for the testing dataset).
+Note that the optimal resolution of the sampling grid can be found using the \code{optimRes} function. Also, note that the number of pseudo-absences eventually sampled in each cell by the internally-called \code{uniformSampling} function depends on the spatial configuration of the observations within the environmental space. Indeed, in most cases some cells of the sampling grid will be empty (i.e., those at the boundary of the environmental space). For this reason, the number of pseudo-absences returned by \code{paSampling} is likely to be lower than the product between the number of cells of the sampling gird and \code{n.tr}(or \code{n.ts}).
 }

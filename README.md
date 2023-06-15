@@ -7,15 +7,15 @@ output: github_document
 
 
 # USE (Uniform Sampling of the Environmental space)
-An R package to perform uniform sampling in the environmental space.
+
+The `USE` R package offers a collection of functions that enable the uniform sampling of the environmental space. It was specifically developed to assist species distribution modellers in gathering ecologically relevant pseudo-absences by uniformly sampling the environmental space.
+
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of USE is to perform uniform sampling in the environmental space.
-
 ## Installation
 
-You can install the development version of USE like so:
+The development version of `USE` can be installed running the code below:
 
 ```r
 # Install the released version from CRAN
@@ -31,4 +31,4 @@ devtools::install_github("danddr/USE")
 ![](man/figures/use_website_figure.png)
 
 ## Examples
-How to apply **USE** is shown in the vignette or the example provided at https://github.com/danddr/USE_paper/tree/main/Example.
+Examples showing how to implement `USE` for species distribution modelling are provided in the dedicated vignette, and can also be found at https://github.com/danddr/USE_paper/tree/main/Example.
