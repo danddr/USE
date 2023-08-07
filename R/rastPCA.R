@@ -15,7 +15,6 @@
 #' @param stand Logical. If \code{TRUE}, perform standardized PCA. Corresponds to centered and scaled input image. This is usually beneficial for equal weighting of all layers. (\code{FALSE} by default)
 #' @param naMask Logical. Masks all pixels which have at least one NA (default \code{TRUE} is recommended but introduces a slow-down. 
 #' @seealso The \code{rastPCA} function has been conceptualized starting from \code{RStoolbox::rasterPCA} (\url{https://github.com/bleutner/RStoolbox}).
-#' @importFrom stats princomp
 #' @return Returns a named list containing the PCA model object ($pca) and the SpatRaster with the principal component layers ($PCs).
 #' @export 
 
@@ -44,7 +43,7 @@ rastPCA <- function (env.rast, nPC=NULL, naMask=TRUE, stand=FALSE){
   }
   
   covMatrix <- terra::layerCor(env.rast, fun = "cov", na.rm = TRUE)
-  eigenDecomp <- stats::princomp(covmat = covMatrix[[1]], cor = stand)
+  eigenDecomp <- princompCustom(covmat = covMatrix[[1]], cor = stand)
   eigenDecomp$center <- covMatrix$mean
   eigenDecomp$n.obs <- nrow(as.data.frame(env.rast[[1]]))
   if (stand==TRUE) {
