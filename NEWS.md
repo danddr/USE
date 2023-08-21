@@ -1,3 +1,6 @@
+# USE 0.1.2
+* Update rastPCA function with a custom version of princomp
+
 # USE 0.1.1
 * Adding thresh.inspect function to investigate the effect of the kernel threshold on the partition of the environmental space. 
 
