@@ -31,7 +31,7 @@ library(ggplot2)
 
 ## 1. Create Virtual Species
 
-First, download bioclimatic variables from WorldClim and crop them to the European extent.
+First, download the bioclimatic variables from WorldClim and crop them to the European extent.
 
 ```{r, eval=FALSE, message=FALSE}
 Worldclim <- geodata::worldclim_global(var='bio', res=10, path=getwd()) 
