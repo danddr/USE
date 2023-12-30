@@ -39,7 +39,7 @@ envData <- terra::crop(Worldclim, terra::ext(-12, 25, 36, 60))
 ```
 ```{r, eval=TRUE, echo=FALSE, message=FALSE, results=FALSE}
 envData <- USE::Worldclim_tmp
-envData<-rast(envData,  type="xyz")
+envData <- terra::rast(envData,  type="xyz")
 ```
 
 Then, generate a virtual species using the bioclimatic variables downloaded in the previous step. For details about the methodology used to create a virtual species, see the [vignette](http://borisleroy.com/files/virtualspecies-tutorial.html#introduction) of the `virtualspecies` R package.

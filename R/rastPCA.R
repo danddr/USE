@@ -38,14 +38,14 @@ rastPCA <- function (env.rast, nPC=NULL, naMask=TRUE, stand=FALSE){
     stop("The layers are empty or contain only NAs")}
   
   if (naMask==TRUE) {
-    maskNA <- is.na(env.rast[[1]])
+    maskNA <-!sum(terra::app(env.rast, is.na))
     env.rast <- terra::mask(env.rast, maskNA, maskvalue = NA)
   }
   
   covMatrix <- terra::layerCor(env.rast, fun = "cov", na.rm = TRUE)
   eigenDecomp <- princompCustom(covmat = covMatrix[[1]], cor = stand)
   eigenDecomp$center <- covMatrix$mean
-  eigenDecomp$n.obs <- nrow(as.data.frame(env.rast[[1]]))
+  eigenDecomp$n.obs  <- terra::global(!any(is.na(env.rast)), sum)$sum
   if (stand==TRUE) {
     S <- diag(covMatrix$covariance)
     eigenDecomp$scale <- sqrt(S * (eigenDecomp$n.obs - 1)/eigenDecomp$n.obs)

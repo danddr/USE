@@ -1,3 +1,6 @@
+# USE 0.1.3
+* Update rastPCA function following the suggestions of the user https://github.com/ailich
+
 # USE 0.1.2
 * Update rastPCA function with a custom version of princomp
 
