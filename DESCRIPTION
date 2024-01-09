@@ -11,6 +11,8 @@ Imports: sf, parallel, terra, ks, ggplot2
 License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true
+URL: https://danddr.github.io/USE/, https://github.com/danddr/USE
+BugReports: https://github.com/danddr/USE/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: rmarkdown, knitr, raster, stars, viridis, virtualspecies,  dplyr
