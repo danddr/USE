@@ -64,7 +64,7 @@ paSampling <- function (env.rast=NULL, pres = NULL, thres = 0.75, H = NULL, grid
   dt <- terra::as.data.frame(rpc$PCs[[c("PC1", "PC2")]], xy = TRUE)
   dt$myID <- seq_len(nrow(dt))
   id <- dt[, c("x", "y", "myID")]
-  id_rast <- terra::rast(id, digits = 10, type = "xyz")
+  id_rast <- terra::rast(id, digits = 3, type = "xyz")
   id_rast <- terra::resample(id_rast, env.rast)
   terra::ext(id_rast) <- terra::ext(env.rast)
   PC12 <- c(rpc$PCs[[c("PC1", "PC2")]], id_rast)
