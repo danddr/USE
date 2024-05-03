@@ -44,7 +44,7 @@ rastPCA <- function (env.rast, nPC=NULL, naMask=TRUE, stand=FALSE){
   
   covMatrix <- terra::layerCor(env.rast, fun = "cov", na.rm = TRUE)
   eigenDecomp <- princompCustom(covmat = covMatrix[[1]], cor = stand)
-  eigenDecomp$center <- covMatrix$mean
+  eigenDecomp$center <- covMatrix$mean[, 1] # modified after probable update of terra
   eigenDecomp$n.obs  <- terra::global(!any(is.na(env.rast)), sum)$sum
   if (stand==TRUE) {
     S <- diag(covMatrix$covariance)
