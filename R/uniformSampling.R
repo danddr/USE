@@ -87,6 +87,10 @@ uniformSampling <- function(sdf, grid.res, n.tr = 5, n.prev = NULL, sub.ts = FAL
       message("You should increase prevalence by randomly excluding some absence from the output dataset")
     }
   }
+  if(any(duplicated(res$ID))){
+    res <- res[!duplicated(res$ID),]
+    warning("Warning: pseudo-replicate sampled and removed from the final training dataset ")
+  }
   if(isTRUE(sub.ts)) {
     abs_val <- sdf[!(sdf$ID %in% res$ID), ]
     res_val <- do.call(rbind, lapply(rev(seq_len(length(grid))), function(i) {
@@ -100,6 +104,10 @@ uniformSampling <- function(sdf, grid.res, n.tr = 5, n.prev = NULL, sub.ts = FAL
         return(subs)
       }
     }))
+    if(any(duplicated(res_val$ID))){
+      res_val <- res_val[!duplicated(res_val$ID),]
+      warning("Warning: pseudo-replicate sampled and removed from the final testing dataset ")
+    }
     return(list(obs.tr = res, obs.ts = res_val))
   } else {
     return(res)

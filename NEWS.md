@@ -1,3 +1,6 @@
+# USE 0.1.4
+* Update uniformSampling function with a check for pseudo-replicates
+
 # USE 0.1.3
 * Update rastPCA function following the suggestions of the user https://github.com/ailich; fixed error in the calculation of the covariance matrix mean
 
