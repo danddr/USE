@@ -1,3 +1,6 @@
+# USE 0.1.5
+* fixing bug on the paSampling's convex hull section
+
 # USE 0.1.4
 * Update uniformSampling function with a check for pseudo-replicates
 

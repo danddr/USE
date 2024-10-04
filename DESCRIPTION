@@ -1,6 +1,6 @@
 Package: USE
 Title: Uniform Sampling of the Environmental space
-Version: 0.1.3
+Version: 0.1.5
 Authors@R: c(
     person("Daniele", "Da Re", email = "dare.daniele@gmail.com",  comment=c(ORCID = "0000-0002-3398-9295"), role = c("aut","cre")),
     person("Enrico", "Tordoni", email = "e.tordoni@gmail.com", comment=c(ORCID = "0000-0002-9722-6692"), role = "aut"), 
@@ -14,6 +14,6 @@ LazyData: true
 URL: https://danddr.github.io/USE/, https://github.com/danddr/USE
 BugReports: https://github.com/danddr/USE/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-Suggests: rmarkdown, knitr, raster, stars, viridis, virtualspecies,  dplyr
+RoxygenNote: 7.3.1
+Suggests: rmarkdown, knitr, raster, tidyterra, viridis, virtualspecies,  dplyr
 VignetteBuilder: knitr

@@ -9,9 +9,6 @@
 #' @importFrom stats na.omit quantile
 #' @return A ggplot2 object showing how the environmental space is partitioned accordingly to the selected \code{thres} values.
 #' @export
-#' 
-# thresh.inspect(
-# env.rast=env_datasets[[2]], pres=myPres, thres=c(0.1,0.5), H=NULL)
 thresh.inspect <- function (env.rast, pres = NULL, thres = 0.75, H = NULL) 
 {
   if (!inherits(env.rast, "BasicRaster") && !inherits(env.rast, 

@@ -23,7 +23,6 @@ This vignette shows the different functionalities, as well as related practical 
 ```{r,  eval=TRUE, message=FALSE, echo=TRUE, warning=FALSE, results = FALSE}
 library(USE)
 library(terra)
-library(raster)
 library(virtualspecies)
 library(sf)
 library(ggplot2)
@@ -51,7 +50,7 @@ envData <- envData[[myRandNum]]
 ```
 ```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 8, fig.width = 8, fig.align='center'}
 set.seed(123)
-random.sp <- virtualspecies::generateRandomSp(raster::stack(envData), 
+random.sp <- virtualspecies::generateRandomSp(envData, 
                                               convert.to.PA = FALSE, 
                                               species.type = "additive",
                                               realistic.sp = TRUE, 
@@ -134,28 +133,28 @@ env_pca <- c(rpc$PCs$PC1, rpc$PCs$PC2)
 env_pca <- na.omit(as.data.frame(env_pca))
 
 ggplot(env_pca, aes(x=PC1))+
-  geom_density(aes(color="Environment"), size=1 )+
+  geom_density(aes(color="Environment"), linewidth=1 )+
   geom_density(data=data.frame(st_coordinates(myObs$obs.tr)), 
-               aes(x=X,  color="Uniform"), size=1)+
+               aes(x=X,  color="Uniform"), linewidth=1)+
   scale_color_manual(name=NULL, 
                      values=c('Environment'='#1E88E5', 'Uniform'='#D81B60'))+     
   labs(y="Density of PC-scores")+
-  xlim(-5,3)+ ylim(0,1)+
+  ylim(0,1)+
   theme_classic()+
-  theme(legend.pos="bottom",  
+  theme(legend.position = "bottom",  
         text = element_text(size=14),  
         legend.text=element_text(size=12))
 
 ggplot(env_pca, aes(x=PC2))+
-  geom_density(aes(color="Environment"), size=1 )+
+  geom_density(aes(color="Environment"), linewidth=1 )+
   geom_density(data=data.frame(st_coordinates(myObs$obs.tr)), 
                aes(x=Y,  color="Uniform"), size=1)+
   scale_color_manual(name=NULL, 
                      values=c('Environment'='#1E88E5', 'Uniform'='#D81B60'))+     
   labs(y="Density of PC-scores")+
-  xlim(-5,3)+ ylim(0,1)+
+  ylim(0,1)+
   theme_classic()+
-  theme(legend.pos="bottom",  
+  theme(legend.position = "bottom",  
         text = element_text(size=14),  
         legend.text=element_text(size=12))
 ```
@@ -186,32 +185,32 @@ Visualizing the coordinates (PC-scores) of the pseudo-absences sampled in the en
 
 ```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 6, fig.width = 6, fig.align='center'}
 ggplot(env_pca, aes(x=PC1))+
-  geom_density(aes(color="Environment"), size=1 )+
+  geom_density(aes(color="Environment"), linewidth=1 )+
   geom_density(data=data.frame(st_coordinates(myGrid.psAbs$obs.tr)), 
-               aes(x=X,  color="Uniform"), size=1)+
+               aes(x=X,  color="Uniform"), linewidth=1)+
   geom_density(data=terra::extract(c(rpc$PCs$PC1, rpc$PCs$PC2), myPres, df=TRUE), 
-               aes(x=PC1, color="Presence"), size=1 )+
+               aes(x=PC1, color="Presence"), linewidth=1 )+
   scale_color_manual(name=NULL, 
                      values=c('Environment'='#1E88E5', 'Uniform'='#D81B60', "Presence"="black"))+     
   labs(y="Density of PC-scores")+
-  xlim(-5,3)+ ylim(0,1)+
+  ylim(0,1)+
   theme_classic()+
-  theme(legend.pos="bottom",  
+  theme(legend.position = "bottom",  
         text = element_text(size=14),  
         legend.text=element_text(size=12))
 
 ggplot(env_pca, aes(x=PC2))+
-  geom_density(aes(color="Environment"), size=1 )+
+  geom_density(aes(color="Environment"), linewidth=1 )+
   geom_density(data=data.frame(st_coordinates(myGrid.psAbs$obs.tr)), 
-               aes(x=Y,  color="Uniform"), size=1)+
+               aes(x=Y,  color="Uniform"), linewidth=1)+
   geom_density(data=terra::extract(c(rpc$PCs$PC1, rpc$PCs$PC2), myPres, df=TRUE), 
-               aes(x=PC2, color="Presence"), size=1 )+
+               aes(x=PC2, color="Presence"), linewidth=1 )+
   scale_color_manual(name=NULL, 
                      values=c('Environment'='#1E88E5', 'Uniform'='#D81B60', "Presence"="black"))+     
   labs(y="Density of PC-scores")+
-  xlim(-5,3)+ ylim(0,1)+
+  ylim(0,1)+
   theme_classic()+
-  theme(legend.pos="bottom",  
+  theme(legend.position = "bottom",  
         text = element_text(size=14),  
         legend.text=element_text(size=12))
 ```
@@ -220,23 +219,22 @@ Visualizing the geographic coordinates of the pseudo-absences sampled in the env
 
 ```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 8, fig.width = 8, fig.align='center'}
 ggplot()+
-  stars::geom_stars(data = stars::st_as_stars(new.pres$pa.raster), alpha = 0.5 )+
-  scale_fill_manual(values =viridis::viridis(2),
-                    na.value = "transparent",
-                    labels = c("Absence", "Presence", ""))+
+  tidyterra::geom_spatraster(data = new.pres$pa.raster)+
+  scale_fill_viridis_c(na.value = "transparent", breaks=c(0,1)) +
   geom_sf(data=myPres, 
           aes(color= "Presences"), 
           alpha=1, size=2, shape= 19)+
-  geom_sf(data=st_as_sf(st_drop_geometry(myGrid.psAbs$obs.tr), coords = c("x","y"), crs=4326), 
+  geom_sf(data=st_as_sf(st_drop_geometry(myGrid.psAbs$obs.tr), 
+                        coords = c("x","y"), crs=4326), 
           aes(color="Pseudo-absences"), 
           alpha=0.8, size=2, shape = 19 )+
     scale_colour_manual(name=NULL,
-                        values=c('Presences'='steelblue', 'Pseudo-absences'='#A41616'))+
+                        values=c('Presences'='steelblue','Pseudo-absences'='#A41616'))+
   labs(x="Longitude", 
        y="Latitude", 
        fill="Virtual species")+
   theme_light()+
-  theme(legend.pos="bottom",  
+  theme(legend.position = "bottom",  
         legend.background=element_blank(),
         legend.box="vertical",
         panel.grid = element_blank(),

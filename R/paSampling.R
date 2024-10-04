@@ -43,8 +43,7 @@ paSampling <- function (env.rast=NULL, pres = NULL, thres = 0.75, H = NULL, grid
   if (is.null(prev)) {
     estPrev <- round(nrow(pres)/(n.tr * (grid.res^2)), 2)
     message(paste("Estimated prevalence of", estPrev))
-  }
-  else {
+  } else {
     n.tr <- (nrow(pres)/prev)/(grid.res^2)
     n.ts <- (nrow(pres)/prev)/(grid.res^2)
     message(paste("User-defined prevalence of", prev))
@@ -54,70 +53,49 @@ paSampling <- function (env.rast=NULL, pres = NULL, thres = 0.75, H = NULL, grid
   }
   if (!inherits(pres, "SpatVector")) {
     occ.vec <- terra::vect(pres)
-  }
-  else {
+  } else {
     occ.vec <- pres
   }
   message("Computing PCA and presences kernel density estimation in the multivariate space")
-  grid.vec <- terra::as.points(env.rast)
   rpc <- rastPCA(env.rast, stand = TRUE)
-  dt <- terra::as.data.frame(rpc$PCs[[c("PC1", "PC2")]], xy = TRUE)
-  dt$myID <- seq_len(nrow(dt))
-  id <- dt[, c("x", "y", "myID")]
-  id_rast <- terra::rast(id, digits = 3, type = "xyz")
-  id_rast <- terra::resample(id_rast, env.rast)
-  terra::ext(id_rast) <- terra::ext(env.rast)
-  PC12 <- c(rpc$PCs[[c("PC1", "PC2")]], id_rast)
-  abio.st <- c(id_rast, env.rast)
-  abio.ex <- na.omit(terra::extract(abio.st, grid.vec, cells = FALSE, 
-                                    df = TRUE))
-  PC12ex <- na.omit(terra::extract(PC12, grid.vec, cells = FALSE, 
-                                   df = TRUE))
-  PC12occ <- terra::extract(PC12, occ.vec, cells = FALSE, df = TRUE)
-  PC12ex <- merge(x = PC12ex, y = PC12occ, by = "myID", all.x = TRUE)
-  PC12ex$PA <- ifelse(is.na(PC12ex$ID.y), 0, 1)
-  PC12ex <- PC12ex[, c("ID.x", "PC1.x", "PC2.x", "myID", "PA")]
-  names(PC12ex) <- c("ID", "PC1", "PC2", "myID", "PA")
-  PC12ex <- na.omit(PC12ex)
+  id_rast <- terra::rast(vals= 1:terra::ncell(env.rast),
+                         names ="myID",
+                         extent = terra::ext(env.rast),
+                         nrows = terra::nrow(env.rast),
+                         ncols = terra::ncol(env.rast), 
+                         crs = terra::crs(env.rast)
+  )
+  abio.st <- terra::as.data.frame(c(id_rast, env.rast))
+  dt <- terra::as.data.frame(c(id_rast, rpc$PCs[[c("PC1", "PC2")]]), xy = TRUE)
+  PC12occ <- terra::extract(id_rast,  occ.vec, cells = FALSE, df = FALSE, ID=FALSE)[,1] 
+  PC12ex <- na.omit(data.frame(dt, PA= ifelse(dt$myID %in% PC12occ, 1, 0)))
   if (is.null(H)) {
     H <- ks::Hpi(x = PC12ex[, c("PC1", "PC2")])
   }
-  estimate <- data.frame(KDE = ks::kde(PC12ex[PC12ex$PA == 
-                                                1, c("PC1", "PC2")], eval.points = PC12ex[PC12ex$PA == 
-                                                                                            1, c("PC1", "PC2")], h = H)$estimate, PC12ex[PC12ex$PA == 
-                                                                                                                                           1, -1])
+  estimate <- data.frame(KDE = ks::kde(PC12ex[PC12ex$PA == 1, c("PC1", "PC2")], 
+                                       eval.points = PC12ex[PC12ex$PA ==1, c("PC1", "PC2")], h = H)$estimate, 
+                         PC12ex[PC12ex$PA == 1, c("PC1", "PC2", "myID", "PA")])
   quantP <- quantile(estimate[, "KDE"], thres)
   estimate$percP <- ifelse(estimate$KDE <= unname(quantP[1]), "out", "in")
-  estimate <- merge(PC12ex, estimate[estimate$PA == 1,c("myID","percP")], by = "myID", all.x = TRUE)
+  estimate <- merge(x = PC12ex, y = estimate[estimate$PA == 1,c("myID","percP")], 
+                    by = "myID", all.x = TRUE) 
+  estimate$percP <- ifelse(is.na(estimate$percP), "pabs",estimate$percP)
   chull <- sf::st_as_sf(subset(estimate, estimate$percP=="in", select=c( "PC1","PC2" )), coords=c( "PC1","PC2" )) 
   chull <- sf::st_union(chull)
   chull <- sf::st_convex_hull(chull)
   estimate <- sf::st_as_sf(estimate, coords=c( "PC1","PC2" ))
-  chull <- sf::st_filter(estimate, chull)
-  chull$percP <- "in"
-  chull <- cbind.data.frame(sf::st_drop_geometry(chull), 
-                           data.frame("PC1"=sf::st_coordinates(chull)[,1], 
-                                      "PC2"=sf::st_coordinates(chull)[,2]))
-  estimate<- cbind.data.frame(sf::st_drop_geometry(estimate), 
-                           data.frame("PC1"=sf::st_coordinates(estimate)[,1], 
-                                      "PC2"=sf::st_coordinates(estimate)[,2]))
-  estimate<-estimate[ !estimate$myID %in% chull$myID, ]
-  estimate$percP <- "out"
-  estimate<-rbind.data.frame(estimate, chull)
-  fullDB.sp <- merge(x = estimate, y = dt[, c("x", "y", "myID")], 
+  within_chull <- estimate[sf::st_within(estimate, chull, sparse = FALSE), ]
+  estimate$percP <- ifelse(estimate$myID %in% within_chull$myID, "in", estimate$percP)
+  estimate <- subset(estimate, estimate$percP =="pabs")
+  fullDB.sp <- merge(x = estimate, y = abio.st, 
                      by = "myID", all.x = TRUE)
-  fullDB.sp <- merge(x = fullDB.sp, y = abio.ex[, 2:ncol(abio.ex)], 
-                     by = "myID", all.x = TRUE)
-  fullDB.sp <- na.omit(fullDB.sp)
   fullDB.sp <- sf::st_as_sf(fullDB.sp, coords = c("PC1", "PC2"))
   if (is.null(prev)) {
     myPas <- NULL
-  }
-  else {
+  }else {
     myPas <- floor(nrow(pres)/prev)
   }
   message("\nPerforming pseudo-absences sampling in the environmental space\n")
-  fullDB.sp <- subset(fullDB.sp, fullDB.sp$percP == "out" & fullDB.sp$PA == 0)
   Res <- uniformSampling(sdf = fullDB.sp, grid.res = grid.res, 
                          n.tr = n.tr, n.prev = myPas, sub.ts = sub.ts, n.ts = n.ts, 
                          plot_proc = plot_proc, verbose = verbose)
