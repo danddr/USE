@@ -1,3 +1,6 @@
+# USE 0.1.6
+* add SpatialProba function to estimate the probability of occurrence of a virtual species
+
 # USE 0.1.5
 * fixing bug on the paSampling's convex hull section
 

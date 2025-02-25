@@ -1,13 +1,13 @@
 Package: USE
 Title: Uniform Sampling of the Environmental space
-Version: 0.1.5
+Version: 0.1.6
 Authors@R: c(
     person("Daniele", "Da Re", email = "dare.daniele@gmail.com",  comment=c(ORCID = "0000-0002-3398-9295"), role = c("aut","cre")),
     person("Enrico", "Tordoni", email = "e.tordoni@gmail.com", comment=c(ORCID = "0000-0002-9722-6692"), role = "aut"), 
     person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", comment=c(ORCID= "0000-0002-9874-5064"),  role = "aut"))
 Description: USE performs uniform sampling of the environmental space.
 Depends: R (>= 3.6.0)
-Imports: sf, parallel, terra, ks, ggplot2
+Imports: sf, parallel, terra, ks, ggplot2, cowplot
 License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true

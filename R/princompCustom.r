@@ -13,7 +13,7 @@
 #' @param newdata An optional data frame or matrix in which to look for variables with which to predict. If omitted, the scores are used. If the original fit used a formula or a data frame or a matrix with column names, newdata must contain columns with the same names. Otherwise it must contain the same number of columns, to be used in the same order.
 #' @importFrom stats cov.wt setNames
 #' @keywords internal
-#' @NoRd
+#' @export
 princompCustom <- function (x, cor = FALSE, scores = TRUE, covmat = NULL, subset = rep_len(TRUE, nrow(as.matrix(x))), fix_sign = TRUE, ...) {
   chkDots(...)
   cl <- match.call()
