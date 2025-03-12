@@ -10,6 +10,7 @@
 #' @param marginalPlots logical, if TRUE, returns marginal plots.
 #' @importFrom grDevices recordPlot
 #' @importFrom stats plogis
+#' @importFrom grDevices dev.off
 #' @export
 #' @usage
 #' SpatialProba(coefs, env.rast, quadr_term, marginalPlots)
@@ -77,10 +78,11 @@ SpatialProba <- function(coefs=NULL, env.rast=NULL, quadr_term = NULL, marginalP
       colnames(marg.eff)<-c(quadr_term, "PA")
       marg.eff <- marg.eff[order(marg.eff[, 1]), ] 
       # plot
-     plot(x = marg.eff[, 1], y = marg.eff[, 2], 
+      plot(x = marg.eff[, 1], y = marg.eff[, 2], 
            xlab=quadr_term, ylab="Probability of Presence", 
            ylim=c(0,1), type="l",  bty = "n")
-     p <- grDevices::recordPlot()
+      p <- grDevices::recordPlot()
+      dev.off()
       plotOut[[quadr_term]]<- p 
     }
   
@@ -99,14 +101,15 @@ SpatialProba <- function(coefs=NULL, env.rast=NULL, quadr_term = NULL, marginalP
     marg.eff <- marg.eff[order(marg.eff[, 1]), ] 
     
     # plot
-    p <- plot(x = marg.eff[, 1], y = marg.eff[, 2], 
+    plot(x = marg.eff[, 1], y = marg.eff[, 2], 
               xlab=myname, ylab="Probability of Presence", 
               ylim=c(0,1), type="l",  bty = "n")
-    p <- recordPlot()
+    p <- grDevices::recordPlot()
+    dev.off()
     plotOut[[myname]] <- p
     plotOut<-cowplot::plot_grid(plotlist = plotOut, nrow=1, ncol=length(plotOut), labels = "AUTO")
     
-    return(list(rast=spatial_proba, margEff = plotOut))
+    return(list(rast=spatial_proba, plot = plotOut))
 
     } else {
     return(spatial_proba)

@@ -15,5 +15,5 @@ URL: https://danddr.github.io/USE/, https://github.com/danddr/USE
 BugReports: https://github.com/danddr/USE/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-Suggests: rmarkdown, knitr, raster, tidyterra, viridis, virtualspecies,  dplyr
+Suggests: rmarkdown, knitr, tidyterra
 VignetteBuilder: knitr

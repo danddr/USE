@@ -23,14 +23,13 @@ This vignette shows the different functionalities, as well as related practical 
 ```{r,  eval=TRUE, message=FALSE, echo=TRUE, warning=FALSE, results = FALSE}
 library(USE)
 library(terra)
-library(virtualspecies)
 library(sf)
 library(ggplot2)
 ```
 
 # 1. Create Virtual Species
 
-First, download the bioclimatic variables from WorldClim and crop them to the European extent.
+First, we download the bioclimatic variables from WorldClim and crop them to the European extent.
 
 ```{r, eval=FALSE, message=FALSE}
 Worldclim <- geodata::worldclim_global(var='bio', res=10, path=getwd()) 
@@ -41,39 +40,66 @@ envData <- USE::Worldclim_tmp
 envData <- terra::rast(envData,  type="xyz")
 ```
 
-Then, generate a virtual species using the bioclimatic variables downloaded in the previous step. For details about the methodology used to create a virtual species, see the [vignette](http://borisleroy.com/files/virtualspecies-tutorial.html#introduction) of the `virtualspecies` R package.
+Then, we generate the probability of a virtual species presence through the `spatialProba` function available in `USE`. The function allows defining both linear and nonlinear predictor effects in an additive manner, capturing their influence on the log-odds of an event's probability within the framework of logistic regression. Only the bioclimatic variables *bio1* (mean annual temperature) and *bio12* (total annual precipitation) will be used in this example.
 
-```{r, eval=FALSE, message=FALSE}
-#create virtual species
-myRandNum <- sample(1:19,size=5, replace = FALSE)
-envData <- envData[[myRandNum]]
-```
+We define the probability of occurrence of the virtual species as follows: 
+
+ $logit(\pi) = α  + β_{tm} \cdot temperature  +  β_{tmq} \cdot temperature^2 + β_{pr} \cdot precipitation$
+ 
+where $logit(∙)$ is the natural logarithm of the odds $\pi /(1-\pi )$, $α$ is the model intercept, $β_{tm}$ is the regression parameter for the linear term of temperature, $β_{tmq}$ is the quadratic term for temperature, and , $β_{pr}$ is the parameter for precipitation. Adding a quadratic term for temperature allowed the simulation of an unimodal response of the species to temperature. The argument `coefs` of the `SpatialProba` function requires a (numeric) vector with the values of the parameters that will be used to compute the probabilities of species presence
+
 ```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 8, fig.width = 8, fig.align='center'}
+myCoef <- c(-8, 1.7, -0.1, -0.001) #0.001
+names(myCoef) <- c("intercept", "bio1", "quad_bio1", "bio12" )
+myVS.po <- USE::SpatialProba(coefs = myCoef,
+                             env.rast = envData, 
+                             quadr_term = "bio1",
+                             marginalPlots = TRUE)
+myVS.po$plot
+```
+
+We can now convert the species probability of presence (p) into a binary presence/absence layer, thereby mapping the species distribution into the geographical space. In particular, at each cell of the probability layer, we draw a random realisation of a Bernoulli trial with probability $\pi$. Deriving presence/absence through the random draw from the Bernoulli distribution avoided selecting a fixed, arbitrary threshold to derive the presence/absence layer.
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 8, fig.width = 8, fig.align='center'}
+# Convert the probability of occurrence raster to a raster of presence-absenceusing a random binomial draw
+new.pres <- terra::app(myVS.po$rast, fun = function(x) {replicate(1, rbinom(n = length(x), 1, x))})
+
+#Sample true occurrences and true absences using a stratified sampling, keeping a sample prevalence fixed to 1
 set.seed(123)
-random.sp <- virtualspecies::generateRandomSp(envData, 
-                                              convert.to.PA = FALSE, 
-                                              species.type = "additive",
-                                              realistic.sp = TRUE, 
-                                              plot = FALSE)
-#reclassify suitability raster using a probability conversion rule
-new.pres <- virtualspecies::convertToPA(x=random.sp, 
-                      beta=0.55,
-                      alpha = -0.05, plot = FALSE)
-#Sample true occurrences
-presence.points <- virtualspecies::sampleOccurrences(new.pres,
-                                     n = 300, # The number of points to sample
-                                     type = "presence-absence",
-                                     sample.prevalence = 0.6,
-                                     detection.probability = 1,
-                                     correct.by.suitability = TRUE,
-                                     plot = TRUE)  
+myVS.pa <- terra::spatSample(new.pres, 150, "stratified", xy=TRUE)
+names(myVS.pa) <- c("x", "y", "Observed")
+```
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 8, fig.width = 8, fig.align='center'}
+ggplot()+
+  tidyterra::geom_spatraster(data = new.pres)+
+  tidyterra::scale_fill_whitebox_c("deep", direction=1, na.value = "transparent",
+                                   breaks=c(0,1)) +
+  geom_point(data=myVS.pa, 
+             aes(x=x, y=y, color=as.factor(Observed)),
+             alpha=1, size=2, shape= 19)+
+     scale_colour_manual(name=NULL,
+                        values=c("1"='steelblue',"0"='#A41616'))+
+  labs(x="Longitude", 
+       y="Latitude", 
+       fill="Virtual species",
+       colour = "Presence/Absence")+
+  theme_light()+
+  theme(legend.position = "bottom",  
+        legend.background=element_blank(),
+        legend.box="vertical",
+        panel.grid = element_blank(),
+        text = element_text(size=14),  
+        legend.text=element_text(size=14), 
+        aspect.ratio = 1, 
+        panel.spacing.y = unit(2, "lines"))
 ```
 
 Generate a presence-only data set.
 
 ```{r, eval=TRUE}
-myPres <- presence.points$sample.points[which(presence.points$sample.points$Observed==1), c( "x", "y",  "Observed")]
-myPres <- st_as_sf(myPres, coords=c("x", "y"), crs=4326)
+myPres <- subset(myVS.pa, myVS.pa$Observed==1)
+myPres <- st_as_sf(myPres , coords=c("x", "y"), crs=4326)
 ```
 
 # 2. Generating the environmental space
@@ -94,7 +120,7 @@ dt <- sf::st_as_sf(dt, coords = c("PC1", "PC2"))
 myRes <- USE::optimRes(sdf=dt,
                     grid.res=c(1:10),
                     perc.thr = 20,
-                    showOpt = TRUE, 
+                    showOpt = FALSE, 
                     cr=5)
 ```
 
@@ -148,7 +174,7 @@ ggplot(env_pca, aes(x=PC1))+
 ggplot(env_pca, aes(x=PC2))+
   geom_density(aes(color="Environment"), linewidth=1 )+
   geom_density(data=data.frame(st_coordinates(myObs$obs.tr)), 
-               aes(x=Y,  color="Uniform"), size=1)+
+               aes(x=Y,  color="Uniform"), linewidth=1)+
   scale_color_manual(name=NULL, 
                      values=c('Environment'='#1E88E5', 'Uniform'='#D81B60'))+     
   labs(y="Density of PC-scores")+
@@ -174,7 +200,7 @@ myGrid.psAbs <- USE::paSampling(env.rast=envData,
                                 H=NULL,
                                 grid.res=as.numeric(myRes$Opt_res),
                                 n.tr = 5,
-                                prev=0.3,
+                                prev=1,
                                 sub.ts=TRUE,
                                 n.ts=5,
                                 plot_proc=FALSE,
@@ -219,8 +245,9 @@ Visualizing the geographic coordinates of the pseudo-absences sampled in the env
 
 ```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.height = 8, fig.width = 8, fig.align='center'}
 ggplot()+
-  tidyterra::geom_spatraster(data = new.pres$pa.raster)+
-  scale_fill_viridis_c(na.value = "transparent", breaks=c(0,1)) +
+  tidyterra::geom_spatraster(data = new.pres)+
+  tidyterra::scale_fill_whitebox_c("deep", direction=1, na.value = "transparent",
+                                   breaks=c(0,1)) +
   geom_sf(data=myPres, 
           aes(color= "Presences"), 
           alpha=1, size=2, shape= 19)+
