@@ -91,49 +91,93 @@ practical examples, of the <code>USE</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://danddr.github.io/USE/" class="external-link">USE</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://borisleroy.com/virtualspecies/" class="external-link">virtualspecies</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="create-virtual-species">1. Create Virtual Species<a class="anchor" aria-label="anchor" href="#create-virtual-species"></a>
 </h2>
-<p>First, download the bioclimatic variables from WorldClim and crop
+<p>First, we download the bioclimatic variables from WorldClim and crop
 them to the European extent.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Worldclim</span> <span class="op">&lt;-</span> <span class="fu">geodata</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geodata/man/worldclim.html" class="external-link">worldclim_global</a></span><span class="op">(</span>var<span class="op">=</span><span class="st">'bio'</span>, res<span class="op">=</span><span class="fl">10</span>, path<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">envData</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">Worldclim</span>, <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="op">-</span><span class="fl">12</span>, <span class="fl">25</span>, <span class="fl">36</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Then, generate a virtual species using the bioclimatic variables
-downloaded in the previous step. For details about the methodology used
-to create a virtual species, see the <a href="http://borisleroy.com/files/virtualspecies-tutorial.html#introduction" class="external-link">vignette</a>
-of the <code>virtualspecies</code> R package.</p>
+<p>Then, we generate the probability of a virtual species presence
+through the <code>spatialProba</code> function available in
+<code>USE</code>. The function allows defining both linear and nonlinear
+predictor effects in an additive manner, capturing their influence on
+the log-odds of an event’s probability within the framework of logistic
+regression. Only the bioclimatic variables <em>bio1</em> (mean annual
+temperature) and <em>bio12</em> (total annual precipitation) will be
+used in this example.</p>
+<p>We define the probability of occurrence of the virtual species as
+follows:</p>
+<p><span class="math inline">\(logit(\pi) = α  + β_{tm} \cdot
+temperature  +  β_{tmq} \cdot temperature^2 + β_{pr} \cdot
+precipitation\)</span></p>
+<p>where <span class="math inline">\(logit(∙)\)</span> is the natural
+logarithm of the odds <span class="math inline">\(\pi /(1-\pi
+)\)</span>, <span class="math inline">\(α\)</span> is the model
+intercept, <span class="math inline">\(β_{tm}\)</span> is the regression
+parameter for the linear term of temperature, <span class="math inline">\(β_{tmq}\)</span> is the quadratic term for
+temperature, and , <span class="math inline">\(β_{pr}\)</span> is the
+parameter for precipitation. Adding a quadratic term for temperature
+allowed the simulation of an unimodal response of the species to
+temperature. The argument <code>coefs</code> of the
+<code>SpatialProba</code> function requires a (numeric) vector with the
+values of the parameters that will be used to compute the probabilities
+of species presence</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#create virtual species</span></span>
-<span><span class="va">myRandNum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">19</span>,size<span class="op">=</span><span class="fl">5</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">envData</span> <span class="op">&lt;-</span> <span class="va">envData</span><span class="op">[[</span><span class="va">myRandNum</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">myCoef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8</span>, <span class="fl">1.7</span>, <span class="op">-</span><span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.001</span><span class="op">)</span> <span class="co">#0.001</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">myCoef</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"intercept"</span>, <span class="st">"bio1"</span>, <span class="st">"quad_bio1"</span>, <span class="st">"bio12"</span> <span class="op">)</span></span>
+<span><span class="va">myVS.po</span> <span class="op">&lt;-</span> <span class="fu">USE</span><span class="fu">::</span><span class="fu"><a href="../reference/SpatialProba.html">SpatialProba</a></span><span class="op">(</span>coefs <span class="op">=</span> <span class="va">myCoef</span>,</span>
+<span>                             env.rast <span class="op">=</span> <span class="va">envData</span>, </span>
+<span>                             quadr_term <span class="op">=</span> <span class="st">"bio1"</span>,</span>
+<span>                             marginalPlots <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">myVS.po</span><span class="op">$</span><span class="va">plot</span></span></code></pre></div>
+<p>We can now convert the species probability of presence (p) into a
+binary presence/absence layer, thereby mapping the species distribution
+into the geographical space. In particular, at each cell of the
+probability layer, we draw a random realisation of a Bernoulli trial
+with probability <span class="math inline">\(\pi\)</span>. Deriving
+presence/absence through the random draw from the Bernoulli distribution
+avoided selecting a fixed, arbitrary threshold to derive the
+presence/absence layer.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span><span class="va">random.sp</span> <span class="op">&lt;-</span> <span class="fu">virtualspecies</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/virtualspecies/man/generateRandomSp.html" class="external-link">generateRandomSp</a></span><span class="op">(</span><span class="va">envData</span>, </span>
-<span>                                              convert.to.PA <span class="op">=</span> <span class="cn">FALSE</span>, </span>
-<span>                                              species.type <span class="op">=</span> <span class="st">"additive"</span>,</span>
-<span>                                              realistic.sp <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                                              plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#reclassify suitability raster using a probability conversion rule</span></span>
-<span><span class="va">new.pres</span> <span class="op">&lt;-</span> <span class="fu">virtualspecies</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/virtualspecies/man/convertToPA.html" class="external-link">convertToPA</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">random.sp</span>, </span>
-<span>                      beta<span class="op">=</span><span class="fl">0.55</span>,</span>
-<span>                      alpha <span class="op">=</span> <span class="op">-</span><span class="fl">0.05</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#Sample true occurrences</span></span>
-<span><span class="va">presence.points</span> <span class="op">&lt;-</span> <span class="fu">virtualspecies</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/virtualspecies/man/sampleOccurrences.html" class="external-link">sampleOccurrences</a></span><span class="op">(</span><span class="va">new.pres</span>,</span>
-<span>                                     n <span class="op">=</span> <span class="fl">300</span>, <span class="co"># The number of points to sample</span></span>
-<span>                                     type <span class="op">=</span> <span class="st">"presence-absence"</span>,</span>
-<span>                                     sample.prevalence <span class="op">=</span> <span class="fl">0.6</span>,</span>
-<span>                                     detection.probability <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>                                     correct.by.suitability <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                     plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>  </span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;"></p>
-<p>Generate a presence-only data set.</p>
+<code class="sourceCode R"><span><span class="co"># Convert the probability of occurrence raster to a raster of presence-absenceusing a random binomial draw</span></span>
+<span><span class="va">new.pres</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/app.html" class="external-link">app</a></span><span class="op">(</span><span class="va">myVS.po</span><span class="op">$</span><span class="va">rast</span>, fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#Sample true occurrences and true absences using a stratified sampling, keeping a sample prevalence fixed to 1</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">myVS.pa</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/sample.html" class="external-link">spatSample</a></span><span class="op">(</span><span class="va">new.pres</span>, <span class="fl">150</span>, <span class="st">"stratified"</span>, xy<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">myVS.pa</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"Observed"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">myPres</span> <span class="op">&lt;-</span> <span class="va">presence.points</span><span class="op">$</span><span class="va">sample.points</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">presence.points</span><span class="op">$</span><span class="va">sample.points</span><span class="op">$</span><span class="va">Observed</span><span class="op">==</span><span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"x"</span>, <span class="st">"y"</span>,  <span class="st">"Observed"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">myPres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">myPres</span>, coords<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span>, crs<span class="op">=</span><span class="fl">4326</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">new.pres</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_whitebox.html" class="external-link">scale_fill_whitebox_c</a></span><span class="op">(</span><span class="st">"deep"</span>, direction<span class="op">=</span><span class="fl">1</span>, na.value <span class="op">=</span> <span class="st">"transparent"</span>,</span>
+<span>                                   breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">myVS.pa</span>, </span>
+<span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, color<span class="op">=</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/is.bool.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">Observed</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>             alpha<span class="op">=</span><span class="fl">1</span>, size<span class="op">=</span><span class="fl">2</span>, shape<span class="op">=</span> <span class="fl">19</span><span class="op">)</span><span class="op">+</span></span>
+<span>     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>name<span class="op">=</span><span class="cn">NULL</span>,</span>
+<span>                        values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span><span class="op">=</span><span class="st">'steelblue'</span>,<span class="st">"0"</span><span class="op">=</span><span class="st">'#A41616'</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Longitude"</span>, </span>
+<span>       y<span class="op">=</span><span class="st">"Latitude"</span>, </span>
+<span>       fill<span class="op">=</span><span class="st">"Virtual species"</span>,</span>
+<span>       colour <span class="op">=</span> <span class="st">"Presence/Absence"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_light</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span>,  </span>
+<span>        legend.background<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        legend.box<span class="op">=</span><span class="st">"vertical"</span>,</span>
+<span>        panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>,  </span>
+<span>        legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>, </span>
+<span>        aspect.ratio <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>        panel.spacing.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">2</span>, <span class="st">"lines"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-6-1.png" width="768" style="display: block; margin: auto;"></p>
+<p>Generate a presence-only data set.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">myPres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">myVS.pa</span>, <span class="va">myVS.pa</span><span class="op">$</span><span class="va">Observed</span><span class="op">==</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">myPres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">myPres</span> , coords<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span>, crs<span class="op">=</span><span class="fl">4326</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="generating-the-environmental-space">2. Generating the environmental space<a class="anchor" aria-label="anchor" href="#generating-the-environmental-space"></a>
@@ -159,18 +203,18 @@ optimal resolution (i.e., the one providing the best trade-off between a
 fine resolution and the overfitting of the environmental space) of the
 sampling grid that will be used to collect the pseudo-absences within
 the environmental space (see below).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rpc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rastPCA.html">rastPCA</a></span><span class="op">(</span><span class="va">envData</span>, stand <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/na.omit.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">rpc</span><span class="op">$</span><span class="va">PCs</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PC1"</span>, <span class="st">"PC2"</span><span class="op">)</span><span class="op">]</span><span class="op">]</span>, xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">dt</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PC1"</span>, <span class="st">"PC2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">myRes</span> <span class="op">&lt;-</span> <span class="fu">USE</span><span class="fu">::</span><span class="fu"><a href="../reference/optimRes.html">optimRes</a></span><span class="op">(</span>sdf<span class="op">=</span><span class="va">dt</span>,</span>
 <span>                    grid.res<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>,</span>
 <span>                    perc.thr <span class="op">=</span> <span class="fl">20</span>,</span>
-<span>                    showOpt <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                    showOpt <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span>                    cr<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="myOptRes.png"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">myRes</span><span class="op">$</span><span class="va">Opt_res</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 5</span></span></code></pre>
 </div>
@@ -189,7 +233,7 @@ purpose is to demonstrate its operation. In the subsequent section, the
 <code><a href="../reference/uniformSampling.html">USE::uniformSampling</a></code> function will be internally called by
 <code><a href="../reference/paSampling.html">USE::paSampling</a></code>, exclusively focusing on sampling
 pseudo-absences.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">myObs</span> <span class="op">&lt;-</span> <span class="fu">USE</span><span class="fu">::</span><span class="fu"><a href="../reference/uniformSampling.html">uniformSampling</a></span><span class="op">(</span>sdf<span class="op">=</span><span class="va">dt</span>, </span>
 <span>                              grid.res<span class="op">=</span><span class="va">myRes</span><span class="op">$</span><span class="va">Opt_res</span>,</span>
 <span>                              n.tr <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -198,20 +242,20 @@ pseudo-absences.</p>
 <span>                              plot_proc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Have a look at the observations sampled using
 <code><a href="../reference/uniformSampling.html">USE::uniformSampling</a></code></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">myObs</span><span class="op">$</span><span class="va">obs.tr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Simple feature collection with 6 features and 3 fields</span></span>
 <span><span class="co">## Geometry type: POINT</span></span>
 <span><span class="co">## Dimension:     XY</span></span>
-<span><span class="co">## Bounding box:  xmin: -2.51107 ymin: -3.288937 xmax: -0.4052154 ymax: -2.683561</span></span>
+<span><span class="co">## Bounding box:  xmin: -3.172442 ymin: -8.447978 xmax: -1.344889 ymax: -6.786689</span></span>
 <span><span class="co">## CRS:           NA</span></span>
-<span><span class="co">##               x        y    ID                     geometry</span></span>
-<span><span class="co">## 21228 -3.750000 43.41667 21228   POINT (-2.51107 -2.732245)</span></span>
-<span><span class="co">## 21229 -3.583333 43.41667 21229  POINT (-2.380254 -2.724758)</span></span>
-<span><span class="co">## 8783  -9.250000 53.08333  8783 POINT (-0.8998304 -2.970903)</span></span>
-<span><span class="co">## 10100 -3.750000 52.08333 10100 POINT (-0.4052154 -2.683561)</span></span>
-<span><span class="co">## 2601  -5.250000 57.91667  2601 POINT (-0.6417641 -3.288937)</span></span>
-<span><span class="co">## 8585  -6.583333 53.25000  8585  POINT (-1.002097 -2.744004)</span></span></code></pre>
+<span><span class="co">##             x        y   ID                    geometry</span></span>
+<span><span class="co">## 102  6.250000 59.91667  102 POINT (-3.172442 -8.447978)</span></span>
+<span><span class="co">## 103  6.416667 59.91667  103 POINT (-2.950234 -7.306683)</span></span>
+<span><span class="co">## 317  6.416667 59.75000  317 POINT (-2.805846 -7.311251)</span></span>
+<span><span class="co">## 1387 6.416667 58.91667 1387 POINT (-2.583969 -7.345443)</span></span>
+<span><span class="co">## 742  5.916667 59.41667  742 POINT (-1.344889 -7.015585)</span></span>
+<span><span class="co">## 1814 6.250000 58.58333 1814 POINT (-1.930465 -6.786689)</span></span></code></pre>
 <p>Visualizing the coordinates (PC-scores) of the observations sampled
 in the environmental space using <code><a href="../reference/uniformSampling.html">USE::uniformSampling</a></code>
 demonstrates the effectiveness of uniformly sampling the environmental
@@ -223,7 +267,7 @@ results in an overrepresentation of the most frequently encountered
 environmental conditions. Uniform sampling mitigates the adverse impact
 of sample location bias, leading to a more comprehensive understanding
 of environmental variations.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">env_pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">rpc</span><span class="op">$</span><span class="va">PCs</span><span class="op">$</span><span class="va">PC1</span>, <span class="va">rpc</span><span class="op">$</span><span class="va">PCs</span><span class="op">$</span><span class="va">PC2</span><span class="op">)</span></span>
 <span><span class="va">env_pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/na.omit.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">env_pca</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -239,12 +283,12 @@ of environmental variations.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span>,  </span>
 <span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>,  </span>
 <span>        legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">env_pca</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">PC2</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"Environment"</span><span class="op">)</span>, linewidth<span class="op">=</span><span class="fl">1</span> <span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span>data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html" class="external-link">st_coordinates</a></span><span class="op">(</span><span class="va">myObs</span><span class="op">$</span><span class="va">obs.tr</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Y</span>,  color<span class="op">=</span><span class="st">"Uniform"</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">+</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Y</span>,  color<span class="op">=</span><span class="st">"Uniform"</span><span class="op">)</span>, linewidth<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>name<span class="op">=</span><span class="cn">NULL</span>, </span>
 <span>                     values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Environment'</span><span class="op">=</span><span class="st">'#1E88E5'</span>, <span class="st">'Uniform'</span><span class="op">=</span><span class="st">'#D81B60'</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>     </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y<span class="op">=</span><span class="st">"Density of PC-scores"</span><span class="op">)</span><span class="op">+</span></span>
@@ -253,7 +297,7 @@ of environmental variations.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span>,  </span>
 <span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>,  </span>
 <span>        legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-13-2.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-14-2.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="uniform-sampling-of-the-pseudo-absences-within-the-environmental-space">4. Uniform sampling of the pseudo-absences within the environmental
@@ -294,14 +338,14 @@ by <code><a href="../reference/paSampling.html">USE::paSampling</a></code>). Pse
 within each cell of the sampling grid mentioned in the previous
 section.</p></li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">myGrid.psAbs</span> <span class="op">&lt;-</span> <span class="fu">USE</span><span class="fu">::</span><span class="fu"><a href="../reference/paSampling.html">paSampling</a></span><span class="op">(</span>env.rast<span class="op">=</span><span class="va">envData</span>,</span>
 <span>                                pres<span class="op">=</span><span class="va">myPres</span>,</span>
 <span>                                thres<span class="op">=</span><span class="fl">0.75</span>,</span>
 <span>                                H<span class="op">=</span><span class="cn">NULL</span>,</span>
 <span>                                grid.res<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">myRes</span><span class="op">$</span><span class="va">Opt_res</span><span class="op">)</span>,</span>
 <span>                                n.tr <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                                prev<span class="op">=</span><span class="fl">0.3</span>,</span>
+<span>                                prev<span class="op">=</span><span class="fl">1</span>,</span>
 <span>                                sub.ts<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>                                n.ts<span class="op">=</span><span class="fl">5</span>,</span>
 <span>                                plot_proc<span class="op">=</span><span class="cn">FALSE</span>,</span>
@@ -309,7 +353,7 @@ section.</p></li>
 <p>Visualizing the coordinates (PC-scores) of the pseudo-absences
 sampled in the environmental space using
 <code><a href="../reference/paSampling.html">USE::paSampling</a></code></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">env_pca</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">PC1</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"Environment"</span><span class="op">)</span>, linewidth<span class="op">=</span><span class="fl">1</span> <span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span>data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html" class="external-link">st_coordinates</a></span><span class="op">(</span><span class="va">myGrid.psAbs</span><span class="op">$</span><span class="va">obs.tr</span><span class="op">)</span><span class="op">)</span>, </span>
@@ -324,8 +368,8 @@ sampled in the environmental space using
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span>,  </span>
 <span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>,  </span>
 <span>        legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">env_pca</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">PC2</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"Environment"</span><span class="op">)</span>, linewidth<span class="op">=</span><span class="fl">1</span> <span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span>data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html" class="external-link">st_coordinates</a></span><span class="op">(</span><span class="va">myGrid.psAbs</span><span class="op">$</span><span class="va">obs.tr</span><span class="op">)</span><span class="op">)</span>, </span>
@@ -340,13 +384,14 @@ sampled in the environmental space using
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span>,  </span>
 <span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>,  </span>
 <span>        legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-15-2.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-16-2.png" width="576" style="display: block; margin: auto;"></p>
 <p>Visualizing the geographic coordinates of the pseudo-absences sampled
 in the environmental space using <code><a href="../reference/paSampling.html">USE::paSampling</a></code></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">new.pres</span><span class="op">$</span><span class="va">pa.raster</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span>na.value <span class="op">=</span> <span class="st">"transparent"</span>, breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">new.pres</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_whitebox.html" class="external-link">scale_fill_whitebox_c</a></span><span class="op">(</span><span class="st">"deep"</span>, direction<span class="op">=</span><span class="fl">1</span>, na.value <span class="op">=</span> <span class="st">"transparent"</span>,</span>
+<span>                                   breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">myPres</span>, </span>
 <span>          <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span> <span class="st">"Presences"</span><span class="op">)</span>, </span>
 <span>          alpha<span class="op">=</span><span class="fl">1</span>, size<span class="op">=</span><span class="fl">2</span>, shape<span class="op">=</span> <span class="fl">19</span><span class="op">)</span><span class="op">+</span></span>
@@ -368,7 +413,7 @@ in the environmental space using <code><a href="../reference/paSampling.html">US
 <span>        legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span>, </span>
 <span>        aspect.ratio <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>        panel.spacing.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">2</span>, <span class="st">"lines"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-17-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="effect-of-the-kernel-density-threshold-on-the-environmental-sub-space-sampled-to-collect-pseudo-absences">5. Effect of the kernel density threshold on the environmental
@@ -391,13 +436,13 @@ kernel-based filter, <code>USE</code> enables the handling of
 pseudo-absence sampling under diverse ecological scenarios, such as
 those involving generalist or specialist species or sink
 populations.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">USE</span><span class="fu">::</span><span class="fu"><a href="../reference/thresh.inspect.html">thresh.inspect</a></span><span class="op">(</span>env.rast<span class="op">=</span><span class="va">envData</span>,</span>
 <span>                    pres<span class="op">=</span><span class="va">myPres</span>,</span>
 <span>                    thres<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span><span class="op">)</span>,</span>
 <span>                    H<span class="op">=</span><span class="cn">NULL</span></span>
 <span>                    <span class="op">)</span></span></code></pre></div>
-<p><img src="USE_vignette_files/figure-html/unnamed-chunk-17-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="USE_vignette_files/figure-html/unnamed-chunk-18-1.png" width="864" style="display: block; margin: auto;"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
