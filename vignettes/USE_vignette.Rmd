@@ -67,6 +67,7 @@ new.pres <- terra::app(myVS.po$rast, fun = function(x) {replicate(1, rbinom(n = 
 #Sample true occurrences and true absences using a stratified sampling, keeping a sample prevalence fixed to 1
 set.seed(123)
 myVS.pa <- terra::spatSample(new.pres, 150, "stratified", xy=TRUE)
+myVS.pa <- as.data.frame(myVS.pa)
 names(myVS.pa) <- c("x", "y", "Observed")
 ```
 

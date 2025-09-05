@@ -14,6 +14,6 @@ LazyData: true
 URL: https://danddr.github.io/USE/, https://github.com/danddr/USE
 BugReports: https://github.com/danddr/USE/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: rmarkdown, knitr, tidyterra
 VignetteBuilder: knitr

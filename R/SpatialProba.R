@@ -89,8 +89,14 @@ SpatialProba <- function(coefs=NULL, env.rast=NULL, quadr_term = NULL, marginalP
     #compute marginal effect for the others term
     env_mat.tmp<-env_mat
     #fix the other predictors taking the mean
-    env_mat.tmp <- cbind(env_mat.tmp[ , which(!colnames(env_mat.tmp) %in% c(quadr_term, paste0("quad_", quadr_term)))],  
-                     data.frame(t(colMeans(env_mat.tmp[ , c(quadr_term, paste0("quad_", quadr_term))]))))
+    # env_mat.tmp <- cbind(env_mat.tmp[ , which(!colnames(env_mat.tmp) %in% c(quadr_term, paste0("quad_", quadr_term)))],  
+    #                  data.frame(t(colMeans(env_mat.tmp[ , c(quadr_term, paste0("quad_", quadr_term))]))))
+    env_mat.tmp <-  cbind(
+      env_mat.tmp[, which(!colnames(env_mat.tmp) %in% c(quadr_term, paste0("quad_", quadr_term)))],
+      setNames(
+        data.frame(t(c(mean(env_mat.tmp[, quadr_term]), mean(env_mat.tmp[, quadr_term])^2))),
+        c(quadr_term, paste0("quad_", quadr_term))
+      ))
     #re-order cols in env_mat to match coefs names
     env_mat.tmp <- as.matrix(env_mat.tmp[, names(coefs)])
     proba_link <- env_mat.tmp%*%unname(coefs)
