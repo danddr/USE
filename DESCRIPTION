@@ -1,11 +1,16 @@
 Package: USE
-Title: Uniform Sampling of the Environmental space
+Title: Uniform Sampling of the Environmental Space
 Version: 0.1.6
 Authors@R: c(
     person("Daniele", "Da Re", email = "dare.daniele@gmail.com",  comment=c(ORCID = "0000-0002-3398-9295"), role = c("aut","cre")),
     person("Enrico", "Tordoni", email = "e.tordoni@gmail.com", comment=c(ORCID = "0000-0002-9722-6692"), role = "aut"), 
     person("Manuele", "Bazzichetto", email = "manuele.bazzichetto@gmail.com", comment=c(ORCID= "0000-0002-9874-5064"),  role = "aut"))
-Description: USE performs uniform sampling of the environmental space.
+Description: Provides functions for uniform sampling of the environmental space,
+  designed to assist species distribution modellers in gathering ecologically 
+  relevant pseudo-absence data. The method ensures balanced representation of 
+  environmental conditions and helps reduce sampling bias in model calibration. 
+  Based on the framework described by Da Re et al. (2023) 
+  <doi:10.1111/2041-210X.14209>.
 Depends: R (>= 3.6.0)
 Imports: sf, parallel, terra, ks, ggplot2, cowplot
 License: GPL(>=2)

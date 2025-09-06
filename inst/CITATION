@@ -1,6 +1,6 @@
 citHeader("To cite USE in publications use:")
 bibentry(bibtype = "article",
-          title = "USE it: uniformly sampling pseudo-absences within the environmental space for applications in habitat suitability models",
+          title = "USE it: Uniformly sampling pseudo-absences within the environmental space for applications in habitat suitability models",
           author   = c(person("Daniele", "Da Re"),
                     person("Enrico", "Tordoni"),
                     person("Jonathan", "Lenoir"),
@@ -8,9 +8,9 @@ bibentry(bibtype = "article",
                     person("Sophie", "Vanwambeke"),
                     person("Duccio", "Rocchini"),
                     person("Manuele", "Bazzichetto")), 
-  journal = "EcoEvoRxiv" ,
+  journal = "Methods in Ecology and Evolution" ,
   year     = 2023,
-  url      = "https://doi.org/10.32942/X2XS32",
+  doi      = "10.1111/2041-210X.14209",
   textVersion = paste(
 
   )
